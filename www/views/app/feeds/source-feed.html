@@ -1,0 +1,44 @@
+<ion-view class="feed-entries-view">
+    <ion-nav-buttons side="left">          
+    </ion-nav-buttons>
+    <ion-content on-scroll="getScrollPosition()" delegate-handle="sourceFeedhandler">
+        <!-- Refresh to get the new posts -->
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="entries-list">
+            <div ng-repeat="entry in feed | orderBy : 'updated_at' : true track by $index" class="list card entry-item" >
+                <div class="entry-content item item-text-wrap">
+                    <div on-tap="loadPostDetails(entry)">
+                        <i class="icon ion-eye left read-unread"></i>
+                        <p class="entry-author">
+                            <span>By {{entry.source_name}}</span> 
+                            <span class="feed-date-time" ng-bind="entry.updated_at | dateTimeFilter"></span>
+                        </p>
+                        <div class="list">
+                            <a class="item item-thumbnail-left" href="#">
+                                <img  ng-src="{{entry.feed.image}}">
+                                <h2 ng-bind="entry.feed.title"></h2>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="card-button secondary" on-tap="bookmarkPost(entry)">
+                            <i class="icon ion-android-bookmark"></i> Save
+                        </a>
+                        <a class="card-button primary" on-tap="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Infinit scroll -->
+        <ion-infinite-scroll on-infinite="loadMore()" distance="15px" immediate-check="false" ng-if="!isMoreFeeds">
+        </ion-infinite-scroll>
+    </ion-content>
+    <div class="float-button effect1" ng-show="sttButton" ng-click="scrollTop()">
+        <span class="height-fix">
+            <a class="cont">
+                <i class="icon ion-chevron-up white"> </i>
+            </a>
+        </span>
+    </div>
+</ion-view>

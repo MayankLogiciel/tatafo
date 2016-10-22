@@ -1,0 +1,106 @@
+.feed-entries-view
+{
+	background-color: $content-bg !important;
+
+	.entry-heading
+	{
+		padding-top: 8px;
+		padding-bottom: 8px;
+		background-color: darken($entry-heading-color, 10%);
+		border-color: #000;
+
+		.entry-title
+		{
+			color: $entry-title-color;
+		}
+
+		.entry-author
+		{
+			font-weight: 500;
+	
+		}
+	}
+
+	.entry-content
+	{
+		padding-top: 8px;
+		padding-bottom: 0px;
+
+		.entry-excerpt
+		{
+			overflow: hidden;
+			text-overflow: ellipsis;
+			@include display(flex);
+			@include flex-direction(column);
+			-webkit-line-clamp: $entry-excerpt-lines; /* number of lines to show */
+			line-height: $entry-font-size + 4;        /* fallback */
+			font-size: $entry-font-size;        /* fallback */
+			max-height: ($entry-font-size + 4) * $entry-excerpt-lines;       /* fallback */
+
+			*
+			{
+				font-size: inherit !important;
+			}
+		}
+
+.card-header
+{
+  padding:16px 16px 16px 8px;
+}
+
+
+
+.card-button
+{
+  font-size: 16px;
+  padding: 5px 5px 5px 0;
+  text-decoration: none;
+
+  &.primary
+  {
+    color: #FF4C4C;
+  }
+
+  &.secondary
+  {
+    color: #FF4C4C;
+
+  }
+
+   &.university
+  {
+    color:  #FF4C4C;
+	float: right;
+	margin: -5px -15px 0 0;
+	font-size: 16px;
+  }
+
+}
+
+.card-footer
+{
+  border-top: 2px solid lighten($content-color,60);
+  padding:16px;
+  margin-top:5px;
+  font-weight: 500;
+}
+	}
+}
+
+.read-unread {
+	padding:0 10px;
+}
+.feed-date-time {
+	float: right;
+}
+
+.feed-entries-card	{
+	padding: 0 17px;
+	.feed-date{
+		float: right;
+	}
+	
+}
+.social-list-border {
+		border: 1px solid;
+	}

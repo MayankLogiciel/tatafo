@@ -1,0 +1,19 @@
+{
+  "name": "tatafo",
+  "app_id": "",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ],
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://qa.tatafo.me/api"
+    }
+  ]
+
+}

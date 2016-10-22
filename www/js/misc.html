@@ -1,0 +1,152 @@
+<!-- Tabs for Home Page -->
+<ion-tabs class="tabs-striped tabs-color-assertive tabs-icon-top">
+	<!-- <ion-view> -->
+	<!--All tab-->
+	<ion-tab title="All" name="All-tab" icon-on="ion-arrow-shrink" icon-off="ion-arrow-expand" on-tap="doRefresh()">
+		
+
+		<ion-view class="feed-entries-view">
+			<ion-nav-bar class="bar app-top-bar effect1">
+				<ion-nav-back-button>
+				</ion-nav-back-button>
+				<ion-nav-buttons side="left">
+					<button class="button button-icon ion-navicon" menu-toggle="left">
+					</button>
+					<button class="button button-icon button-clear ion-ios-arrow-down" ng-click="popover.show($event)" ng-hide="sortPop"> Sort  
+					</button>
+				</ion-nav-buttons>
+				<ion-nav-buttons side="right">                  
+					<button class="button button-icon button-clear ion-refresh" on-tap="doRefresh()" ng-hide="reload"> 
+					</button>
+					<form ng-submit="searchData(searchInput)">
+					<input type="search"  ng-model="searchInput" name="search" ng-show="mySearch">	</form>		
+					<button class="button button-icon button-assertive ion-search" menu-toggle="right" ng-click="toggle()">
+					</button>
+					<header-popover></header-popover>					
+				</ion-nav-buttons>
+			</ion-nav-bar>
+			<ion-nav-title>
+				<span ng-bind="entry.feed.title"></span>
+			</ion-nav-title>
+			<ion-content class="has-header" on-scroll="getScrollPosition()" delegate-handle="feedshandler">
+				<!-- Refresh to get the new posts -->
+				<ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+				</ion-refresher>
+
+				<div class="entries-list feed-col">
+					<div ng-repeat="entry in allFeed" class="list card entry-item">
+						<div class="entry-content item item-text-wrap" >
+							<div on-tap="loadPostDetails(entry)">
+								<i class="icon ion-eye left read-unread"></i>
+								<p class="entry-author">
+									<span>By {{entry.source_name}}</span> 
+									<span class="feed-date-time" ng-bind="entry.updated_at | dateTimeFilter"></span>
+								</p>
+								<div class="list">
+									<a class="item item-thumbnail-left" href="#">
+										<img  ng-src={{entry.feed.image}}>
+										<h2 ng-bind="entry.feed.title"></h2>
+									</a>
+								</div> 
+							</div>
+							<div class="card-footer">
+								<a class="card-button secondary" on-tap="bookmarkPost(entry)">
+									<i class="icon ion-android-bookmark"></i> Save
+								</a>
+								<a class="card-button primary" ng-click="sharePost(post.url)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Infinit scroll -->
+				<ion-infinite-scroll on-infinite="loadMore()" distance="15px" immediate-check="false"  ng-if="!isMoreFeeds" >
+				</ion-infinite-scroll>
+				<div class="float-button effect1" ng-show="sttButton" ng-click="scrollTop()"	>
+					<span class="height-fix">
+						<a class="cont">
+							<i class="icon ion-chevron-up white"> </i>
+						</a>
+					</span>
+				</div>
+
+			</ion-content>
+
+		</ion-nav-view>		
+	</ion-tab>
+
+	<!-- Local tab-->
+	<ion-tab title="Local" name="Local-tab" icon-on="ion-ios-location" icon-off="ion-ios-location-outline">
+		<ion-nav-view class="feed-entries-view">
+			<ion-nav-bar class="bar app-top-bar effect1">
+				<ion-nav-buttons side="left">
+					<button class="button button-icon ion-navicon" menu-toggle="left">
+					</button>
+				</ion-nav-buttons>
+				<ion-nav-buttons side="right">  
+					<button class="button button-icon button-clear ion-ios-heart"> 
+					</button>
+					<header-popover></header-popover>
+				</ion-nav-buttons>
+			</ion-nav-bar>
+			<ion-nav-title>
+				<span ng-bind="entry.feed.title"></span>
+			</ion-nav-title>
+			<ion-nav-buttons side="left">
+				<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+			</ion-nav-buttons>
+			<ion-nav-title>
+				<span ng-bind="source.name"></span>
+			</ion-nav-title>
+			<ion-content class="has-header">   
+				<div class="row categories-list feed-col">
+					<div ng-repeat="source in feedSources" ng-show="source.locale=='local'" class="col col-50">
+						<a class="feed-category" ui-sref="app.feed-entries({sourceId: source.id})">
+							<pre-img ratio="_1_1" helper-class="square-image">
+								<img class="category-image" ng-src="img/feeds/logos/bbc.jpg" spinner-on-load>
+							</pre-img>
+							<div class="category-bg"></div>
+						</a>
+					</div>
+				</div>
+			</ion-content>
+		</ion-nav-view class="about-view">
+	</ion-tab>
+
+	<!--Foreign tab-->
+	<ion-tab title="foreign" icon-on="ion-ios-world" icon-off="ion-ios-world-outline">
+		<ion-nav-view class="feed-entries-view">
+			<ion-nav-bar class="bar app-top-bar effect1">
+				<ion-nav-buttons side="left">
+					<button class="button button-icon ion-navicon" menu-toggle="left">
+					</button>
+				</ion-nav-buttons>
+				<ion-nav-buttons side="right">
+
+					<button class="button button-icon button-clear ion-ios-heart"> 
+					</button>  
+					<header-popover></header-popover>           
+
+					
+				</ion-nav-buttons>
+			</ion-nav-bar>
+			<ion-nav-title>
+				<span ng-bind="source.name"></span>
+			</ion-nav-title>
+			<ion-content class="has-header">   
+				<div class="row categories-list feed-col">
+					<div ng-repeat="source in feedSources" ng-show="source.locale=='foreign'" class="col col-50">
+						<a class="feed-category"  ui-sref="app.feed-entries({sourceId: source.id})">
+							<pre-img ratio="_1_1" helper-class="square-image">
+								<img class="category-image" ng-src="img/feeds/logos/cnn.jpg" spinner-on-load>
+							</pre-img>
+							<div class="category-bg"></div>
+						</a>
+					</div>
+				</div>
+			</ion-content>
+		</ion-nav-view class="about-view">
+	</ion-tab>
+	<!-- </ion-view> -->
+</ion-tabs> 

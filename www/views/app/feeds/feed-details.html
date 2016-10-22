@@ -1,0 +1,61 @@
+<ion-view class="feed-entries-details-view">
+    <ion-nav-buttons side="left">          
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-android-share-alt" on-tap="sharePost(post)">
+        </button>
+        <button class="button button-icon button-clear ion-android-bookmark" on-tap="bookmarkPost(post)">
+        </button>
+    </ion-nav-buttons>
+    <ion-content scroll="true" overflow-scroll="true">
+
+        <div class="list card">
+
+            <div class="item feed-entries-card item-avatar post" post-content>
+
+                <div class="card-header ">
+                    <h1 ng-bind="entry.feed.title || entry.title | rawHtml" class="title" on-hold="copyText('Header')">Header</h1>
+                    <h2>Posted by <span class="author" ng-bind="entry.source_name | rawHtml"></span><span class="feed-date" ng-bind="entry.updated_at || entry.date | dateTimeFeedDetailFilter"></span></h2>
+                </div>
+            </div>
+
+            <div class="item item-body">
+                <img class="full-image" ng-src="img/feeds/logos/bbc.jpg">
+                <p class="card-content"  dynamic-anchor-fix ng-bind-html="entry.feed.summary || entry.summary  | rawHtml">
+                </p>
+            </div>
+        </div>
+
+        <div class="button-bar border">
+            <a class="button button-block button-dark icon-left ion-happy " href="javascript:void(0)" ng-click="showSubmitMenu()">
+                <p>Credit:</p>
+                <p>
+                    <span>{{entry.source_name}}</span>
+                    <span>{{}}</span>
+                </p>
+            </a>           
+        </div>
+        <div class = "row" >
+            <div class = "col col-50 social-list-border" >Reach {{entry.feed.title || entry.title}}</div>
+            <div class = "col social-list-border"> <i class="icon ion-social-facebook"></i>{{facebook}}</div>
+            <div class = "col social-list-border"> <i class="icon ion-social-twitter"></i>{{twitter}}</div>
+            <div class = "col social-list-border"> <i class="icon ion-social-instagram"></i>{{Instagram}}</div>
+            <div class = "col social-list-border"> <i class="icon ion-email"></i>{{Email}}</div>
+        </div>
+ 
+        <div class="float-button-left effect1" on-tap="previousButton()" ng-hide="currentIndex==0">
+            <span class="height-fix">
+                <a ng-click="" class="cont">
+                    <i class="ion-chevron-left white"> </i>
+                </a>
+            </span>
+        </div>
+        <div class="float-button-right effect1" on-tap="nextButton()" ng-hide="currentIndex==allFeed.length-1">
+            <span class="height-fix">
+                <a ng-click="show()" class="cont">
+                  <i class="ion-chevron-right white"> </i>
+                </a>
+            </span>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,22 @@
+<ion-view class="feed-entries-view">
+<ion-nav-buttons side="left">
+	<button class="button button-icon ion-navicon" menu-toggle="left">
+	</button>
+</ion-nav-buttons>
+<ion-nav-buttons side="right">  
+	<app-rate-model></app-rate-model>
+	<header-popover></header-popover>
+</ion-nav-buttons> 
+<ion-content class="has-header">   
+	<div class="row categories-list feed-col">
+		<div ng-repeat="source in feedSources" ng-show="source.locale=='local'" class="col col-50">
+			<a class="feed-category" on-tap="feedDetail(source.id)">
+				<pre-img ratio="_1_1" helper-class="square-image">
+					<img class="category-image" ng-src="img/feeds/logos/bbc.jpg" spinner-on-load>
+				</pre-img>
+				<div class="category-bg"></div>
+			</a>
+		</div>
+	</div>
+</ion-content>
+</ion-view>

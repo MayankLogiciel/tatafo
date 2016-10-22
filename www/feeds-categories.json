@@ -1,0 +1,39 @@
+[
+	{
+		"id":"bbc",
+		"title":"BBC",
+		"foreign":true,
+		"local":false,
+		"description":"The latest stories from the World section of the BBC News web site.",
+		"image":"img/feeds/logos/bbc.jpg",
+		"url":"https://push.superfeedr.com/?hub.mode=retrieve&hub.topic=http%3A%2F%2Fwww.lwkm.ng%2Ffeed&count=100&format=atom&authorization=d2hpenpvd293Ojc4NTQ4NDVkYjQxN2JlODc5MzlkMjcyZDE5N2JiZmYx&"
+	},
+	{
+		"id":"reuters",
+		"title":"Reuters",
+		"foreign":true,
+		"local":false,
+		"description":"Reuters.com is your source for breaking news, business, financial and investing news, including personal finance and stocks. Reuters is the leading global provider of news, financial information and technology solutions to the world's media, financial institutions, businesses and individuals.",
+		"image":"img/feeds/logos/reuters.jpg",
+		"url":"http://feeds.reuters.com/Reuters/worldNews"
+	},
+	{
+		"id":"cnn",
+		"title":"CNN",
+		"foreign":false,
+		"local":true,
+		"description":"CNN.com delivers up-to-the-minute news and information on the latest top stories, weather, entertainment, politics and more.",
+		"image":"img/feeds/logos/cnn.jpg",
+		"url":"http://rss.cnn.com/rss/cnn_world.rss"
+	},
+	{
+		"id":"the-guardian",
+		"title":"The Guardian",
+		"foreign":false,
+		"local":true,
+		"description":"Latest World news, comment and analysis from the Guardian, the world's leading liberal voice",
+		"image":"img/feeds/logos/the-guardian.jpg",
+		"url":"http://www.theguardian.com/world/rss"
+	}
+]
+	

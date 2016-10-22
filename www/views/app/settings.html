@@ -1,0 +1,24 @@
+<ion-view class="settings-view">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon ion-navicon" menu-toggle="left">
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">        
+    </ion-nav-buttons>
+    <ion-nav-title>
+        <span>Settings</span>
+    </ion-nav-title>
+    <ion-content>
+        <ul class="list">
+            <div class="item item-divider"></div>
+            <ion-toggle ng-model="push" toggle-class="toggle-assertive" ng-change="showStatus(push)"> Push Notifications</ion-toggle>
+            <div class="item item-divider"></div>
+            <ion-toggle ng-model="pictures" toggle-class="toggle-assertive" ng-checked="true">Disable Picture</ion-toggle>
+            <div class="item item-divider"></div>
+            <button class="button button-block button-light" ng-click = "showPopup()">
+               Sync data after {{interval.title}}
+            </button>
+            <div class="item item-divider"></div>
+        </ul>
+    </ion-content>
+</ion-view>
