@@ -73,3 +73,33 @@
     }
   }
 }
+
+.bookmarks-view {
+    .bookmarks-container {
+        padding: 10px;
+        .empty-bookmark {
+            height: 100%;
+        }
+        .bookmarks-list {
+            padding: 0;
+            border: none;
+            .bookmark-item {
+                padding: 10px;
+                margin: 0;
+                .bookmark-section {
+                    margin-bottom: 5px;
+                    h2 {
+                        &.post-title {
+                            margin-bottom: 5px;
+                        }
+                    }
+                }
+                .post-time {
+                    font-size: 12px;
+                    font-weight: 200;
+                }
+            }
+        }
+    }
+}
+

@@ -11,6 +11,10 @@
 	<div class="row categories-list feed-col">
 		<div ng-repeat="source in feedSources" ng-show="source.locale=='foreign'" class="col col-50">
 			<a class="feed-category" on-tap="feedDetail(source.id)">
+				<!-- <div class="source-img-char" ng-bind="source.image_character"></div>
+				<div class="source-title">
+					<p ng-bind="source.name"></p>
+				</div> -->
 				<pre-img ratio="_1_1" helper-class="square-image">
 					<img class="category-image" ng-src="img/feeds/logos/cnn.jpg" spinner-on-load>
 				</pre-img>

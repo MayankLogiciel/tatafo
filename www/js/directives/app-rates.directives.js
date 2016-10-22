@@ -8,7 +8,7 @@
 	var appRateModel=function($ionicModal, $state, $ionicPopup) {		
 		return {
 			restrict: 'E',
-			template: '<button class="button button-icon button-clear ion-ios-heart" on-tap="showAppRateModel()"></button>',
+			template: '<button class="button button-icon ion-ios-heart" on-tap="showAppRateModel()"></button>',
 			link: function(scope, element, attrs) {
 
 				$ionicModal.fromTemplateUrl('views/common/rates.html', {    			 

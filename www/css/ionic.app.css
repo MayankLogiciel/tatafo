@@ -10557,6 +10557,24 @@ ion-side-menu .heading-item .message {
     .bookmarks-view .bookmark-item .post-time {
       color: rgba(43, 43, 43, 0.9); }
 
+.bookmarks-view .bookmarks-container {
+  padding: 10px; }
+  .bookmarks-view .bookmarks-container .empty-bookmark {
+    height: 100%; }
+  .bookmarks-view .bookmarks-container .bookmarks-list {
+    padding: 0;
+    border: none; }
+    .bookmarks-view .bookmarks-container .bookmarks-list .bookmark-item {
+      padding: 10px;
+      margin: 0; }
+      .bookmarks-view .bookmarks-container .bookmarks-list .bookmark-item .bookmark-section {
+        margin-bottom: 5px; }
+        .bookmarks-view .bookmarks-container .bookmarks-list .bookmark-item .bookmark-section h2.post-title {
+          margin-bottom: 5px; }
+      .bookmarks-view .bookmarks-container .bookmarks-list .bookmark-item .post-time {
+        font-size: 12px;
+        font-weight: 200; }
+
 .category-feeds-view {
   background-color: #EAEAEA !important; }
   .category-feeds-view .category-feeds .item {
@@ -10571,6 +10589,9 @@ ion-side-menu .heading-item .message {
     font-weight: 500; }
   .category-feeds-view .category-feeds .item .description {
     color: #9d9d9d; }
+
+.source-section {
+  background-image: url("../img/feeds/logos/feed-source.png"); }
 
 .feed-entries-view {
   background-color: #EAEAEA !important; }
@@ -10975,3 +10996,9 @@ ion-side-menu .heading-item .message {
 
 .settings-view {
   background-color: #EAEAEA !important; }
+
+.sync-interval-setting .pull-left {
+  float: left; }
+
+.sync-interval-setting .pull-right {
+  float: right; }

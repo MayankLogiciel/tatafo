@@ -15,10 +15,13 @@
             <div class="item item-divider"></div>
             <ion-toggle ng-model="pictures" toggle-class="toggle-assertive" ng-checked="true">Disable Picture</ion-toggle>
             <div class="item item-divider"></div>
-            <button class="button button-block button-light" ng-click = "showPopup()">
-               Sync data after {{interval.title}}
-            </button>
-            <div class="item item-divider"></div>
+            <div on-tap="showPopup()" class="item sync-interval-setting">
+                <div class="pull-left">Sync data after</div>
+                <div class="pull-right" ng-if="selectedInterval()" ng-bind="selectedInterval()"></div>
+            </div>
+            <!-- <button class="button button-block button-light" ng-click="">
+            </button> -->
+            <!-- <div class="item item-divider"></div> -->
         </ul>
     </ion-content>
 </ion-view>
