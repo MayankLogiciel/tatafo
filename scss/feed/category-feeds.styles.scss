@@ -34,5 +34,40 @@
 }
 
 .source-section {
-	background-image: url("../img/feeds/logos/feed-source.png");
+	position: relative;
+	text-align: center;
+	max-height: 210px;
+	.feed-category {
+		display: block;
+		background-color: #fff;
+		.circle-img {
+			height: 60px;
+			position: absolute;
+			&.circle-1 {
+				top: 8px;
+				left: 12px;
+			}
+			&.circle-2 {
+				bottom: 40px;
+				right: 20px;
+			}
+		}
+		.source-img-char {
+			font-size: 9em;
+			position: relative;
+			// height: 170px;
+			line-height: normal;
+			p {
+				margin: 0;
+			}
+		}
+		.source-title {
+			background: rgba(0,0,0,0.2);
+			padding: 5px 0;
+			p {
+				margin: 0;
+				font-size: 1.2em;
+			}
+		}
+	}
 }

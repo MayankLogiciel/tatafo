@@ -10184,18 +10184,21 @@ ion-popover-view.fit ion-content {
   margin-top: -3px; }
 
 .feed-entries-view .feed-col .card {
-  margin-top: 0;
-  margin-bottom: 0;
-  border: 1px solid #ccc; }
+  margin: 8px 7px 10px 7px;
+  box-shadow: 0 1px 3px #f2f2f2; }
   .feed-entries-view .feed-col .card:first-child {
     margin-top: 20px; }
   .feed-entries-view .feed-col .card .card-footer {
-    border-top: 1px solid #ccc; }
+    border-top: 1px dashed #ccc; }
+    .feed-entries-view .feed-col .card .card-footer .card-button.primary {
+      border-right: 1px dashed #ccc; }
     .feed-entries-view .feed-col .card .card-footer .icon {
       font-size: 20px; }
 
 .feed-entries-view .feed-col .entry-author {
-  font-size: 13px; }
+  font-size: 13px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed #ccc; }
 
 .popup-container .popup-buttons .button-default {
   background-color: buttonface; }
@@ -10267,6 +10270,11 @@ ion-popover-view.fit ion-content {
     margin-top: 13px; }
   .feed-entries-details-view .button-bar a p span {
     color: #fff; }
+
+.word-wrap {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; }
 
 .content-banner {
   width: 100%;
@@ -10591,7 +10599,33 @@ ion-side-menu .heading-item .message {
     color: #9d9d9d; }
 
 .source-section {
-  background-image: url("../img/feeds/logos/feed-source.png"); }
+  position: relative;
+  text-align: center;
+  max-height: 210px; }
+  .source-section .feed-category {
+    display: block;
+    background-color: #fff; }
+    .source-section .feed-category .circle-img {
+      height: 60px;
+      position: absolute; }
+      .source-section .feed-category .circle-img.circle-1 {
+        top: 8px;
+        left: 12px; }
+      .source-section .feed-category .circle-img.circle-2 {
+        bottom: 40px;
+        right: 20px; }
+    .source-section .feed-category .source-img-char {
+      font-size: 9em;
+      position: relative;
+      line-height: normal; }
+      .source-section .feed-category .source-img-char p {
+        margin: 0; }
+    .source-section .feed-category .source-title {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 5px 0; }
+      .source-section .feed-category .source-title p {
+        margin: 0;
+        font-size: 1.2em; }
 
 .feed-entries-view {
   background-color: #EAEAEA !important; }
@@ -10637,7 +10671,6 @@ ion-side-menu .heading-item .message {
       padding: 16px 16px 16px 8px; }
     .feed-entries-view .entry-content .card-button {
       font-size: 16px;
-      padding: 5px 5px 5px 0;
       text-decoration: none; }
       .feed-entries-view .entry-content .card-button.primary {
         color: #FF4C4C; }
@@ -10648,11 +10681,6 @@ ion-side-menu .heading-item .message {
         float: right;
         margin: -5px -15px 0 0;
         font-size: 16px; }
-    .feed-entries-view .entry-content .card-footer {
-      border-top: 2px solid #dddddd;
-      padding: 16px;
-      margin-top: 5px;
-      font-weight: 500; }
 
 .read-unread {
   padding: 0 10px; }
@@ -10660,13 +10688,21 @@ ion-side-menu .heading-item .message {
 .feed-date-time {
   float: right; }
 
-.feed-entries-card {
-  padding: 0 17px; }
-  .feed-entries-card .feed-date {
-    float: right; }
+.feed-entries-card .feed-date {
+  float: right;
+  font-weight: 400; }
 
 .social-list-border {
   border: 1px solid; }
+
+.feed-detail-cont {
+  padding: 10px; }
+  .feed-detail-cont .feed-entries-card {
+    border-bottom: 1px dashed #ccc;
+    margin-bottom: 10px; }
+  .feed-detail-cont .feed-detail-content img {
+    width: 100%;
+    height: auto; }
 
 .feeds-categories-view {
   background-color: #ccc; }
@@ -11002,3 +11038,37 @@ ion-side-menu .heading-item .message {
 
 .sync-interval-setting .pull-right {
   float: right; }
+
+.rating-popup {
+  height: 180px !important; }
+
+.titleuni {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  overflow: hidden;
+  padding: 0 10px;
+  min-width: 30px;
+  height: 43px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 44px;
+  background-color: #FFC; }
+
+.rates {
+  padding: 20px;
+  text-align: justify; }
+
+.rates-image1 {
+  height: 32px;
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: #FFF;
+  background-repeat: no-repeat;
+  background-image: url(../img/rating.png);
+  background-position: center, center; }

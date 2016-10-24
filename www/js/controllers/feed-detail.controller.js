@@ -22,12 +22,11 @@
 			// fetching the feed source frm local storage
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
 			if($scope.sourceData.topics.data.length > 0) {
-				angular.forEach($scope.sourceData.topics.data,function(value,key){
-					if(value.name==$scope.entry.topic_name){
-						$scope.topicName=value;
-					}					
+				$scope.sourceData.topics.data.map(function(val) {
+					if (val.name == $scope.entry.topic_name) {
+						$scope.topic = val;
+					}
 				});
-				
 			};
 			
 			loadFeeds();
