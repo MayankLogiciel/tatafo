@@ -11,7 +11,7 @@
                     var deviceToken = JSON.parse(localStorage.deviceToken);
                     config.headers['device-token'] = deviceToken.device_token;
                     config.headers['device-id'] = deviceToken.device_id;
-                    var pushToken = JSON.parse(localStorage.pushobj);
+                   var pushToken = JSON.parse(localStorage.pushobj);
                     config.headers['push-token'] = pushToken.pushToken;
                 }else {
                     config.headers['test'] = 'true';

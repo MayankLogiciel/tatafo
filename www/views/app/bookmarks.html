@@ -20,10 +20,10 @@
                 <ion-list class="bookmarks-list item item-divider" can-swipe="true">
                     <ion-item class="bookmark-item item item-divider" ng-repeat="bookmark in bookmarks" >
                         <div class="bookmark-section">
-                            <h2 class="post-title" ng-bind-html="bookmark.doc.title | rawHtml"></h2>
+                            <h2 class="post-title" ng-bind-html="bookmark.doc.data.feed.title | rawHtml"></h2>
                             <p class="entry-author">
-                                <span>By {{bookmark.doc.source_name}} .</span>
-                                <span class="post-time" am-time-ago="bookmark.doc.date"></span> 
+                                <span>By {{bookmark.topicName.author_name}} .</span>
+                                <span class="post-time" am-time-ago="bookmark.doc.data.feed.updated"></span> 
                             </p>
                             <!-- <div class="item item-body">
                                 <img class="full-image" ng-src="{{bookmark.doc.image}}">
@@ -31,7 +31,7 @@
                             <!-- <p class="post-date">Posted <span class="post-time" am-time-ago="bookmark.doc.date"></span></p> -->
                         </div>   
                         <div class="row">
-                            <div class="col text-center">  <button class="button  icon-left ion-ios-book button-calm"  ng-click="goToFeedPostArticle(bookmark.doc)">Open</button></div>
+                            <div class="col text-center">  <button class="button  icon-left ion-ios-book button-calm"  ng-click="goToFeedPostArticle(bookmark.doc.data)">Open</button></div>
                             <div class="col text-center"><button class="button  icon-left ion-trash-b button-assertive"  ng-click="deleteBookMark(bookmark.doc)">Remove</button></div>
                         </div>
                         

@@ -1,7 +1,7 @@
 // Ionic Starter App
 angular
     .module('underscore', [])
-    .constant('ONESIGNAL_APP_ID','43222a94-96fd-45de-a0ce-f43d6eda1a25')
+    .constant('ONESIGNAL_APP_ID','8d93d121-4d4e-4981-9392-16da702dcf92')
     .constant('GOOGLE_PROJECT_NUMBER','518598830385')
 
     .factory('_' , function() {
@@ -14,7 +14,7 @@ angular
     angular
         .module('tatafo', ['ionic' , 'angularMoment' , 'tatafo.config' , 'underscore' , 'ngResource' , 'ngCordova' , 'slugifier' , 'youtube-embed', 'jett.ionic.content.banner' ])
 
-    .run(function($ionicPlatform,$rootScope, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, $cordovaDevice,  ConnectivityMonitorFactoryFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
+    .run(function($ionicPlatform,$rootScope, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, $cordovaDevice,  ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
 
          ionic.Platform.ready(function() {
 
@@ -103,7 +103,7 @@ angular
             }
 
             //start watching online/offline event
-            ConnectivityMonitorFactoryFactory.startWatching();
+            console.log(ConnectivityMonitorFactory.startWatching());
 
                 /**
                     settingService.getSetting function will set default settings if already not set

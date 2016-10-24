@@ -18,6 +18,7 @@
 		* check if already exist then create msg already exist
 		*/
      	this.addBookmarkToPouchDB = function(bookmark_post) {
+     		console.log(bookmark_post);
 		$q.when(_db.allDocs({ 
 			include_docs: true,
 			descending: true,
@@ -25,27 +26,22 @@
         .then(function(docs) {
         	//check if this post is already saved
 			var existing_post = _.find(docs.rows, function(data) { 
-				if(angular.isUndefined(data.doc.id)){
+				console.log(data);
+				if(angular.isUndefined(data.doc.data.id)){
 					return null;
 				}
-				if(data.doc.id==bookmark_post.id){
+				if(data.doc.data.id==bookmark_post.id){
 					
 					$ionicLoading.show({ template: 'Bookmark already exist!', noBackdrop: true, duration: 1000 });
 				
-					return data.doc.id == bookmark_post.id; 
+					return data.doc.data.id == bookmark_post.id; 
 				}				
 
 			});
 	
 			if(!existing_post) {
 				_db.post({
-					id:bookmark_post.id,
-					source_name:bookmark_post.source_name,
-					permalinkUrl: bookmark_post.feed.permalinkUrl,
-					title : bookmark_post.feed.title,
-					date: bookmark_post.updated_at,
-					summary:bookmark_post.feed.summary,
-					image:bookmark_post.feed.image
+					data:bookmark_post
 				});
 				$ionicLoading.show({ template: 'Bookmark Saved!', noBackdrop: true, duration: 1000 });
 

@@ -4,7 +4,7 @@
 	/**
 	* SourceFeedController Function
 	*/
-	var SourceFeedController = function($log, $injector, $ionicHistory, $scope, $state, $stateParams, feedService , $http , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactoryFactory) {
+	var SourceFeedController = function($log, $injector, $ionicHistory, $scope, $state, $stateParams, feedService , $http , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactory) {
 
 		/**
 		* Intialization
@@ -27,6 +27,17 @@
 		*/
 		$scope.$on('$ionicView.beforeEnter', function (event, viewData) {
 		    viewData.enableBack = true;
+		});
+		$scope.$on('$ionicView.beforeLeave', function (event, viewData) {
+		    viewData.enableBack = true;
+
+			var clickEvent = new MouseEvent("tap", {
+			    "view": window,
+			    "bubbles": true,
+			    "cancelable": false
+			});
+		    var element = document.getElementById('app-rate-model-source-feed');
+			element.dispatchEvent(clickEvent);
 		});
 
 		/**
@@ -66,6 +77,7 @@
 		*/	
 		$scope.bookmarkPost = function(post) {
 			bookMarkService.addBookmarkToPouchDB(post);
+			
 		};
 
 		/**
@@ -73,10 +85,10 @@
 		* if connection is online then socialService.share sending the parameter need to share from feeds
 		*/
 		$scope.sharePost = function(post) {
-			if(ConnectivityMonitorFactoryFactory.isOffline()){
+			if(ConnectivityMonitorFactory.isOffline()){
 				$ionicLoading.show({ template: 'Please check you network connection!', noBackdrop: true, duration: 1000 });
 			}
-			if(ConnectivityMonitorFactoryFactory.isOnline()){
+			if(ConnectivityMonitorFactory.isOnline()){
 
 				socialService.share(post.feed.title, post.feed.summary, post.image, post.feed.permalinkUrl);
 			};
@@ -84,12 +96,12 @@
 
 		/**
 		* loadFeed loads the all feeds of perticular source
-		* if ConnectivityMonitorFactoryFactory.isOffline then loads the feeds from pouch db using feedService.getfeedFromPouchDB
-		* if ConnectivityMonitorFactoryFactory.isOnline then loads the feeds from  API using feedService.getFeeds
+		* if ConnectivityMonitorFactory.isOffline then loads the feeds from pouch db using feedService.getfeedFromPouchDB
+		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
 		var loadFeed = function(isLoadMore) {				
 			$scope.feedsParams.source_id = $stateParams.sourceId;
-			if(ConnectivityMonitorFactoryFactory.isOffline()) {
+			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.getPostsHavingSource($scope.feedsParams).then(function(response){
 					if(response.posts.length>0){
 						if(!isLoadMore) {
@@ -107,14 +119,14 @@
 
 				});	
 			}
-			if(ConnectivityMonitorFactoryFactory.isOnline()) {	
+			if(ConnectivityMonitorFactory.isOnline()) {	
 				$ionicLoading.show({
 					template: '<ion-spinner icon="android"></ion-spinner>'
 				});
-				if($scope.loadMoreActive==true){
-					return;
-				}			
-				$scope.loadMoreActive = true;
+				// if($scope.loadMoreActive==true){
+				// 	return;
+				// }			
+				// $scope.loadMoreActive = true;
 				feedService.getFeeds($scope.feedsParams).then(function(feed) {
 					if(feed.data.data.meta.pagination.current_page == feed.data.data.meta.pagination.total_pages || feed.data.data.meta.pagination.total_pages == 0){
 
@@ -131,7 +143,7 @@
 				})
 				.finally(function(){
 					$scope.$broadcast('scroll.refreshComplete');
-					$scope.loadMoreActive = false;
+					//$scope.loadMoreActive = false;
 					$ionicLoading.hide();
 				});
 			};
@@ -150,6 +162,7 @@
 		* loadPostDetails feedDetailService.setCombinedPostDataForNextPrevious sending the deatil of other feeds for next and previous Button
 		*/
 		$scope.loadPostDetails=function(post) {
+			post.is_read = true;
 			feedDetailService.setPostData(post);
 			feedDetailService.setCombinedPostDataForNextPrevious($scope.feed);
 			$state.go('app.feed-entries-details');
@@ -164,7 +177,7 @@
 		*/
 		$scope.$on('getFeedsBySearch',function(event,search){
 			$scope.feedsParams.name = search;
-			if(ConnectivityMonitorFactoryFactory.isOffline()) {
+			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.searchFromPouchDB($scope.feedsParams).then(function(response) {
 					console.log(response);
 					$scope.feed = [];
@@ -172,7 +185,7 @@
 					$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
 				});
 			}
-			if(ConnectivityMonitorFactoryFactory.isOnline()) {
+			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
 			}
 		});
@@ -211,7 +224,7 @@
 		$scope.doRefresh = function() {			
 
 			$scope.feedsParams.page = 1;
-			$scope.isMoreFeeds = false;
+			$scope.isMoreFeeds = true;
 			loadFeed();
 		};
 
@@ -243,9 +256,9 @@
 	setup();
 };
 /**
-* @dependencies injector $log, $injector, $ionicHistory, $scope, $state, $stateParams, feedService , $http , feedListService , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactoryFactory
+* @dependencies injector $log, $injector, $ionicHistory, $scope, $state, $stateParams, feedService , $http , feedListService , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactory
 */
-SourceFeedController.$inject=['$log', '$injector', '$ionicHistory', '$scope','$state','$stateParams', 'feedService','$http', '$q', '$ionicLoading', '$ionicScrollDelegate', '$ionicPopover','bookMarkService','feedDetailService', 'socialService', '$cordovaNetwork', 'ConnectivityMonitorFactoryFactory' ];
+SourceFeedController.$inject=['$log', '$injector', '$ionicHistory', '$scope','$state','$stateParams', 'feedService','$http', '$q', '$ionicLoading', '$ionicScrollDelegate', '$ionicPopover','bookMarkService','feedDetailService', 'socialService', '$cordovaNetwork', 'ConnectivityMonitorFactory' ];
 angular
 	.module('tatafo')
 	.controller('SourceFeedController',SourceFeedController)

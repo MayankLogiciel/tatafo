@@ -21,13 +21,13 @@
 			$scope.entry = feedDetailService.getPostData();
 			// fetching the feed source frm local storage
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
+			//console.log($scope.sourceData);
 			if($scope.sourceData.topics.data.length > 0) {
 				angular.forEach($scope.sourceData.topics.data,function(value,key){
 					if(value.name==$scope.entry.topic_name){
 						$scope.topicName=value;
 					}					
-				});
-				
+				});				
 			};
 			
 			loadFeeds();
@@ -49,7 +49,8 @@
 	    */
 		var getFeedIndex=function(){
 			angular.forEach($scope.allFeed, function(val, index) {
-				if(angular.isDefined(val.doc) && $scope.entry.id == val.doc.id) {
+				//console.log(val);
+				if(angular.isDefined(val.doc) && $scope.entry.id == val.doc.data.id) {
 					$scope.currentIndex = index;
 				}
 				if(!angular.isDefined(val.doc) && $scope.entry.id == val.id) {
@@ -72,10 +73,11 @@
 		$scope.nextButton=function(){
 			$scope.currentIndex = $scope.currentIndex + 1;
 
-			if(angular.isDefined($scope.allFeed[$scope.currentIndex].doc)) {
-				$scope.entry = $scope.allFeed[$scope.currentIndex].doc;		
-			} else {
+			if(angular.isDefined($scope.allFeed[$scope.currentIndex])) {
 				$scope.entry = $scope.allFeed[$scope.currentIndex];		
+			}
+			 else {
+				$scope.entry = $scope.allFeed[$scope.currentIndex].doc.data;		
 			}
 
 		}
@@ -85,11 +87,10 @@
 	    */
 	    $scope.previousButton=function(){
 			$scope.currentIndex = $scope.currentIndex - 1;
-
-			if(angular.isDefined($scope.allFeed[$scope.currentIndex].doc)) {
-				$scope.entry = $scope.allFeed[$scope.currentIndex].doc;		
-			} else {
+			if(angular.isDefined($scope.allFeed[$scope.currentIndex])) {
 				$scope.entry = $scope.allFeed[$scope.currentIndex];		
+			} else {
+				$scope.entry = $scope.allFeed[$scope.currentIndex].doc.data;		
 			}
 
 		}
@@ -115,7 +116,7 @@
 		*  bookmarkPost post the feed deatil for book mark for PouchDB
 		*/	
 		$scope.bookmarkPost = function(post) {	
-			bookMarkService.addBookmarkToPouchDB($scope.entry);			
+			bookMarkService.addBookmarkToPouchDB($scope.entry);
 		};
 
 		/**
@@ -130,10 +131,10 @@
 		* if connection is online then socialService.share sending the parameter need to share from feeds
 		*/
 		$scope.sharePost = function(post) {
-			if(ConnectivityMonitorFactoryFactory.isOffline()) {
+			if(ConnectivityMonitorFactory.isOffline()) {
 				$ionicLoading.show({ template: 'Please check you network connection!', noBackdrop: true, duration: 1000 });
 			}
-			if(ConnectivityMonitorFactoryFactory.isOnline()) {
+			if(ConnectivityMonitorFactory.isOnline()) {
 				socialService.share($scope.entry.feed.title, $scope.entry.feed.summary,  $scope.entry.image, 
 		$scope.entry.feed.permalinkUrl);
 			}

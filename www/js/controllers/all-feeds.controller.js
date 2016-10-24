@@ -4,7 +4,7 @@
 	/**
 	* AllFeedsController Function
 	*/
-	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, $ionicLoading, $filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService,$cordovaNetwork,$timeout, ConnectivityMonitorFactoryFactory, settingService) {
+	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, $ionicLoading, $filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService,$cordovaNetwork,$timeout, ConnectivityMonitorFactory, settingService) {
 
 		/**
 		* AllFeedsController setup function for initialization
@@ -57,8 +57,8 @@
 
 		var isSourceSyncRequired=function(){
 			var syncInterval = settingService.getAllSetting().sourceSyncIntervalTime;
-			//var syncIntervalInMillisecond = syncInterval.value*60*60*1000;
-			var syncIntervalInMillisecond =1*60*1000;
+			var syncIntervalInMillisecond = syncInterval.value*60*60*1000;
+			//var syncIntervalInMillisecond =1*60*1000;
 			var lastTimeSynced = settingService.getAllSetting().lastTimeSourceSynced;	
 			var lastSynced = Date.parse(lastTimeSynced);
 			var currentDate = new Date();
@@ -98,12 +98,12 @@
 
 		/**
 		* loadFeeds loads the all feeds
-		* if ConnectivityMonitorFactoryFactory.isOffline then loads the feeds from pouch db using feedService.getfeedFromPouchDB
-		* if ConnectivityMonitorFactoryFactory.isOnline then loads the feeds from  API using feedService.getFeeds
+		* if ConnectivityMonitorFactory.isOffline then loads the feeds from pouch db using feedService.getfeedFromPouchDB
+		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
 
 		var loadFeeds = function(isLoadMore) {
-			if(ConnectivityMonitorFactoryFactory.isOffline()) {	
+			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.getfeedFromPouchDB($scope.feedsParams).then(function(response){
 						if(response.data.length>0){
 
@@ -112,7 +112,6 @@
 							}
 						angular.forEach(response.data, function(feed, key) {	
 							$scope.allFeed = $scope.allFeed.concat(feed);
-
 						});
 						$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
 
@@ -124,11 +123,11 @@
 
 				});	
 			}
-			if(ConnectivityMonitorFactoryFactory.isOnline()) {
-				if($scope.loadMoreActive){
-					return;
-				};
-				$scope.loadMoreActive=true;				
+			if(ConnectivityMonitorFactory.isOnline()) {
+				// if($scope.loadMoreActive){
+				// 	return;
+				// };
+				// $scope.loadMoreActive=true;				
 				$ionicLoading.show({
           			template: '<ion-spinner icon="android"></ion-spinner>'
         		});
@@ -146,8 +145,7 @@
 					console.log($scope.allFeed);
 					$scope.$broadcast('scroll.infiniteScrollComplete');
 					feedService.addNewFeeds($scope.allFeed);
-				}).finally(function(){
-					$scope.loadMoreActive = false;
+				}).finally(function(){					
 					$scope.$broadcast('scroll.refreshComplete');
 					$ionicLoading.hide();
 				});
@@ -156,13 +154,13 @@
 
 		/**
 		* selectOption to geting the read and unread feeds
-		* if ConnectivityMonitorFactoryFactory.isOffline then feedService.sortReadUnread loads the feeds from pouchDB(after filtering) 
-		* if ConnectivityMonitorFactoryFactory.isOnline then send the request status to API and load the feed according to the satatus by calling load feeds
+		* if ConnectivityMonitorFactory.isOffline then feedService.sortReadUnread loads the feeds from pouchDB(after filtering) 
+		* if ConnectivityMonitorFactory.isOnline then send the request status to API and load the feed according to the satatus by calling load feeds
 		*/
 
 		$scope.selectOption = function() {
 			$scope.feedsParams.page = 1;
-			if(ConnectivityMonitorFactoryFactory.isOffline()) {	
+			if(ConnectivityMonitorFactory.isOffline()) {	
 				if( ($scope.feedStatus.read && $scope.feedStatus.unread) || (!$scope.feedStatus.read && !$scope.feedStatus.unread) ){
 					loadFeeds();
 				}else 
@@ -177,7 +175,7 @@
 					}
 					
 			}
-			if(ConnectivityMonitorFactoryFactory.isOnline()) {
+			if(ConnectivityMonitorFactory.isOnline()) {
 				$ionicLoading.show({
 	          				template: '<ion-spinner icon="android"></ion-spinner>'
 	        	});
@@ -202,10 +200,10 @@
 		* if connection is online then socialService.share sending the parameter need to share from feeds
 		*/
 		$scope.sharePost = function(post) {
-			if(ConnectivityMonitorFactoryFactory.isOffline()) {
+			if(ConnectivityMonitorFactory.isOffline()) {
 				$ionicLoading.show({ template: 'Please check you network connection!', noBackdrop: true, duration: 1000 });
 			}
-			if(ConnectivityMonitorFactoryFactory.isOnline()) {
+			if(ConnectivityMonitorFactory.isOnline()) {
 
 				socialService.share(post.feed.title, post.feed.summary, post.image, post.feed.permalinkUrl);
 			}
@@ -228,14 +226,14 @@
 		*/	
 		$scope.$on('getFeedsBySearch',function(event,search){
 			$scope.feedsParams.name = search;
-			if(ConnectivityMonitorFactoryFactory.isOffline()) {
+			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.searchFromPouchDB($scope.feedsParams).then(function(response) {
 					$scope.allFeed = [];
 					$scope.allFeed = response.data;
 					$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
 				});
 			}
-			if(ConnectivityMonitorFactoryFactory.isOnline()) {
+			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
 			}
 		});
@@ -344,9 +342,10 @@
 		*/
 		$scope.doRefresh = function() {	
 			$scope.feedsParams.page = 1;
-	  		$scope.isMoreFeeds = false;
+	  		$scope.isMoreFeeds = true;	  		
        		loadFeeds();
 		};
+
 
 
 		/**
@@ -377,7 +376,7 @@
 	};
 
 	/**
-	* @dependencies injector $log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, feedListService,$ionicLoading,$filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService,$cordovaNetwork,$timeout, ConnectivityMonitorFactoryFactory, settingService
+	* @dependencies injector $log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, feedListService,$ionicLoading,$filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService,$cordovaNetwork,$timeout, ConnectivityMonitorFactory, settingService
 	*/
 	AllFeedsController.$inject = [
 		'$log',
@@ -397,7 +396,7 @@
 		'socialService',
 		'$cordovaNetwork',
 		'$timeout',
-		'ConnectivityMonitorFactoryFactory',
+		'ConnectivityMonitorFactory',
 		'settingService'
 	];
 

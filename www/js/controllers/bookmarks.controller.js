@@ -43,9 +43,9 @@
 		* open the book mark feed back to article page
 		*/
 		$scope.goToFeedPostArticle = function(post){
-				feedDetailService.setCombinedPostDataForNextPrevious($scope.bookmarks);
-				feedDetailService.setPostData(post);
-				$state.go('app.feed-entries-details');
+			feedDetailService.setCombinedPostDataForNextPrevious($scope.bookmarks);
+			feedDetailService.setPostData(post);
+			$state.go('app.feed-entries-details');
 		};		  
 		getBookmarks();
 
