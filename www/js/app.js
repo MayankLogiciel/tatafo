@@ -1,45 +1,72 @@
 // Ionic Starter App
 angular
     .module('underscore', [])
-    .constant('ONESIGNAL_APP_ID','43222a94-96fd-45de-a0ce-f43d6eda1a25')
-    .constant('GOOGLE_PROJECT_NUMBER','518598830385')
-
     .factory('_' , function() {
         return window._; // assumes underscore has already been loaded on the page
     });
 
-    // angular.module is a global place for creating, registering and retrieving Angular modules
-    // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-    // the 2nd parameter is an array of 'requires'
-    angular
-        .module('tatafo', ['ionic' , 'angularMoment' , 'tatafo.config' , 'underscore' , 'ngResource' , 'ngCordova' , 'slugifier' , 'youtube-embed', 'jett.ionic.content.banner' ])
 
-    .run(function($ionicPlatform,$rootScope, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, $cordovaDevice,  ConnectivityMonitorFactoryFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
+angular
+    .module('tatafo', ['ionic' , 'angularMoment' , 'tatafo.config' , 'underscore' , 'ngResource' , 'ngCordova' , 'slugifier' , 'youtube-embed', 'jett.ionic.content.banner' ])
 
-         ionic.Platform.ready(function() {
+    .run(function($log, $ionicPlatform, $rootScope, $state, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, $cordovaDevice,  ConnectivityMonitorFactoryFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
 
-            if (ionic.Platform.isAndroid() && ionic.Platform.isWebView()) {
-               
+        ionic.Platform.ready(function() {
+
+            if ( ionic.Platform.isWebView() && ionic.Platform.isAndroid() ) {
+
                 var notificationOpenedCallback = function(jsonData) {
                     console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
                 };
                 
                 window.plugins.OneSignal
-                .startInit(ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER)
-                .handleNotificationOpened(notificationOpenedCallback)
-                .handleNotificationReceived(function(jsonData) {                    
-                })
-               .endInit();
-               // generate unique oneSignal user id.
+                    .startInit(ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER)
+                    .handleNotificationOpened(notificationOpenedCallback)
+                    .handleNotificationReceived(function(jsonData) {})
+                    .endInit();
+
                 window.plugins.OneSignal.getIds(function(pushobj) {
-                    if(angular.isDefined(localStorage.pushobj)) {
-                        if(localStorage.pushobj.pushToken != pushobj.pushToken) {
-                            localStorage.pushobj.pushToken = pushobj.pushToken;
-                        }
-                    }else {
-                        localStorage.pushobj = JSON.stringify(pushobj);
+                    if( deviceTokenService.isRegisterOnServerRequired(pushObj) ){
+                        $log.debug('Registeration on server required for push notification');
+                        var params = {
+                            device_token : pushObj.userId,
+                            push_token : pushObj.pushToken
+                        };
+
+                        deviceTokenService.registerDeviceOnServer(params).then(function(res){
+                            $log.debug(res.data.data.data);
+                            deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
+                            $state.go('app.feeds.all');
+                        });
+                    }else{
+                        $log.debug('No Need to register device on server');
+                        $state.go('app.feeds.all');
+
                     }
                });
+            }else{
+                // this is temp code, always intentionly run on browser to test register device feature
+                var pushObj = {
+                    'userId': 'userId',
+                    'pushToken' : 'pushToken'
+                };
+
+                if( deviceTokenService.isRegisterOnServerRequired(pushObj) ){
+                    $log.debug('Registeration on server required for push notification');
+                    var params = {
+                        device_token : pushObj.userId,
+                        push_token : pushObj.pushToken
+                    };     
+
+                    deviceTokenService.registerDeviceOnServer(params).then(function(res){
+                        $log.debug(res.data.data.data);
+                        deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
+                        $state.go('app.feeds.all');
+                    });
+                }else{
+                    $log.debug('No Need to register device on server');
+                    $state.go('app.feeds.all');
+                }
             }
 
             if (window.StatusBar) {
@@ -47,23 +74,6 @@ angular
                 StatusBar.styleDefault();
             }
 
-            var CurrentDeviceId = $cordovaDevice.getUUID();
-            if(deviceTokenService.isTokenAvailable()) {
-                deviceTokenService.getdeviceToken(CurrentDeviceId).then(function(res) {
-                    var device = deviceTokenService.getDeviceTokeninLocalStorage();
-                    if(device.device_id != res.data.data.data.device_id) {
-                        deviceTokenService.setDeviceTokeninLocalStorage(res.data.data.data);
-                    }
-                });
-            }else {
-                if(CurrentDeviceId) {
-                    deviceTokenService.getdeviceToken(CurrentDeviceId).then(function(res) {
-                        deviceTokenService.setDeviceTokeninLocalStorage(res.data.data.data);
-                    });
-                }else {
-                    console.log("oops! cant get device id.")
-                }
-            }
 
             var admobid = {};
             if( /(android)/i.test(navigator.userAgent) ) { 
@@ -131,131 +141,96 @@ angular
                 }
         });
 
-        // This fixes transitions for transparent background views
-        $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
-            if(toState.name.indexOf('auth.walkthrough') > -1)
-            {
-                // set transitions to android to avoid weird visual effect in the walkthrough transitions
-                $timeout(function() {
-                $ionicConfig.views.transition('android');
-                $ionicConfig.views.swipeBackEnabled(false);
-                console.log("setting transition to android and disabling swipe back");
-            }, 0);
-        }
-    });
-    $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-        if(toState.name.indexOf('app.feeds-categories') > -1)
-        {
-            // Restore platform default transition. We are just hardcoding android transitions to auth views.
-             $ionicConfig.views.transition('platform');
-            // If it's ios, then enable swipe back again
-            if(ionic.Platform.isIOS()) {
-                $ionicConfig.views.swipeBackEnabled(true);
+
+        $ionicPlatform.on("resume", function() {});
+
+    })
+    .config(function($stateProvider , $urlRouterProvider , $ionicConfigProvider) {
+
+        $ionicConfigProvider.tabs.position('bottom');
+        $stateProvider
+        .state('app', {
+            url: "/app",
+            abstract: true,
+            templateUrl: "views/app/side-menu.html",
+            controller: 'AppController'
+        })
+        .state('app.feeds', {
+            url: "/feeds",
+           // abstract: true,
+            views: {
+                'menuContent': {
+                    templateUrl: "views/app/feeds/tabs.html"
+                }
             }
-            console.log("enabling swipe back and restoring transition to platform default", $ionicConfig.views.transition());
-        }
+        })
+        .state('app.feeds.all', {
+            url: '/all',
+            views: {
+                'all-tab': {
+                    templateUrl: 'views/app/feeds/all-tab.html',
+                    controller: 'AllFeedsController'
+                }
+            }
+        })
+        .state('app.feeds.local', {
+            url: '/local',
+            views: {
+                'local-tab': {
+                    templateUrl: 'views/app/feeds/local-tab.html',
+                    controller: 'AllFeedsController'
+                }
+            }
+        })
+        .state('app.feeds.foreign', {
+            url: '/foreign',
+            views: {
+                'foreign-tab': {
+                    templateUrl: 'views/app/feeds/foreign-tab.html',
+                    controller: 'AllFeedsController'
+                }
+            }
+        })
+        .state('app.feed-entries', {
+            url: "/feed/:sourceId",
+            views: {
+                'menuContent': {
+                    templateUrl: "views/app/feeds/source-feed.html",
+                    controller: 'SourceFeedController'
+                }
+            }
+        })
+        .state('app.feed-entries-details', {
+            url: "/feed-entries-details",
+            cache: false,
+            views: {
+                'menuContent': {
+                    templateUrl: "views/app/feeds/feed-details.html",
+                    controller: 'FeedDetailController'
+                }
+            }
+        })
+        .state('app.settings', {
+            url: "/settings",
+            cache: false,
+            views: {
+                'menuContent': {
+                    templateUrl: "views/app/settings.html",
+                    controller: 'SettingsController'
+                }
+            }
+        })
+        .state('app.bookmarks', {
+            url: "/bookmarks",
+            cache: false,
+            views: {
+                'menuContent': {
+                    templateUrl: "views/app/bookmarks.html",
+                    controller: 'BookMarksController'
+                }
+            }
+        });
+
+        // if none of the above states are matched, use this as the fallback
+        //$urlRouterProvider.otherwise('/app/feeds');
     });
-
-    $ionicPlatform.on("resume", function() {
-
-    });
-
-
-})
-.config(function($stateProvider , $urlRouterProvider , $ionicConfigProvider) {
-
-$ionicConfigProvider.tabs.position('bottom');
-$stateProvider
-
-//Introductions
-.state('app', {
-    url: "/app",
-    abstract: true,
-    templateUrl: "views/app/side-menu.html",
-    controller: 'AppController'
-})
-//FEEDS
-.state('app.feeds', {
-    url: "/feeds",
-   // abstract: true,
-    views: {
-        'menuContent': {
-            templateUrl: "views/app/feeds/tabs.html"
-        }
-    }
-})
-
-.state('app.feeds.all', {
-    url: '/all',
-    views: {
-        'all-tab': {
-            templateUrl: 'views/app/feeds/all-tab.html',
-            controller: 'AllFeedsController'
-        }
-    }
-})
-.state('app.feeds.local', {
-    url: '/local',
-    views: {
-        'local-tab': {
-            templateUrl: 'views/app/feeds/local-tab.html',
-            controller: 'AllFeedsController'
-        }
-    }
-})
-.state('app.feeds.foreign', {
-    url: '/foreign',
-    views: {
-        'foreign-tab': {
-            templateUrl: 'views/app/feeds/foreign-tab.html',
-            controller: 'AllFeedsController'
-        }
-    }
-})
-
-.state('app.feed-entries', {
-    url: "/feed/:sourceId",
-    views: {
-        'menuContent': {
-            templateUrl: "views/app/feeds/source-feed.html",
-            controller: 'SourceFeedController'
-        }
-    }
-})
-
-.state('app.feed-entries-details', {
-    url: "/feed-entries-details",
-    cache: false,
-    views: {
-        'menuContent': {
-            templateUrl: "views/app/feeds/feed-details.html",
-            controller: 'FeedDetailController'
-        }
-    }
-})
-//OTHERS
-.state('app.settings', {
-    url: "/settings",
-    cache: false,
-    views: {
-        'menuContent': {
-            templateUrl: "views/app/settings.html",
-            controller: 'SettingsController'
-        }
-    }
-})
-
-.state('app.bookmarks', {
-    url: "/bookmarks",
-    cache: false,
-    views: {
-        'menuContent': {
-            templateUrl: "views/app/bookmarks.html",
-            controller: 'BookMarksController'
-        }
-    }
-});
-
-// if none of the above states are matched, use this as the fallback
-$urlRouterProvider.otherwise('/app/feeds');
-});

@@ -1,50 +1,21 @@
 (function() {
     'use strict';
 
-    /**
-    *  sourceService are used for create an connection with api to get and set the valid data.
-    */
-
     var deviceTokenService = function($log, $http, $q, TATAFO_API_URL) {
 
         /**
-        * isTokenAvailable checking the token already available in localstarage
+        * register device on server for 
+        * 1) push notification 
+        * 2) read unread manage user's posts/articles without login
         */
-        this.isTokenAvailable = function(){
-            
-            var deviceToken = JSON.parse(localStorage.deviceToken || '[]');
-            if(angular.isDefined(deviceToken) && deviceToken.length > 0 ){
-                return true;
-            }else{
-                return false;
-            }           
-        };
-
-        /**
-        * inserting the token in local storage
-        */
-        this.setDeviceTokeninLocalStorage = function(deviceToken){
-            $log.debug('setDeviceTokeninLocalStorage');            
-            localStorage.deviceToken = JSON.stringify(deviceToken);
-        };
-
-        /**
-        * getting the token from locastorage
-        */
-        this.getDeviceTokeninLocalStorage = function(){
-           return JSON.parse(localStorage.deviceToken);
-        };
-
-        /**
-        * geting device token from API
-        */
-        this.getdeviceToken = function(data) {
-            var _defer  = $q.defer(data);
+        this.registerDeviceOnServer = function(data) {
+            var _defer  = $q.defer();
             // Initiate the AJAX request.
+            console.log(data);
             $http({
                 method: 'post',
-                url: TATAFO_API_URL + '/register-device/' + data,
-                // params: data,
+                url: TATAFO_API_URL + '/register-device',
+                params: data,
                 timeout: _defer.promise
             }).then(
                 function( response ) {
@@ -57,12 +28,41 @@
             );
             return _defer.promise;
         };
+
+        /**
+        * Check whether we need to register device on server
+        * it will register for the following cases
+        * 1) if first time or unregistered
+        * 2) if pushObj tokens has changed from device
+        * @param {Object} pushObj : result from getIds() from OneSignal having pushToken and userId
+        */
+        this.isRegisterOnServerRequired = function(pushObj){
+
+            if( !localStorage.deviceInfo ){
+                $log.debug('deviceInfo not present in localStorage');
+                return true;
+            }
+
+            var deviceInfo = angular.fromJson(localStorage.deviceInfo);
+
+            if( deviceInfo.push_token != pushObj.pushToken || deviceInfo.device_token != pushObj.userId ){
+                $log.debug('deviceInfo has changed from device & localStorage');
+                return true;
+            }else{
+                return false;
+            }
+
+        };
+
+        this.setDeviceInfoInLocalStorage = function(deviceInfo){
+            localStorage.deviceInfo = angular.toJson(deviceInfo);
+        };
+
+        this.getDeviceInfoFromLocalStorage = function(){
+            return angular.fromJson(localStorage.deviceInfo);
+        };
+
     }
-
-
-    /**
-    * deviceTokenService injector $log, $http, $q, TATAFO_API_URL
-    */
 
     deviceTokenService.$inject = [
         '$log', 
