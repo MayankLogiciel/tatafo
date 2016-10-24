@@ -1,91 +1,95 @@
 (function()	{
-	'use strict';
+      'use strict';
 
-	/**
-	* SendMailController function
-	*/
-	var SettingsController = function($scope, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, $ionicScrollDelegate, $ionicLoading, settingService, $filter) {
 
-      	$scope.syncIntervals = [
-      		{
-      			title : '2 Hours',
-      			value : 2
-      		},
-      		{
-      			title : '4 Hours',
-      			value : 4
-      		},
-      		{
-      			title : '6 Hours',
-      			value : 6
-      		},
-      		{
-      			title : '8 Hours',
-      			value : 8
-      		},
-      		{
-      			title : '10 Hours',
-      			value : 10
-      		},
-      		{
-      			title : '12 Hours',
-      			value : 12
-      		},
-      	];
+      var SettingsController = function($scope, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, $ionicScrollDelegate, $ionicLoading, settingService, $filter) {
 
-        $scope.interval = {};
-        $scope.interval.value = settingService.getInterval().setSyncIntervalTime;
+            /**
+            * syncIntervals data
+            */
+            $scope.syncIntervals = [
+            {
+                  title : '2 Hours',
+                  value : 2
+            },
+            {
+                  title : '4 Hours',
+                  value : 4
+            },
+            {
+                  title : '6 Hours',
+                  value : 6
+            },
+            {
+                  title : '8 Hours',
+                  value : 8
+            },
+            {
+                  title : '10 Hours',
+                  value : 10
+            },
+            {
+                  title : '12 Hours',
+                  value : 12
+            },
+            ];
 
-        $scope.push=settingService.getAllSetting().pushNotificationEnabled;
+            $scope.interval = {};
+            $scope.interval.value = settingService.getAllSetting().sourceSyncIntervalTime;
+            $scope.push=settingService.getAllSetting().pushNotificationEnabled;
 
-        /**
-        *
-        * update seleted user count
-        */
-        $scope.selectedInterval = function () {
-            if (angular.isDefined($scope.syncIntervals) && $scope.syncIntervals.length > 0) {
-                var temp = $filter('filter')($scope.syncIntervals, { value: $scope.interval.value });
-                return temp[0].title;
+            /**
+            * Fecthing the title of Selected Interval by user
+            */
+            $scope.selectedInterval = function () {
+                  if (angular.isDefined($scope.syncIntervals) && $scope.syncIntervals.length > 0) {
+                        var temp = $filter('filter')($scope.syncIntervals, { value: $scope.interval.value });
+                        return temp[0].title;
+                  }
+            };
+
+            /**
+            * Fecthing the value of Selected Interval by user
+            */
+
+            $scope.intervalValue=function() {
+                  settingService.setSourceSyncIntervalTime($scope.interval.value);
             }
-        };
 
-        $scope.intervalValue=function() {  
-                                        
-              settingService.setInterval($scope.interval.value);
-        }
-        $scope.showStatus=function(status){
-              settingService.setPushNotificationSatus(status);
-              window.plugins.OneSignal.setSubscription(status);
-        }
+            /**
+            * show the status of Pushnotifiaction button
+            */
+            $scope.showStatus=function(status){
+                  settingService.setPushNotificationSatus(status);
+                  window.plugins.OneSignal.setSubscription(status);
+            }
 
+            /**
+            * show popup for select interval
+            */
+            $scope.showPopup = function() {
+                  $scope.interval.value = settingService.getAllSetting().sourceSyncIntervalTime;
+                  var myPopup = $ionicPopup.show({
+                        template: '<div ng-repeat="entry in syncIntervals"><ion-radio ng-model="interval.value" value="{{entry.value}}">{{entry.title}}</ion-radio></div>',	       
+                        title: 'Please select the interval',		     
+                        scope: $scope,
+                        buttons: [{
+                              text: '<b>OK</b>',
+                              type: 'button-positive',
+                              onTap: function(e) {
+                                    $scope.intervalValue();
+                                    myPopup.close();
+                              }
+                        }] 
+                  });
 
-        $scope.showPopup = function() {
-              
-              $scope.interval.value = settingService.getInterval().setSyncIntervalTime;
-
-              // Custom popup
-        	var myPopup = $ionicPopup.show({
-  	            template: '<div ng-repeat="entry in syncIntervals"><ion-radio ng-model="interval.value" value="{{entry.value}}">{{entry.title}}</ion-radio></div>',	       
-  	            title: 'Please select the interval',		     
-  	            scope: $scope,
-                    buttons: [{
-                          text: '<b>OK</b>',
-                          type: 'button-positive',
-                          onTap: function(e) {
-                                $scope.intervalValue();
-                                myPopup.close();
-                          }
-                    }] 
-              });
-              
-        };
-	};
+            };
+      };
 
 	/**
-	* @dependencies injector $scope , $ionicActionSheet , $state
+	* @dependencies injector $scope, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, $ionicScrollDelegate, $ionicLoading, settingService, $filter
 	*/
 	SettingsController.$inject=['$scope', '$state', '$ionicPopup', '$timeout', '$ionicSideMenuDelegate', '$ionicScrollDelegate', '$ionicLoading', 'settingService', '$filter'];
-
 	angular
 		.module('tatafo')
 		.controller('SettingsController' , SettingsController);

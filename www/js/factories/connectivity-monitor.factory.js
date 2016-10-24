@@ -2,8 +2,15 @@
 
       'use strict';
 
-      var ConnectivityMonitor=function($log,$rootScope, $cordovaNetwork, $ionicContentBanner, $timeout) {
+      /**
+      * ConnectivityMonitorFactory function
+      */
 
+      var ConnectivityMonitorFactoryFactory=function($log,$rootScope, $cordovaNetwork, $ionicContentBanner, $timeout) {
+
+            /**
+            * initaillization
+            */
             var contentBannerInstance = null;
             var MESSAGES = {
                   'SOMETHING_WRONG' : 'Something went wrong. Please try again.',
@@ -92,10 +99,14 @@
             }
       }
 
-      ConnectivityMonitor.$inject=['$log', '$rootScope', '$cordovaNetwork', '$ionicContentBanner', '$timeout'];
+      /** 
+      * ConnectivityMonitorFactoryFactory $injector $log,$rootScope, $cordovaNetwork, $ionicContentBanner, $timeout
+      */
+
+      ConnectivityMonitorFactoryFactory.$inject=['$log', '$rootScope', '$cordovaNetwork', '$ionicContentBanner', '$timeout'];
 
       angular
       .module('tatafo')
-      .factory('ConnectivityMonitor',ConnectivityMonitor);
+      .factory('ConnectivityMonitorFactoryFactory',ConnectivityMonitorFactoryFactory);
 
 })();

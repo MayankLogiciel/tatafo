@@ -6,6 +6,9 @@
 	*/
 	var dateTimeFilter = function($filter) {
 
+		/**
+		* converting the date/time formate in yyyy-MM-dd | HH:mm
+		*/
 		return function(input)
  		{
   			if(input == null){ return ""; } 
@@ -15,7 +18,7 @@
 	};
 
 	/**
-	* @dependencies injector
+	* @dependencies injector $filter
 	*/
 	dateTimeFilter.$inject=['$filter'];
 

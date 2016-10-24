@@ -6,6 +6,10 @@
 	*/
 	var dateTimeFeedDetailFilter = function($filter) {
 
+		/**
+		* converting the date/time formate in HH:mm | yyyy-MM-dd
+		*/
+
 		return function(input)
  		{
   			if(input == null){ return ""; } 

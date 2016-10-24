@@ -5,6 +5,15 @@
     <button class="button button-icon button-clear ion-ios-arrow-down" ng-click="popover.show($event)" ng-hide="sortPop">Sort  
     </button>
 </ion-nav-buttons>
+<ion-nav-buttons side="right">                  
+	<button class="button button-icon button-clear ion-refresh" on-tap="reload()" ng-hide="reload1"> 
+	</button>
+<form ng-submit="searchData(searchInput)">
+<input type="search"  ng-model="searchInput" name="search" ng-show="mySearch"></form>    
+<button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick() " ng-hide="searchbtn"> </button>
+ <button class="button button-icon button-assertive ion-close-circled" ng-click="onClosedIconClick(); searchInput = '' " ng-show="closed"> </button>
+<header-popover ng-hide="mySearch"></header-popover>                   
+</ion-nav-buttons>
 <ion-content class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="feedshandler" >
 	<!-- Refresh to get the new posts -->
 	<ion-refresher on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
@@ -13,7 +22,7 @@
 		<div ng-repeat="entry in allFeed | orderBy : 'updated_at' : true  track by $index" class="list card entry-item">
 			<div class="entry-content item item-text-wrap" >
 				<div on-tap="loadPostDetails(entry)">
-					<i (!entry.is_read) ? class="icon ion-eye-disabled left read-unread" : class="icon ion-eye left read-unread"></i>
+					<i ng-class= "{ 'icon ion-eye-disabled left read-unread':(entry.is_read==false) , 'icon ion-eye left read-unread':(entry.is_read==true) }"></i>
 					<p class="entry-author">
 						<span>By {{entry.source_name}}</span> 
 						<span class="feed-date-time" ng-bind="entry.updated_at | dateTimeFilter"></span>
@@ -35,7 +44,7 @@
 		</div>
 	</div>
 	<!-- Infinit scroll -->
-	<ion-infinite-scroll on-infinite="loadMore()" distance="15px" immediate-check="false" ng-if="!isMoreFeeds">
+	<ion-infinite-scroll on-infinite="loadMore()" distance="1%" immediate-check="false" ng-if="!isMoreFeeds">
 	</ion-infinite-scroll>
 </ion-content>
 	<div class="float-button effect1" ng-show="sttButton" ng-click="scrollTop()"	>

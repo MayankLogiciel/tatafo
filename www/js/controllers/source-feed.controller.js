@@ -4,7 +4,7 @@
 	/**
 	* SourceFeedController Function
 	*/
-	var SourceFeedController = function($log, $injector, $ionicHistory, $scope, $state, $stateParams, feedService , $http , feedListService , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitor) {
+	var SourceFeedController = function($log, $injector, $ionicHistory, $scope, $state, $stateParams, feedService , $http , feedListService , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactoryFactory) {
 
 		/**
 		* Intialization
@@ -23,7 +23,7 @@
 		};
 
 		/**
-		* Back Button
+		* Back Button Handling
 		*/
 		$scope.$on('$ionicView.beforeEnter', function (event, viewData) {
 		    viewData.enableBack = true;
@@ -38,7 +38,7 @@
 		});
 
 		/**
-		* Get reload on clicking closed button
+		* reload on clicking closed button after search(braodcast metthod)
 		*/
 		$scope.$on('getallfeeds',function(event) {
 			$scope.feedsParams.page = 1;
@@ -46,6 +46,7 @@
 			$scope.scrollTop();
 			loadFeed();
 		});
+
 
 		/**
 		* Load read/ Unread feeds
@@ -64,23 +65,31 @@
 		* Post bookmark
 		*/	
 		$scope.bookmarkPost = function(post) {
-			bookMarkService.bookmarkFeedPost(post);
+			bookMarkService.addBookmarkToPouchDB(post);
 		};
 
+		/**
+		* sharePost checking the connection first
+		* if connection is online then socialService.share sending the parameter need to share from feeds
+		*/
 		$scope.sharePost = function(post) {
-
-			if(ConnectivityMonitor.isOffline()){
+			if(ConnectivityMonitorFactoryFactory.isOffline()){
 				$ionicLoading.show({ template: 'Please check you network connection!', noBackdrop: true, duration: 1000 });
 			}
-			if(ConnectivityMonitor.isOnline()){
+			if(ConnectivityMonitorFactoryFactory.isOnline()){
 
 				socialService.share(post.feed.title, post.feed.summary, post.image, post.feed.permalinkUrl);
 			};
-		};		
+		};
 
+		/**
+		* loadFeed loads the all feeds of perticular source
+		* if ConnectivityMonitorFactoryFactory.isOffline then loads the feeds from pouch db using feedService.getfeedFromPouchDB
+		* if ConnectivityMonitorFactoryFactory.isOnline then loads the feeds from  API using feedService.getFeeds
+		*/
 		var loadFeed = function(isLoadMore) {				
 			$scope.feedsParams.source_id = $stateParams.sourceId;
-			if(ConnectivityMonitor.isOffline()) {
+			if(ConnectivityMonitorFactoryFactory.isOffline()) {
 				feedService.getPostsHavingSource($scope.feedsParams).then(function(response){
 					if(response.posts.length>0){
 						if(!isLoadMore) {
@@ -98,7 +107,7 @@
 
 				});	
 			}
-			if(ConnectivityMonitor.isOnline()) {	
+			if(ConnectivityMonitorFactoryFactory.isOnline()) {	
 				$ionicLoading.show({
 					template: '<ion-spinner icon="android"></ion-spinner>'
 				});
@@ -128,27 +137,34 @@
 			};
 		}
 
-			
+		/**
+		*loadMore incrementing page by one and calling the loadFeeds
+		*/	
 		$scope.loadMore = function() {
 			$scope.feedsParams.page++;
 			loadFeed(true);		
 		}
 
-
+		/**
+		* loadPostDetails feedDetailService.setPostData posting the deatil of single feed to article page
+		* loadPostDetails feedDetailService.setCombinedPostDataForNextPrevious sending the deatil of other feeds for next and previous Button
+		*/
 		$scope.loadPostDetails=function(post) {
 			feedDetailService.setPostData(post);
 			feedDetailService.setCombinedPostDataForNextPrevious($scope.feed);
 			$state.go('app.feed-entries-details');
-			console.log("page redirect");
 		}
 
 		$scope.$on('pullToRefresh',function(){
 			$scope.doRefresh();			
 		});
 
+		/**
+		* search the feeds enter in search box on from pouchDB if offline otherwise from API
+		*/
 		$scope.$on('getFeedsBySearch',function(event,search){
 			$scope.feedsParams.name = search;
-			if(ConnectivityMonitor.isOffline()) {
+			if(ConnectivityMonitorFactoryFactory.isOffline()) {
 				feedService.searchFromPouchDB($scope.feedsParams).then(function(response) {
 					console.log(response);
 					$scope.feed = [];
@@ -156,11 +172,42 @@
 					$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
 				});
 			}
-			if(ConnectivityMonitor.isOnline()) {
+			if(ConnectivityMonitorFactoryFactory.isOnline()) {
 				$scope.doRefresh();
 			}
 		});
 
+
+		/**
+		* show and hide button not needed while clicking search button
+		*/
+		$scope.onSearchIconClick = function() {
+			$scope.mySearch = !$scope.mySearch;
+        	$scope.closed = !$scope.closed;
+        	$scope.searchbtn=!$scope.searchbtn
+        	$scope.sortPop=!$scope.sortPop;
+        	$scope.reload1=!$scope.reload1;
+
+      	};
+
+      	/**
+		* show and hide button not needed while clicking search closed button
+		*/
+    	$scope.onClosedIconClick = function() {
+        	$scope.reload();
+        	$scope.mySearch = !$scope.mySearch;
+        	$scope.closed = !$scope.closed;
+        	$scope.searchbtn = !$scope.searchbtn
+        	$scope.sortPop = !$scope.sortPop;
+        	$scope.reload1 = !$scope.reload1;
+        	$scope.$broadcast('getallfeeds');
+        	
+    	};
+
+    	/**
+		* doRefresh setting up the page 1 
+		* calling the loadFeeds
+		*/
 		$scope.doRefresh = function() {			
 
 			$scope.feedsParams.page = 1;
@@ -168,11 +215,18 @@
 			loadFeed();
 		};
 
+		/**
+		* scrolling up to top by clicking sttButton
+		* hide the sttButton
+		*/
 	   	$scope.scrollTop = function() { //ng-click for back to top button
 	   		$ionicScrollDelegate.scrollTop([true]);
 	  		$scope.sttButton=false; //hide the button when reached top
 		};
-	 
+
+	 	/**
+		* getting the scroll postion
+		*/
 		$scope.getScrollPosition = function() {
 			
 	  		//monitor the scroll
@@ -189,9 +243,9 @@
 	setup();
 };
 /**
-* @dependencies injector $scope , $state , $stateParams , $http , feedListService , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService ,feedDetailService 
+* @dependencies injector $log, $injector, $ionicHistory, $scope, $state, $stateParams, feedService , $http , feedListService , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactoryFactory
 */
-SourceFeedController.$inject=['$log', '$injector', '$ionicHistory', '$scope','$state','$stateParams', 'feedService','$http', 'feedListService', '$q', '$ionicLoading', '$ionicScrollDelegate', '$ionicPopover','bookMarkService','feedDetailService', 'socialService', '$cordovaNetwork', 'ConnectivityMonitor' ];
+SourceFeedController.$inject=['$log', '$injector', '$ionicHistory', '$scope','$state','$stateParams', 'feedService','$http', 'feedListService', '$q', '$ionicLoading', '$ionicScrollDelegate', '$ionicPopover','bookMarkService','feedDetailService', 'socialService', '$cordovaNetwork', 'ConnectivityMonitorFactoryFactory' ];
 angular
 	.module('tatafo')
 	.controller('SourceFeedController',SourceFeedController)

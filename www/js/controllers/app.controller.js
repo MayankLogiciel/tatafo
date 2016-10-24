@@ -6,15 +6,24 @@
 	*/
 	var AppController = function($log, $stateParams, $scope, $rootScope, $ionicConfig , $state, $ionicLoading, feedService, $ionicPopover,$cordovaNetwork) {
 
+		/**
+		* Initialization
+		*/
 		var setup=function(){
-			$log.debug('AppController setup');
-			
+			$log.debug('AppController setup');			
 		};
 
+
+		/**
+		* Reload the feeds
+		*/
 		$scope.reload=function(){
     		$scope.$broadcast('reloadFeeds');			
 		};
 
+		/**
+		* Broadcast method for search
+		*/
 		$scope.searchData=function(search){
 			
 			var param='';
@@ -24,34 +33,11 @@
 			
 	    	$scope.$broadcast('getFeedsBySearch',search);
 		};
-
-		$scope.onSearchIconClick = function() {
-			$scope.mySearch = !$scope.mySearch;
-        	$scope.closed = !$scope.closed;
-        	$scope.searchbtn=!$scope.searchbtn
-        	$scope.sortPop=!$scope.sortPop;
-        	$scope.reload1=!$scope.reload1;
-
-      	};
-    	$scope.onClosedIconClick = function() {
-        	$scope.reload();
-        	$scope.mySearch = !$scope.mySearch;
-        	$scope.closed = !$scope.closed;
-        	$scope.searchbtn = !$scope.searchbtn
-        	$scope.sortPop = !$scope.sortPop;
-        	$scope.reload1 = !$scope.reload1;
-        	$scope.$broadcast('getallfeeds');
-        	
-    	};
-
-
-
-
     	setup();  		
 	};
 
 	/**
-	* @dependencies injector $scope, $ionicConfig
+	* @dependencies injector $log, $stateParams, $scope, $rootScope, $ionicConfig , $state, $ionicLoading, feedService, $ionicPopover,$cordovaNetwork
 	*/
 	AppController.$inject=['$log','$stateParams', '$scope', '$rootScope', '$ionicConfig', '$state', '$ionicLoading', 'feedService', '$ionicPopover','$cordovaNetwork'];
 

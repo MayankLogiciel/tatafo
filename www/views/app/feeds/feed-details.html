@@ -15,7 +15,7 @@
 
                 <div class="card-header ">
                     <h1 ng-bind="entry.feed.title || entry.title | rawHtml" class="title" on-hold="copyText('Header')">Header</h1>
-                    <h2>Posted by <span class="author" ng-bind="entry.source_name | rawHtml"></span><span class="feed-date" ng-bind="entry.updated_at || entry.date | dateTimeFeedDetailFilter"></span></h2>
+                    <h2>Posted by <span class="author" ng-bind="entry.topicName.author_name | rawHtml"></span><span class="feed-date" ng-bind="entry.updated_at || entry.date | dateTimeFeedDetailFilter"></span></h2>
                 </div>
             </div>
 
@@ -36,11 +36,11 @@
             </a>           
         </div>
         <div class = "row" >
-            <div class = "col col-50 social-list-border" >Reach {{entry.feed.title || entry.title}}</div>
-            <div class = "col social-list-border"> <i class="icon ion-social-facebook"></i>{{facebook}}</div>
-            <div class = "col social-list-border"> <i class="icon ion-social-twitter"></i>{{twitter}}</div>
-            <div class = "col social-list-border"> <i class="icon ion-social-instagram"></i>{{Instagram}}</div>
-            <div class = "col social-list-border"> <i class="icon ion-email"></i>{{Email}}</div>
+            <div class = "col col-50 social-list-border" >Reach {{topicName.author_name || entry.title}}</div>
+            <div class = "col social-list-border" ng-show="topicName.social_links.facebook_url" on-tap="OpenSocialWindow(topicName.social_links.facebook_url)"> <i class="icon ion-social-facebook"></i>{{facebook}}</div>
+            <div class = "col social-list-border" ng-show="topicName.social_links.twitter_url" on-tap="OpenSocialWindow(topicName.social_links.twitter_url)"> <i class="icon ion-social-twitter"></i>{{twitter}}</div>
+            <div class = "col social-list-border" ng-show="topicName.social_links.instagram_url" on-tap="OpenSocialWindow(topicName.social_links.instagram_url)"> <i class="icon ion-social-instagram"></i>{{Instagram}}</div>
+            <div class = "col social-list-border" ng-show="topicName.social_links.email" on-tap="OpenSocialWindow(topicName.social_links.email)"> <i class="icon ion-email"></i>{{Email}}</div>
         </div>
  
     </ion-content>

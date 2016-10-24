@@ -1,7 +1,9 @@
 (function() {
     'use strict';
     var feedService = function($log, $http, $q, TATAFO_API_URL, $window, $rootScope, $ionicLoading, $timeout) {
-
+        /**
+        * initiallization
+        */
         var _db;
         var getResponse;
         var post;
@@ -13,11 +15,7 @@
         };
         _db = new PouchDB(postsDBSettings.POSTS_DB_NAME, { auto_compaction: postsDBSettings.AUTO_COMPACTION });
 
-        /**
-        * 1. Add/Update posts to Posts Local DB
-        * 2. Delete older posts exceeding Local DB limit
-        * @param {Array} posts posts to add into the Local DB
-        */
+        
         // this.feedsPost=function(feeds){ 
         //         angular.forEach(feeds, function(feed, key) {                                   
         //             _db.find({
@@ -51,6 +49,11 @@
         //     },3000);
         // };
 
+        /**
+        * 1. Add/Update posts to Posts Local DB
+        * 2. Delete older posts exceeding Local DB limit
+        * @param {Array} posts posts to add into the Local DB
+        */
         this.addNewFeeds = function(posts){
 
             var docPosts = posts.map(function(post){

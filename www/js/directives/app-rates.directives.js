@@ -3,14 +3,16 @@
 	'use strict';
 
 	/**
-	* smallerText Directive function
+	* appRateDirective Directive function
 	*/
-	var appRateModel=function($ionicModal, $state, $ionicPopup) {		
+	var appRateDirective=function($ionicModal, $state, $ionicPopup) {		
 		return {
-			restrict: 'E',
-			template: '<button class="button button-icon ion-ios-heart" on-tap="showAppRateModel()"></button>',
+			restrict: 'A',
+			scope: {},
 			link: function(scope, element, attrs) {
-
+				/**
+				* ionicModal for rate app or not
+				*/
 				$ionicModal.fromTemplateUrl('views/common/rates.html', {    			 
     				scope: scope,
     				animation: 'none'
@@ -26,7 +28,9 @@
 					scope.appRateModel.hide();
 				}
   				
-
+				/**
+				* ionicModal for rate app if satisfied
+				*/
 				$ionicModal.fromTemplateUrl('views/common/rates1.html', {    			 
     				scope: scope,
     				animation: 'none'
@@ -42,6 +46,9 @@
 					scope.appRateModel1.hide();
 				}
 
+				/**
+				* ionicModal for rate app if not satisfied
+				*/
 				$ionicModal.fromTemplateUrl('views/common/rates2.html', {    			 
     				scope: scope,
     				animation: 'none'
@@ -55,18 +62,21 @@
               	
 				scope.hideAppRateModelNo = function() {
 					scope.appRateModel2.hide();
-				}			
+				}
+
+				element.on('tap', scope.showAppRateModel); 
+
  			}
 		}
 	}
 
 	/**
-	* @dependencies injector $ionicGesture
+	* @dependencies injector $ionicModal, $state, $ionicPopup
 	*/
-	appRateModel.$inject=['$ionicModal', '$state', '$ionicPopup'];
+	appRateDirective.$inject=['$ionicModal', '$state', '$ionicPopup'];
 	angular
 		.module('tatafo')
-		.directive('appRateModel',appRateModel)
+		.directive('appRateDirective',appRateDirective)
 
 })();
 

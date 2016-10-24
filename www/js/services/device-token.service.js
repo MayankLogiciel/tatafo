@@ -7,29 +7,37 @@
 
     var deviceTokenService = function($log, $http, $q, TATAFO_API_URL) {
 
-
+        /**
+        * isTokenAvailable checking the token already available in localstarage
+        */
         this.isTokenAvailable = function(){
             
             var deviceToken = JSON.parse(localStorage.deviceToken || '[]');
-
             if(angular.isDefined(deviceToken) && deviceToken.length > 0 ){
                 return true;
             }else{
                 return false;
-            }
-           
+            }           
         };
 
+        /**
+        * inserting the token in local storage
+        */
         this.setDeviceTokeninLocalStorage = function(deviceToken){
             $log.debug('setDeviceTokeninLocalStorage');            
             localStorage.deviceToken = JSON.stringify(deviceToken);
         };
 
+        /**
+        * getting the token from locastorage
+        */
         this.getDeviceTokeninLocalStorage = function(){
            return JSON.parse(localStorage.deviceToken);
         };
 
-
+        /**
+        * geting device token from API
+        */
         this.getdeviceToken = function(data) {
             var _defer  = $q.defer(data);
             // Initiate the AJAX request.
@@ -47,12 +55,14 @@
                     _defer.reject(response);
                 }
             );
-
             return _defer.promise;
         };
-
-
     }
+
+
+    /**
+    * deviceTokenService injector $log, $http, $q, TATAFO_API_URL
+    */
 
     deviceTokenService.$inject = [
         '$log', 
@@ -60,7 +70,6 @@
         '$q', 
         'TATAFO_API_URL'
     ];
-
     angular
         .module('tatafo')
         .service('deviceTokenService', deviceTokenService);

@@ -1,7 +1,9 @@
 (function() {
     'use strict';
     var requestIntercepter = function($log, $q, $injector, messagesService, utilService) { 
-
+        /**
+        * passing data to header like device_id, deviceToken, pushToken
+        */
         return{
             request: function(config) {
                 config.headers = config.headers || {};
@@ -19,7 +21,6 @@
             },
 
             response: function(response){
-               // console.log(response);
                 return response;
             },
 
@@ -100,7 +101,6 @@
     }
     
     requestIntercepter.$inject = ['$log', '$q', '$injector' , 'messagesService' , 'utilService'];
-
     angular
         .module('tatafo')
         .factory('requestIntercepter', requestIntercepter)

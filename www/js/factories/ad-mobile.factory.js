@@ -9,8 +9,9 @@
 		var adMob = $window.adMob;
 
         if(adMob) {
-            // Register adMobileFactory events
-            // new events, with variable to differentiate: adNetwork, adType, adEvent
+            /** Register adMobileFactory events
+            * new events, with variable to differentiate: adNetwork, adType, adEvent
+            */
             document.addEventListener('onAdFailLoad', function(data) {
                 console.log('error: ' + data.error + ', reason: ' + data.reason + ', adNetwork:' + data.adNetwork + ', adType:' + data.adType + ', adEvent:' + data.adEvent); // adType: 'banner' or 'interstitial'
             });

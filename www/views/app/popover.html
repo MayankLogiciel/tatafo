@@ -2,13 +2,13 @@
     <ion-content scroll="false">
         <div class="list">        
 
-            <a class="item" on-tap="showSetting()">
+            <a class="item" on-tap="showSetting(); closePopover();">
                 <i class="icon bigsocial ion-settings" style="color: #FF3333;"></i> Settings
             </a>
-            <a class="item"  href="" >
+            <a class="item" app-rate-directive on-tap="closePopover()">
                 <i class="icon bigsocial ion-android-favorite" style="color: #FF3333;" ></i> Rate App 
             </a>
-            <a class="item">
+            <a class="item" on-tap="closePopover()">
                 <i class="icon bigsocial ion-ios-trash-outline" style="color: #FF3333;"></i> Clear Cache
             </a>
         </div>

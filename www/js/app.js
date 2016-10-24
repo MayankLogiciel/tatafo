@@ -14,16 +14,16 @@ angular
     angular
         .module('tatafo', ['ionic' , 'angularMoment' , 'tatafo.config' , 'underscore' , 'ngResource' , 'ngCordova' , 'slugifier' , 'youtube-embed', 'jett.ionic.content.banner' ])
 
-    .run(function($ionicPlatform,$rootScope, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, $cordovaDevice,  ConnectivityMonitor, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
+    .run(function($ionicPlatform,$rootScope, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, $cordovaDevice,  ConnectivityMonitorFactoryFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
 
          ionic.Platform.ready(function() {
 
             if (ionic.Platform.isAndroid() && ionic.Platform.isWebView()) {
-
                
                 var notificationOpenedCallback = function(jsonData) {
                     console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
                 };
+                
                 window.plugins.OneSignal
                 .startInit(ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER)
                 .handleNotificationOpened(notificationOpenedCallback)
@@ -103,19 +103,29 @@ angular
             }
 
             //start watching online/offline event
-            ConnectivityMonitor.startWatching();
+            ConnectivityMonitorFactoryFactory.startWatching();
 
-
-
-                var appSetting = settingService.getSettings();
+                /**
+                    settingService.getSetting function will set default settings if already not set
+                    (means first Time) other wise it will return users setting
+                */
+                var appSetting = settingService.getSettings();  
 
                 if (appSetting.lastTimeSourceSynced == '') {
                     settingService.setSyncTime(new Date());
                 }
 
-                if (appSetting.setSyncIntervalTime == 0) {
-                    settingService.setInterval(6);
+                /**
+                    settingService.getSetting function will set 6 hours default time for new sources
+                */
+
+                if (appSetting.sourceSyncIntervalTime == 0) {
+                    settingService.setSourceSyncIntervalTime(6);
                 }
+
+                /**
+                    settingService.pushNotificationEnabled function will set default pushnotification setting
+                */
                 if (angular.isDefined(appSetting.pushNotificationEnabled)) {
                     window.plugins.OneSignal.setSubscription(appSetting.pushNotificationEnabled);                    
                 }
