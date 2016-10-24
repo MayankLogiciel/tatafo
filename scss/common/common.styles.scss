@@ -441,14 +441,19 @@ ion-popover-view.fit ion-content {
             margin-top: -3px;
         }
         .card {
-            margin-top: 0;
-            margin-bottom: 0;
-            border: 1px solid #ccc;
+            // margin-top: 0;
+            // margin-bottom: 0;
+            margin: 8px 7px 10px 7px;
+            box-shadow: 0 1px 3px #f2f2f2;
+            // border: 1px solid #ccc;
             &:first-child {
                 margin-top: 20px;
             }
             .card-footer {
-                border-top: 1px solid #ccc;
+                border-top: 1px dashed #ccc;
+                .card-button.primary {
+                  border-right: 1px dashed #ccc;
+                }
                 .icon {
                     font-size: 20px;
                 }
@@ -456,6 +461,8 @@ ion-popover-view.fit ion-content {
         }
         .entry-author {
             font-size: 13px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #ccc;
         }
     }
 }
@@ -579,4 +586,10 @@ ion-popover-view.fit ion-content {
             }
         }
     }
+}
+
+.word-wrap {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

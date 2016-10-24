@@ -1,0 +1,34 @@
+.rating-popup {
+	height: 180px !important
+}
+.titleuni {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 0;
+	overflow: hidden;
+	padding: 0 10px;
+	min-width: 30px;
+	height: 43px;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 17px;
+	font-weight: 500;
+	line-height: 44px;
+	background-color: #FFC;
+}
+.rates {
+    padding: 20px;
+    text-align: justify;
+}
+.rates-image1 {
+    height: 32px;
+    width: 100%;
+    margin-bottom: 5px;
+    background-color: #FFF;
+    background-repeat: no-repeat;
+    background-image: url(../img/rating.png);
+    background-position: center, center;
+}

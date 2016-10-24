@@ -9,19 +9,15 @@
     </ion-nav-buttons>
     <ion-content scroll="true" overflow-scroll="true">
 
-        <div class="list card">
+        <div class="feed-detail-cont">
 
-            <div class="item feed-entries-card item-avatar post" post-content>
-
-                <div class="card-header ">
-                    <h1 ng-bind="entry.feed.title || entry.title | rawHtml" class="title" on-hold="copyText('Header')">Header</h1>
-                    <h2>Posted by <span class="author" ng-bind="entry.topicName.author_name | rawHtml"></span><span class="feed-date" ng-bind="entry.updated_at || entry.date | dateTimeFeedDetailFilter"></span></h2>
-                </div>
+            <div class="feed-entries-card post" post-content>
+                <h4 ng-bind="entry.feed.title || entry.title | rawHtml" class="title" on-hold="copyText('Header')"></h4>
+                <h5>Posted by <span class="author" ng-bind="topic.author_name | rawHtml"></span><span class="feed-date" ng-bind="entry.updated_at | dateTimeFeedDetailFilter"></span></h5>
             </div>
 
-            <div class="item item-body">
-                <img class="full-image" ng-src="img/feeds/logos/bbc.jpg">
-                <p class="card-content"  dynamic-anchor-fix ng-bind-html="entry.feed.summary || entry.summary  | rawHtml">
+            <div class="feed-detail-content">
+                <p dynamic-anchor-fix ng-bind-html="entry.feed.content | rawHtml">
                 </p>
             </div>
         </div>
@@ -36,13 +32,12 @@
             </a>           
         </div>
         <div class = "row" >
-            <div class = "col col-50 social-list-border" >Reach {{topicName.author_name || entry.title}}</div>
-            <div class = "col social-list-border" ng-show="topicName.social_links.facebook_url" on-tap="OpenSocialWindow(topicName.social_links.facebook_url)"> <i class="icon ion-social-facebook"></i>{{facebook}}</div>
-            <div class = "col social-list-border" ng-show="topicName.social_links.twitter_url" on-tap="OpenSocialWindow(topicName.social_links.twitter_url)"> <i class="icon ion-social-twitter"></i>{{twitter}}</div>
-            <div class = "col social-list-border" ng-show="topicName.social_links.instagram_url" on-tap="OpenSocialWindow(topicName.social_links.instagram_url)"> <i class="icon ion-social-instagram"></i>{{Instagram}}</div>
-            <div class = "col social-list-border" ng-show="topicName.social_links.email" on-tap="OpenSocialWindow(topicName.social_links.email)"> <i class="icon ion-email"></i>{{Email}}</div>
+            <div class = "col col-50 social-list-border" >Reach {{topic.author_name || entry.title}}</div>
+            <div class = "col social-list-border" ng-show="topic.social_links.facebook_url" on-tap="OpenSocialWindow(topic.social_links.facebook_url)"> <i class="icon ion-social-facebook"></i>{{facebook}}</div>
+            <div class = "col social-list-border" ng-show="topic.social_links.twitter_url" on-tap="OpenSocialWindow(topic.social_links.twitter_url)"> <i class="icon ion-social-twitter"></i>{{twitter}}</div>
+            <div class = "col social-list-border" ng-show="topic.social_links.instagram_url" on-tap="OpenSocialWindow(topic.social_links.instagram_url)"> <i class="icon ion-social-instagram"></i>{{Instagram}}</div>
+            <div class = "col social-list-border" ng-show="topic.social_links.email" on-tap="OpenSocialWindow(topic.social_links.email)"> <i class="icon ion-email"></i>{{Email}}</div>
         </div>
- 
     </ion-content>
     <div class="float-button-left effect1" on-tap="previousButton()" ng-hide="currentIndex==0">
         <span class="height-fix">
