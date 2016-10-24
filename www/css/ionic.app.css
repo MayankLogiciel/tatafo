@@ -10276,6 +10276,9 @@ ion-popover-view.fit ion-content {
   text-overflow: ellipsis;
   overflow: hidden; }
 
+.no-margin {
+  margin: 0; }
+
 .content-banner {
   width: 100%;
   color: white;
@@ -10710,6 +10713,23 @@ ion-side-menu .heading-item .message {
   .feed-detail-cont .feed-detail-content img {
     width: 100%;
     height: auto; }
+
+.credit-bar-section {
+  background-color: #444;
+  margin: 10px 0;
+  padding: 10px; }
+  .credit-bar-section .credit-bar-icon {
+    float: left; }
+    .credit-bar-section .credit-bar-icon i {
+      color: #fff;
+      font-size: 26px; }
+  .credit-bar-section .credit-bar p {
+    color: #fff;
+    margin: 0 0 0 27px; }
+    .credit-bar-section .credit-bar p:first-child {
+      margin-top: 0 !important; }
+  .credit-bar-section .credit-bar .credit-bar-link {
+    color: #33AC6B; }
 
 .feeds-categories-view {
   background-color: #ccc; }

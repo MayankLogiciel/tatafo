@@ -118,3 +118,29 @@
 		}
 	}
 }
+
+.credit-bar-section {
+	background-color: #444;
+	margin: 10px 0;
+	padding: 10px;
+	.credit-bar-icon {
+		float: left;
+		i {
+			color: #fff;
+			font-size: 26px;
+		}
+	}
+	.credit-bar {
+		p {
+			color: #fff;
+			margin: 0 0 0 27px;
+			&:first-child {
+				margin-top: 0 !important;
+			}
+		}
+		.credit-bar-link {
+			color: #33AC6B;
+		}
+	}
+}
+

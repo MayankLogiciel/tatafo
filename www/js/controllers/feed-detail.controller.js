@@ -4,7 +4,7 @@
 	/**
 	* FeedDetailController function
 	*/
-	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $location,$stateParams,feedService, socialService, $cordovaNetwork,$timeout, sourcesService) {
+	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $location,$stateParams,feedService, socialService, $cordovaNetwork,$timeout, sourcesService, $window) {
 		
 		/**
 		* Initialization
@@ -24,6 +24,7 @@
 			//console.log($scope.sourceData);
 			if($scope.sourceData.topics.data.length > 0) {
 				$scope.sourceData.topics.data.map(function(val) {
+					console.log(val);
 					if (val.name == $scope.entry.topic_name) {
 						$scope.topic = val;
 					}
@@ -140,13 +141,18 @@
 			}
 			
 		}
+
+		$scope.openLink = function (link) {
+			$window.open('//' + link, '_system');
+		};
+
 		setup();
 	};
 
 	/**
 	* @dependencies injector $log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $location,$stateParams,feedService, socialService, $cordovaNetwork,$timeout, sourcesService
 	*/
-	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService','bookMarkService', '$ionicLoading', '$state','$ionicHistory','$location', '$stateParams','feedService','socialService','$cordovaNetwork','$timeout','sourcesService'];
+	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService','bookMarkService', '$ionicLoading', '$state','$ionicHistory','$location', '$stateParams','feedService','socialService','$cordovaNetwork','$timeout','sourcesService', '$window'];
 
 	angular
 		.module('tatafo')
