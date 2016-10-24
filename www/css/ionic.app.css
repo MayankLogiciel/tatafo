@@ -10186,8 +10186,6 @@ ion-popover-view.fit ion-content {
 .feed-entries-view .feed-col .card {
   margin: 8px 7px 10px 7px;
   box-shadow: 0 1px 3px #f2f2f2; }
-  .feed-entries-view .feed-col .card:first-child {
-    margin-top: 20px; }
   .feed-entries-view .feed-col .card .card-footer {
     border-top: 1px dashed #ccc; }
     .feed-entries-view .feed-col .card .card-footer .card-button.primary {

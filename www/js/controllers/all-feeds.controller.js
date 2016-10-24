@@ -23,6 +23,7 @@
 			$scope.feedStatus.unread=true;
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
+			$scope.isSearchOpen = false;
 			$scope.defaultImage = 'img/feeds/logos/bbc.jpg';
 
 			/**
@@ -105,19 +106,19 @@
 		var loadFeeds = function(isLoadMore) {
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.getfeedFromPouchDB($scope.feedsParams).then(function(response){
-						if(response.data.length>0){
+					if(response.data.length>0){
 
-							if(!isLoadMore) {
-								$scope.allFeed = [];
-							}
+						if(!isLoadMore) {
+							$scope.allFeed = [];
+						}
 						angular.forEach(response.data, function(feed, key) {	
 							$scope.allFeed = $scope.allFeed.concat(feed);
 						});
-						$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
+						$scope.isMoreFeeds = response.isMorePostsPresent;
 
 					}	
 					else{
-						$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
+						$scope.isMoreFeeds = response.isMorePostsPresent;
 					}
 					$scope.$broadcast('scroll.infiniteScrollComplete');
 
@@ -129,20 +130,23 @@
 	          			template: '<ion-spinner icon="android"></ion-spinner>'
 	        		});
 					feedService.getFeeds($scope.feedsParams).then(function(feed) {					
-		   				if(feed.data.data.meta.pagination.current_page == feed.data.data.meta.pagination.total_pages || feed.data.data.meta.pagination.total_pages == 0){
+		   				if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
 							$scope.isMoreFeeds = true;
-						}
-						else{
+						}else{
 							$scope.isMoreFeeds = false;
 						}
 						if(!isLoadMore) {
 							$scope.allFeed = [];
 						}
 						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
-						$scope.$broadcast('scroll.infiniteScrollComplete');
+						//$scope.$broadcast('scroll.infiniteScrollComplete');
 						feedService.addNewFeeds($scope.allFeed);
-					}).finally(function(){					
-						$scope.$broadcast('scroll.refreshComplete');
+					}).finally(function(){	
+						if(isLoadMore){
+							$scope.$broadcast('scroll.infiniteScrollComplete');
+						}else{
+							$scope.$broadcast('scroll.refreshComplete');
+						}				
 						$ionicLoading.hide();
 					});
 				}
@@ -172,7 +176,7 @@
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$ionicLoading.show({
-	          				template: '<ion-spinner icon="android"></ion-spinner>'
+	          		template: '<ion-spinner icon="android"></ion-spinner>'
 	        	});
 				
 				if( $scope.feedStatus.read && $scope.feedStatus.unread ) {
@@ -222,6 +226,7 @@
 		* search the feeds enter in search box on from pouchDB if offline otherwise from API
 		*/	
 		$scope.$on('getFeedsBySearch',function(event,search){
+			$scope.isSearchUsed = true;
 			$scope.feedsParams.name = search;
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.searchFromPouchDB($scope.feedsParams).then(function(response) {
@@ -232,9 +237,9 @@
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
-				if($scope.feedsParams.page == 1) {
-					$scope.scrollTop(); 
-				}
+				// if($scope.feedsParams.page == 1) {
+				// 	$scope.scrollTop(); 
+				// }
 			}
 		});
 
@@ -242,11 +247,12 @@
 		* show and hide button not needed while clicking search button
 		*/
 		$scope.onSearchIconClick = function() {
-			$scope.mySearch = !$scope.mySearch;
-        	$scope.closed = !$scope.closed;
-        	$scope.searchbtn=!$scope.searchbtn
-        	$scope.sortPop=!$scope.sortPop;
-        	$scope.reload1=!$scope.reload1;
+			//$scope.mySearch = !$scope.mySearch;
+			$scope.isSearchOpen = !$scope.isSearchOpen;
+        	// $scope.closed = !$scope.closed;
+        	// $scope.searchbtn=!$scope.searchbtn
+        	// $scope.sortPop=!$scope.sortPop;
+        	// $scope.reload1=!$scope.reload1;
 
       	};
 
@@ -254,13 +260,19 @@
 		* show and hide button not needed while clicking search closed button
 		*/
     	$scope.onClosedIconClick = function() {
-        	$scope.reload();
-        	$scope.mySearch = !$scope.mySearch;
-        	$scope.closed = !$scope.closed;
-        	$scope.searchbtn = !$scope.searchbtn
-        	$scope.sortPop = !$scope.sortPop;
-        	$scope.reload1 = !$scope.reload1;
-        	$scope.$broadcast('getallfeeds');
+        	$scope.isSearchOpen = false;
+        	delete $scope.feedsParams.name;
+        	//$scope.reload();
+        	// $scope.mySearch = !$scope.mySearch;
+        	// $scope.closed = !$scope.closed;
+        	// $scope.searchbtn = !$scope.searchbtn
+        	// $scope.sortPop = !$scope.sortPop;
+        	// $scope.reload1 = !$scope.reload1;
+        	//$scope.$broadcast('getallfeeds');
+        	if($scope.isSearchUsed){
+	        	$scope.doRefresh();
+        		$scope.isSearchUsed = false;
+        	}
         	
     	};
 
@@ -270,8 +282,7 @@
 
 		$scope.$on('reloadFeeds',function(){
 			$scope.doRefresh();
-			$scope.scrollTop();
-		
+			//$scope.scrollTop();		
 		});
 
 
@@ -288,7 +299,7 @@
 		*/
 		var loadReadUnreadFeeds=function(param,id){
 			$ionicLoading.show({
-          				template: '<ion-spinner icon="android"></ion-spinner>'
+          		template: '<ion-spinner icon="android"></ion-spinner>'
         	});
 			feedService.getRaedOrUnread(param,id).then(function(feed){
 				$scope.allFeed =feed.data.data.feed;
@@ -300,8 +311,11 @@
 		*loadMore incrementing page by one and calling the loadFeeds
 		*/
 		$scope.loadMore = function() {
-		 	$scope.feedsParams.page++;
-		 	loadFeeds(true);
+			if($scope.allFeed.length > 0){
+				$scope.feedsParams.page++;
+		 		loadFeeds(true);	
+			}
+
 		}
 
 
@@ -332,9 +346,8 @@
 			$scope.feedsParams.page = 1;
 	  		$scope.isMoreFeeds = true;	  		
        		loadFeeds();
+       		$scope.scrollTop();
 		};
-
-
 
 		/**
 		* scrolling up to top by clicking sttButton

@@ -1,59 +1,64 @@
 <ion-view class="feed-entries-view">
-<ion-nav-buttons side="left">
-    <button class="button button-icon ion-navicon" menu-toggle="left">
-    </button>
-    <button class="button button-icon button-clear ion-ios-arrow-down" ng-click="popover.show($event)" ng-hide="sortPop">Sort  
-    </button>
-</ion-nav-buttons>
-<ion-nav-buttons side="right">                  
-	<button class="button button-icon button-clear ion-refresh" on-tap="reload()" ng-hide="reload1"> 
-	</button>
-<form ng-submit="searchData(searchInput)">
-<input type="search"  ng-model="searchInput" name="search" ng-show="mySearch"></form>    
-<button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick() " ng-hide="searchbtn"> </button>
- <button class="button button-icon button-assertive ion-close-circled" ng-click="onClosedIconClick(); searchInput = '' " ng-show="closed"> </button>
-<header-popover ng-hide="mySearch"></header-popover>                   
-</ion-nav-buttons>
-<ion-content class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="feedshandler" >
-	<!-- Refresh to get the new posts -->
-	<ion-refresher on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
-	</ion-refresher>
-	<div class="entries-list feed-col">
-		<div ng-repeat="entry in allFeed | orderBy : 'updated_at' : true  track by $index" class="list card entry-item">
-			<div class="entry-content item item-text-wrap" >
-				<div on-tap="loadPostDetails(entry)">
-					<i ng-class= "{ 'icon ion-eye-disabled left read-unread':(entry.is_read==false) , 'icon ion-eye left read-unread':(entry.is_read==true) }"></i>
-					<p class="entry-author">
-						<span>By {{entry.source_name}}</span> 
-						<span class="feed-date-time" ng-bind="entry.updated_at | dateTimeFilter"></span>
-					</p>
-					<div class="list">
-						<a class="item item-thumbnail-left" href="#">
-							<img  ng-src={{entry.feed.image}}>
-							<h2 ng-bind="entry.feed.title"></h2>
-						</a>
-					</div> 
-				</div>
-				<div class="card-footer">
-					<div class="button-bar">
-						<a class="button button-clear card-button primary" on-tap="bookmarkPost(entry)">
-							<i class="icon ion-android-bookmark"></i> Save
-						</a>
-						<a class="button button-clear card-button secondary" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+	<ion-nav-buttons side="left">
+		<button class="button button-icon ion-navicon" menu-toggle="left"></button>
+		<button class="button button-icon button-clear ion-ios-arrow-down" ng-click="popover.show($event)" ng-hide="isSearchOpen">Sort  
+		</button>
+	</ion-nav-buttons>
+	<ion-nav-buttons side="right">                  
+		<button class="button button-icon button-clear ion-refresh" on-tap="reload()" ng-hide="isSearchOpen"> 
+		</button>
+		<form ng-submit="searchData(searchInput)">
+			<input type="search"  ng-model="searchInput" name="search" ng-show="isSearchOpen">
+		</form>    
+		<button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick() " ng-hide="isSearchOpen"> </button>
+		<button class="button button-icon button-assertive ion-close-circled" ng-click="onClosedIconClick(); searchInput = '' " ng-show="isSearchOpen"> </button>
+		<header-popover ng-hide="isSearchOpen"></header-popover>                   
+	</ion-nav-buttons>
+	<ion-content class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="feedshandler" >
+		<!-- 		
+		<ion-refresher on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
+		</ion-refresher> 
+		-->
+		<div class="entries-list feed-col">
+			<div ng-repeat="entry in allFeed | orderBy : 'updated_at' : true" class="list card entry-item">
+				<div class="entry-content item item-text-wrap" >
+					<div on-tap="loadPostDetails(entry)">
+						<i ng-class= "{ 'icon ion-eye-disabled left read-unread':(entry.is_read==false) , 'icon ion-eye left read-unread':(entry.is_read==true) }"></i>
+						<p class="entry-author">
+							<span>By {{entry.source_name}}</span> 
+							<span class="feed-date-time" ng-bind="entry.updated_at | dateTimeFilter"></span>
+						</p>
+						<div class="list">
+							<a class="item item-thumbnail-left" href="#">
+								<img  ng-src={{entry.feed.image}}>
+								<h2 ng-bind="entry.feed.title"></h2>
+							</a>
+						</div> 
+					</div>
+					<div class="card-footer">
+						<div class="button-bar">
+							<a class="button button-clear card-button primary" on-tap="bookmarkPost(entry)">
+								<i class="icon ion-android-bookmark"></i> Save
+							</a>
+							<a class="button button-clear card-button secondary" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- Infinit scroll -->
-	<ion-infinite-scroll on-infinite="loadMore()" distance="1%" immediate-check="false" ng-if="!isMoreFeeds">
-	</ion-infinite-scroll>
-</ion-content>
+		<!-- Infinit scroll -->
+		<ion-infinite-scroll 
+			immediate-check="false" 
+			on-infinite="loadMore()" 
+			distance="1%" 
+			ng-if="isMoreFeeds">
+		</ion-infinite-scroll>
+	</ion-content>
 	<div class="float-button effect1" ng-show="sttButton" ng-click="scrollTop()"	>
 		<span class="height-fix">
 			<a class="cont">
 				<i class="icon ion-chevron-up white"> </i>
 			</a>
 		</span>
-		</div>
+	</div>
 </ion-view>
