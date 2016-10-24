@@ -6,7 +6,7 @@
       * ConnectivityMonitorFactory function
       */
 
-      var ConnectivityMonitorFactoryFactory=function($log,$rootScope, $cordovaNetwork, $ionicContentBanner, $timeout) {
+      var ConnectivityMonitorFactory=function($log,$rootScope, $cordovaNetwork, $ionicContentBanner, $timeout) {
 
             /**
             * initaillization
@@ -17,7 +17,6 @@
                   'GOES_ONLINE' : 'You are now connected.',
                   'GOES_OFFLINE' : 'Network unavailable.'
             };
-
             var closeOfflineBannerAfter = 60*60*1000;
             var closeOnlineBannerAfter = 2*1000;
             var closeOtherBannerAfter = 10*1000;
@@ -100,13 +99,13 @@
       }
 
       /** 
-      * ConnectivityMonitorFactoryFactory $injector $log,$rootScope, $cordovaNetwork, $ionicContentBanner, $timeout
+      * ConnectivityMonitorFactory $injector $log,$rootScope, $cordovaNetwork, $ionicContentBanner, $timeout
       */
 
-      ConnectivityMonitorFactoryFactory.$inject=['$log', '$rootScope', '$cordovaNetwork', '$ionicContentBanner', '$timeout'];
+      ConnectivityMonitorFactory.$inject=['$log', '$rootScope', '$cordovaNetwork', '$ionicContentBanner', '$timeout'];
 
       angular
       .module('tatafo')
-      .factory('ConnectivityMonitorFactoryFactory',ConnectivityMonitorFactoryFactory);
+      .factory('ConnectivityMonitorFactory',ConnectivityMonitorFactory);
 
 })();

@@ -5,11 +5,10 @@ angular
         return window._; // assumes underscore has already been loaded on the page
     });
 
-
 angular
     .module('tatafo', ['ionic' , 'angularMoment' , 'tatafo.config' , 'underscore' , 'ngResource' , 'ngCordova' , 'slugifier' , 'youtube-embed', 'jett.ionic.content.banner' ])
 
-    .run(function($log, $ionicPlatform, $rootScope, $state, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, $cordovaDevice,  ConnectivityMonitorFactoryFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
+    .run(function($log, $ionicPlatform, $rootScope, $state, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, ConnectivityMonitorFactoryFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
 
         ionic.Platform.ready(function() {
 
@@ -113,7 +112,7 @@ angular
             }
 
             //start watching online/offline event
-            ConnectivityMonitorFactoryFactory.startWatching();
+            console.log(ConnectivityMonitorFactory.startWatching());
 
                 /**
                     settingService.getSetting function will set default settings if already not set

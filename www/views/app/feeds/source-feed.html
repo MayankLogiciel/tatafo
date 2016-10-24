@@ -7,17 +7,17 @@
 <input type="search"  ng-model="searchInput" name="search" ng-show="mySearch"></form>    
 <button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick() " ng-hide="searchbtn"> </button>
 <button class="button button-icon button-assertive ion-close-circled" ng-click="onClosedIconClick(); searchInput = '' " ng-show="closed"> </button>
-<header-popover ng-hide="mySearch"></header-popover>                   
+<header-popover ng-hide="mySearch"></header-popover>
 </ion-nav-buttons>
-    <ion-content on-scroll="getScrollPosition()" delegate-handle="sourceFeedhandler">
+    <ion-content class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="sourceFeedhandler">
         <!-- Refresh to get the new posts -->
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
-        <div class="entries-list">
+        <div class="entries-list feed-col">
             <div ng-repeat="entry in feed | orderBy : 'updated_at' : true track by $index" class="list card entry-item" >
                 <div class="entry-content item item-text-wrap">
                     <div on-tap="loadPostDetails(entry)">
-                        <i class="icon ion-eye left read-unread"></i>
+                        <i ng-class= "{ 'icon ion-eye-disabled left read-unread':(entry.is_read==false) , 'icon ion-eye left read-unread':(entry.is_read==true) }"></i>
                         <p class="entry-author">
                             <span>By {{entry.source_name}}</span> 
                             <span class="feed-date-time" ng-bind="entry.updated_at | dateTimeFilter"></span>
@@ -30,11 +30,14 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a class="card-button secondary" on-tap="bookmarkPost(entry)">
-                            <i class="icon ion-android-bookmark"></i> Save
-                        </a>
-                        <a class="card-button primary" on-tap="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+                        <div class="button-bar">
+                            <a class="button button-clear card-button primary" on-tap="bookmarkPost(entry)">
+                                <i class="icon ion-android-bookmark"></i> Save
+                            </a>
+                            <a class="button button-clear card-button secondary" on-tap="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+                        </div>
                     </div>
+                    <button id="app-rate-model-source-feed" app-rate-directive ng-hide="true"></button> 
                 </div>
             </div>
         </div>

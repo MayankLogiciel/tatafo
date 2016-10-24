@@ -5,6 +5,7 @@
         return{
             request: function(config) {
                 config.headers = config.headers || {};
+                
                 if( ionic.Platform.isWebView() && angular.isDefined(localStorage.deviceInfo) ){
                     
                     //set headers so that token can be verified and user's last activity can be captured

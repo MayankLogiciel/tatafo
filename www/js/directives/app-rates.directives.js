@@ -5,7 +5,7 @@
 	/**
 	* appRateDirective Directive function
 	*/
-	var appRateDirective=function($ionicModal, $state, $ionicPopup) {		
+	var appRateDirective=function($ionicModal, $state, $ionicPopup, $window) {		
 		return {
 			restrict: 'A',
 			scope: {},
@@ -64,6 +64,10 @@
 					scope.appRateModel2.hide();
 				}
 
+				scope.popAsk1 = function () {
+					$window.open("mailto:info@jobprogress.com", "_system");
+				}
+
 				element.on('tap', scope.showAppRateModel); 
 
  			}
@@ -73,7 +77,7 @@
 	/**
 	* @dependencies injector $ionicModal, $state, $ionicPopup
 	*/
-	appRateDirective.$inject=['$ionicModal', '$state', '$ionicPopup'];
+	appRateDirective.$inject=['$ionicModal', '$state', '$ionicPopup', '$window'];
 	angular
 		.module('tatafo')
 		.directive('appRateDirective',appRateDirective)

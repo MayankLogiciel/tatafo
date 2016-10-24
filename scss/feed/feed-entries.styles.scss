@@ -53,7 +53,7 @@
 .card-button
 {
   font-size: 16px;
-  padding: 5px 5px 5px 0;
+  // padding: 5px 5px 5px 0;
   text-decoration: none;
 
   &.primary
@@ -79,10 +79,10 @@
 
 .card-footer
 {
-  border-top: 2px solid lighten($content-color,60);
-  padding:16px;
-  margin-top:5px;
-  font-weight: 500;
+  // border-top: 2px solid lighten($content-color,60);
+  // padding:16px;
+  // margin-top:5px;
+  // font-weight: 500;
 }
 	}
 }
@@ -95,12 +95,26 @@
 }
 
 .feed-entries-card	{
-	padding: 0 17px;
+	// padding: 0 17px;
 	.feed-date{
 		float: right;
+		font-weight: 400;
 	}
 	
 }
 .social-list-border {
-		border: 1px solid;
+	border: 1px solid;
+}
+.feed-detail-cont {
+	padding: 10px;
+	.feed-entries-card {
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 10px;
 	}
+	.feed-detail-content {
+		img {
+			width: 100%;
+			height: auto;
+		}
+	}
+}

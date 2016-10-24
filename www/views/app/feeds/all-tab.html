@@ -35,10 +35,12 @@
 					</div> 
 				</div>
 				<div class="card-footer">
-					<a class="card-button secondary" on-tap="bookmarkPost(entry)">
-						<i class="icon ion-android-bookmark"></i> Save
-					</a>
-					<a class="card-button primary" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+					<div class="button-bar">
+						<a class="button button-clear card-button primary" on-tap="bookmarkPost(entry)">
+							<i class="icon ion-android-bookmark"></i> Save
+						</a>
+						<a class="button button-clear card-button secondary" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+					</div>
 				</div>
 			</div>
 		</div>
