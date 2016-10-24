@@ -112,7 +112,7 @@ angular
             }
 
             //start watching online/offline event
-            console.log(ConnectivityMonitorFactory.startWatching());
+            ConnectivityMonitorFactory.startWatching();
 
                 /**
                     settingService.getSetting function will set default settings if already not set

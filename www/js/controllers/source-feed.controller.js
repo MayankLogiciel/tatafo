@@ -30,14 +30,15 @@
 		});
 		$scope.$on('$ionicView.beforeLeave', function (event, viewData) {
 		    viewData.enableBack = true;
+		    if(!angular.isDefined(localStorage.appRateStatus) || localStorage.appRateStatus == 'false') {		    	  	
+				var clickEvent = new MouseEvent("tap", {			    
+				});
+			    var element = document.getElementById('app-rate-model-source-feed');
+				element.dispatchEvent(clickEvent);
+		    } else {
+		    	console.log("true");
+		    }
 
-			var clickEvent = new MouseEvent("tap", {
-			    "view": window,
-			    "bubbles": true,
-			    "cancelable": false
-			});
-		    var element = document.getElementById('app-rate-model-source-feed');
-			element.dispatchEvent(clickEvent);
 		});
 
 		/**

@@ -46,6 +46,11 @@
 					scope.appRateModel1.hide();
 				}
 
+				scope.appRate = function () {
+					$window.open("market://details?id=com.wec.tatafo", "_system");
+					localStorage.appRateStatus = true;			
+				}
+
 				/**
 				* ionicModal for rate app if not satisfied
 				*/

@@ -124,31 +124,28 @@
 				});	
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
-				// if($scope.loadMoreActive){
-				// 	return;
-				// };
-				// $scope.loadMoreActive=true;				
-				$ionicLoading.show({
-          			template: '<ion-spinner icon="android"></ion-spinner>'
-        		});
-				feedService.getFeeds($scope.feedsParams).then(function(feed) {					
-	   				if(feed.data.data.meta.pagination.current_page == feed.data.data.meta.pagination.total_pages || feed.data.data.meta.pagination.total_pages == 0){
-						$scope.isMoreFeeds = true;
-					}
-					else{
-						$scope.isMoreFeeds = false;
-					}
-					if(!isLoadMore) {
-						$scope.allFeed = [];
-					}
-					$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
-					console.log($scope.allFeed);
-					$scope.$broadcast('scroll.infiniteScrollComplete');
-					feedService.addNewFeeds($scope.allFeed);
-				}).finally(function(){					
-					$scope.$broadcast('scroll.refreshComplete');
-					$ionicLoading.hide();
-				});
+				if($state.current.name.indexOf('app.feeds.all') !== -1 ) {
+					$ionicLoading.show({
+	          			template: '<ion-spinner icon="android"></ion-spinner>'
+	        		});
+					feedService.getFeeds($scope.feedsParams).then(function(feed) {					
+		   				if(feed.data.data.meta.pagination.current_page == feed.data.data.meta.pagination.total_pages || feed.data.data.meta.pagination.total_pages == 0){
+							$scope.isMoreFeeds = true;
+						}
+						else{
+							$scope.isMoreFeeds = false;
+						}
+						if(!isLoadMore) {
+							$scope.allFeed = [];
+						}
+						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
+						$scope.$broadcast('scroll.infiniteScrollComplete');
+						feedService.addNewFeeds($scope.allFeed);
+					}).finally(function(){					
+						$scope.$broadcast('scroll.refreshComplete');
+						$ionicLoading.hide();
+					});
+				}
 			}			
 		};
 
@@ -157,23 +154,21 @@
 		* if ConnectivityMonitorFactory.isOffline then feedService.sortReadUnread loads the feeds from pouchDB(after filtering) 
 		* if ConnectivityMonitorFactory.isOnline then send the request status to API and load the feed according to the satatus by calling load feeds
 		*/
-
 		$scope.selectOption = function() {
 			$scope.feedsParams.page = 1;
 			if(ConnectivityMonitorFactory.isOffline()) {	
 				if( ($scope.feedStatus.read && $scope.feedStatus.unread) || (!$scope.feedStatus.read && !$scope.feedStatus.unread) ){
 					loadFeeds();
 				}else 
-					if( $scope.feedStatus.read || $scope.feedStatus.unread ) {
+				if( $scope.feedStatus.read || $scope.feedStatus.unread ) {
 
-						$scope.feedsParams.is_read = ($scope.feedStatus.read) ? true : false;
-						feedService.sortReadUnread($scope.feedsParams).then(function(response){
-							$scope.allFeed = [];
-							$scope.allFeed = response;
-							$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
-						});			
-					}
-					
+					$scope.feedsParams.is_read = ($scope.feedStatus.read) ? true : false;
+					feedService.sortReadUnread($scope.feedsParams).then(function(response){
+						$scope.allFeed = [];
+						$scope.allFeed = response;
+						$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
+					});			
+				}					
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$ionicLoading.show({
@@ -192,9 +187,11 @@
 		    		}
 				}
 				loadFeeds();
+				$scope.scrollTop();
 			}
 		}
-		
+
+
 		/**
 		* sharePost checking the connection first
 		* if connection is online then socialService.share sending the parameter need to share from feeds
@@ -235,6 +232,9 @@
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
+				if($scope.feedsParams.page == 1) {
+					$scope.scrollTop(); 
+				}
 			}
 		});
 
@@ -274,18 +274,6 @@
 		
 		});
 
-		/**
-		* rateApp checking the platform is android
-		* creating the link app with play store 
-		*/
-		$scope.rateApp = function(){
-    		if(ionic.Platform.isAndroid()){
-	      		AppRate.preferences.storeAppURL.android = 'market://details?id=com.wec.lwkm';
-	      		AppRate.preferences.usesUntilPrompt = 2;
-				AppRate.promptForRating();
-				App.promptAgainForEachNewVersion(true);
-	    	}
-  		};
 
   		/**
 		* bookMarkService.addBookmarkToPouchDB post the deatil to pouchDB
@@ -397,7 +385,7 @@
 		'$cordovaNetwork',
 		'$timeout',
 		'ConnectivityMonitorFactory',
-		'settingService'
+		'settingService'		
 	];
 
 	angular
