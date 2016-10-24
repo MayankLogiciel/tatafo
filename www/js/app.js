@@ -8,7 +8,7 @@ angular
 angular
     .module('tatafo', ['ionic' , 'angularMoment' , 'tatafo.config' , 'underscore' , 'ngResource' , 'ngCordova' , 'slugifier' , 'youtube-embed', 'jett.ionic.content.banner' ])
 
-    .run(function($log, $ionicPlatform, $rootScope, $state, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, ConnectivityMonitorFactoryFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
+    .run(function($log, $ionicPlatform, $rootScope, $state, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
 
         ionic.Platform.ready(function() {
 
