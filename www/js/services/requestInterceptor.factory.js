@@ -1,22 +1,26 @@
 (function() {
     'use strict';
     var requestIntercepter = function($log, $q, $injector, messagesService, utilService) { 
-        /**
-        * passing data to header like device_id, deviceToken, pushToken
-        */
+
         return{
             request: function(config) {
                 config.headers = config.headers || {};
-                if(ionic.Platform.isAndroid() && angular.isDefined(localStorage.deviceToken)){
-                    var deviceToken = JSON.parse(localStorage.deviceToken);
-                    config.headers['device-token'] = deviceToken.device_token;
-                    config.headers['device-id'] = deviceToken.device_id;
-                   var pushToken = JSON.parse(localStorage.pushobj);
-                    config.headers['push-token'] = pushToken.pushToken;
-                }else {
+                
+                if( ionic.Platform.isWebView() && angular.isDefined(localStorage.deviceInfo) ){
+                    
+                    //set headers so that token can be verified and user's last activity can be captured
+                    var deviceInfo = angular.fromJson(localStorage.deviceInfo);
+                    config.headers['device-id'] = deviceInfo.device_id;
+                    config.headers['device-token'] = deviceInfo.device_token;
+                    config.headers['push-token'] = deviceInfo.push_token;
+                    config.headers['test'] = 'false';
+
+                }else{
                     config.headers['test'] = 'true';
-                }                
+                }
+
                 config.timeout = 60000;
+
                 return config;
             },
 
