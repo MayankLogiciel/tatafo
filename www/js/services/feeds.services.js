@@ -58,7 +58,7 @@
 
             var docPosts = posts.map(function(post){
                 var docPost = {
-                    "_id" : new Date(post.date).toJSON(),
+                    "_id" : new Date(post.update_at).toJSON(),
                     "post" : post
                 }
                 return docPost.post;
@@ -129,7 +129,6 @@
                     isMorePostsPresent: true  
                 };
                 angular.forEach(docs.rows,function(value,key){
-                    console.log(value);
                     mydata.data.push(value.doc);
                 });
                 mydata.isMorePostsPresent = (docs.total_rows - docs.offset - docs.rows.length) > 0 ? true : false;
@@ -172,7 +171,6 @@
 
                         console.log(result.indexes[1].ddoc);
                         _db.deleteIndex({
-
                             "ddoc" : result.indexes[1].ddoc,
                             "name": result.indexes[1].name,
                             "type": "json",

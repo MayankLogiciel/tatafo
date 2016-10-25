@@ -4,17 +4,13 @@
 	/**
 	* FeedDetailController function
 	*/
-	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $location,$stateParams,feedService, socialService, $cordovaNetwork,$timeout, sourcesService, $window) {
+	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $location,$stateParams,feedService, socialService, $cordovaNetwork,$timeout, sourcesService, $window, $rootScope) {
 		
 		/**
 		* Initialization
 		*/
 		var setup = function(){
 			console.log("FeedDetailController");
-			$scope.feedsParams = {
-				page:1,
-				limit:$stateParams.postData
-			};
 			$scope.sttButton=true;
 			$scope.allFeed=[];
 			$scope.load = false;
@@ -26,7 +22,7 @@
 			//console.log($scope.sourceData);
 			if($scope.sourceData.topics.data.length > 0) {
 				$scope.sourceData.topics.data.map(function(val) {
-					console.log(val);
+					//console.log(val);
 					if (val.name == $scope.entry.topic_name) {
 						$scope.topic = val;
 					}
@@ -44,7 +40,7 @@
 		*/
  
 	    $scope.$on('$ionicView.beforeLeave', function(e) {
-	        if (window.AdMob) AdMob.showInterstitial();
+	        if (window.AdMob) AdMob.showInterstitial();	       
 	    });
 
 	    /**
@@ -108,12 +104,13 @@
 		* sending the request to the API to markAsRead is status is 1
 		*/
 
-		var markAsRead=function(){
+		var markAsRead=function() {
 			var query={
 				status:1,
 				ids:[$scope.entry.id]
 			};
-			feedService.getRaedOrUnread(query).then(function(res){
+			feedService.getRaedOrUnread(query).then(function(res) {
+				$rootScope.$broadcast("readArticle", { id: res.data.data.updated_ids[0], status: true });
 			})
 		}
 
@@ -134,6 +131,7 @@
 		$scope.$on('$ionicView.beforeEnter', function (event, viewData) {
 		    viewData.enableBack = true;
 		});
+
 
 		/**
 		* sharePost checking the connection first
@@ -160,7 +158,7 @@
 	/**
 	* @dependencies injector $log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $location,$stateParams,feedService, socialService, $cordovaNetwork,$timeout, sourcesService
 	*/
-	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService','bookMarkService', '$ionicLoading', '$state','$ionicHistory','$location', '$stateParams','feedService','socialService','$cordovaNetwork','$timeout','sourcesService', '$window'];
+	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService','bookMarkService', '$ionicLoading', '$state','$ionicHistory','$location', '$stateParams','feedService','socialService','$cordovaNetwork','$timeout','sourcesService', '$window', '$rootScope'];
 
 	angular
 		.module('tatafo')

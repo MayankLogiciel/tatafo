@@ -25,7 +25,7 @@
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
 			$scope.defaultImage = 'img/imgUnavailable.png';
-
+			
 			/**
 			* sourcesService.isFeedSourcesAvailable use to check source already available or not
 			* isSourceSyncRequired checks source sync is required
@@ -146,6 +146,7 @@
 						if(!isLoadMore) {
 							$scope.allFeed = [];
 						}
+
 						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
 						//$scope.$broadcast('scroll.infiniteScrollComplete');
 						feedService.addNewFeeds($scope.allFeed);
@@ -160,6 +161,15 @@
 				}
 			}			
 		};
+
+		$rootScope.$on("readArticle", function (event,args) {
+      		angular.forEach($scope.allFeed,function(val, key){
+      			if(val.id == args.id){
+      				$scope.allFeed[key].is_read=true;
+      			}
+      		});
+    	});
+
 
 		/**
 		* selectOption to geting the read and unread feeds
@@ -228,8 +238,7 @@
 			$scope.scrollTop();
 			loadFeeds();
 		});
-				
-		
+
 		/**
 		* search the feeds enter in search box on from pouchDB if offline otherwise from API
 		*/	
@@ -290,7 +299,6 @@
 
 		$scope.$on('reloadFeeds',function(){
 			$scope.doRefresh();
-			//$scope.scrollTop();		
 		});
 
 
@@ -332,7 +340,6 @@
 		* loadPostDetails feedDetailService.setCombinedPostDataForNextPrevious sending the deatil of other feeds for next and previous Button
 		*/	
 		$scope.loadPostDetails=function(post) {	
-			post.is_read = true;
 			feedDetailService.setPostData(post);
 			feedDetailService.setCombinedPostDataForNextPrevious($scope.allFeed);
 			$state.go('app.feed-entries-details');								
