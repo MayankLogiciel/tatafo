@@ -6,7 +6,7 @@
       * ConnectivityMonitorFactory function
       */
 
-      var ConnectivityMonitorFactory=function($log,$rootScope, $cordovaNetwork, $ionicContentBanner, $timeout) {
+      var ConnectivityMonitorFactory=function($log, $rootScope, $cordovaNetwork, $ionicContentBanner, $timeout) {
 
             /**
             * initaillization
@@ -45,7 +45,7 @@
                   MESSAGES: MESSAGES,
                   isOffline: function(){
                         if(ionic.Platform.isWebView()) {
-                             console.log(!$cordovaNetwork.isOnline());
+                             $log.debug(!$cordovaNetwork.isOnline());
                               return !$cordovaNetwork.isOnline();    
                         } else {
                               return !navigator.onLine;
@@ -69,14 +69,14 @@
                               $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
                                     // if(isInternetConnected) return;
                                     // isInternetConnected= true;
-                                    console.log("went online");
+                                    $log.debug("went online");
                                     showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'fade', closeOnlineBannerAfter);         
                               });
 
                               $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
                                     // if(isInternetConnected) return;
                                     // isInternetConnected= false;
-                                    console.log("went offline");
+                                    $log.debug("went offline");
                                     showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', closeOfflineBannerAfter);
                               });
 
@@ -84,12 +84,12 @@
                         else {
 
                               window.addEventListener("online", function(e) {
-                                    console.log("went online");
+                                    $log.debug("went online");
                                     showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'fade', closeOnlineBannerAfter);
                               }, false);    
 
                               window.addEventListener("offline", function(e) {
-                                    console.log("went offline");
+                                    $log.debug("went offline");
                                     showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', closeOfflineBannerAfter);
                               }, false); 
 

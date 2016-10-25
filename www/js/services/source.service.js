@@ -18,6 +18,7 @@
            
         };
 
+        this.set
         /**
         *  setFeedSourcesinLocalStorage is used store sources in Local Storage
         */
@@ -66,7 +67,7 @@
                     setFeedSourcesinLocalStorage(response.data.data.sources);
                     if(angular.isDefined(response.data.data.sources) && response.data.data.sources.length > 0 ){
                         console.log(new Date());
-                        settingService.setSyncTime(new Date());
+                        setLastSourceSyncTime(new Date());
                     }
                     _defer.resolve(response.data.data.sources);
                 },
@@ -78,7 +79,13 @@
             return _defer.promise;
         };
 
-       
+        var setLastSourceSyncTime = function(date){
+            localStorage.lastSourceSyncTime = date;
+        };
+
+        this.getLastSourceSyncTime = function(){
+            return localStorage.lastSourceSyncTime || new Date("October 13, 2000 00:00:00");
+        };
 
     }
 

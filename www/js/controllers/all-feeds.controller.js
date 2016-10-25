@@ -42,12 +42,12 @@
 		var getFeeds = function () {
 			if(sourcesService.isFeedSourcesAvailable() && !isSourceSyncRequired()){
 				//load all feeds
-				$log.debug(' Sources already Available');
+				$log.debug('Sources already Available');
 				$scope.feedSources=sourcesService.getFeedSourcesFromLocalStorage();
 				loadFeeds();
 			}else{	
 				//load feed source data first
-				$log.debug(' Sources  Unavailable');
+				$log.debug('Sources Unavailable');
 				$ionicLoading.show({
           			template: '<ion-spinner icon="android"></ion-spinner>'
         		});
@@ -56,29 +56,23 @@
 		};
 
 		/**
-		* isSourceSyncRequired (settingService.getAllSetting) is used to get interval set by user
-		* syncIntervalInMillisecond convert the time into milliseconds
-		* settingService.getAllSetting to get last syc time from local storage
-		* currentDate gating the present date and time
-		* comparing the time to get new sorces or not
+		* Decide whether source data sync is required or not
+		* by checking users sync preference and last sync time
 		*/
 
-		var isSourceSyncRequired=function(){
-			var syncInterval = settingService.getAllSetting().sourceSyncIntervalTime;
-			var syncIntervalInMillisecond = syncInterval.value*60*60*1000;
-			//var syncIntervalInMillisecond =1*60*1000;
-			var lastTimeSynced = settingService.getAllSetting().lastTimeSourceSynced;	
-			var lastSynced = Date.parse(lastTimeSynced);
-			var currentDate = new Date();
-			var currenTime = Date.parse(currentDate);
-			var timeInMillisecondsSinceLastSync = currenTime - lastSynced;
-			if(timeInMillisecondsSinceLastSync > syncIntervalInMillisecond) {
+		var isSourceSyncRequired = function(){
+			var syncSetting = settingService.getSettings().sourceSyncIntervalTime;
+			var syncIntervalInMS = syncSetting.value*60*60*1000;
+			//var syncIntervalInMS =1*60*1000;
+			var lastSynced = Date.parse(sourcesService.getLastSourceSyncTime());
+			var currenTime = Date.parse(new Date());
+			var timeSinceLastSyncInMS = currenTime - lastSynced;
 
-				console.log("Sync is required");
+			if(timeSinceLastSyncInMS > syncIntervalInMS) {
+				$log.debug("Sync is required");
 				return true;
 			}else {
-				console.log("Sync is not required");
-
+				$log.debug("Sync is not required");
 			 	return false;
 			}
 		}
@@ -202,7 +196,7 @@
 		    			delete $scope.feedsParams.status;
 		    		}
 				} else if( $scope.feedStatus.read || $scope.feedStatus.unread ) {
-					$scope.feedsParams.status = ($scope.feedStatus.read) ? 1 : 0;
+					$scope.feedsParams.status = ($scope.feedStatus.read) ? "read" : "unread";
 				} else {
 					if (angular.isDefined($scope.feedsParams.status)) {
 		    			delete $scope.feedsParams.status;

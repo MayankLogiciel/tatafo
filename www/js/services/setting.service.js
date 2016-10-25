@@ -10,27 +10,19 @@
         * Initiallization
         */
         var setting = {
-           lastTimeSourceSynced: '',
            sourceSyncIntervalTime: 0,
            pushNotificationEnabled: true,
            imageViewEnabled: false
         }
 
-        /**
-            settingService.getSetting function will set default settings if already not set
-            (means first Time) other wise it will return users setting
-        */
+        //get user settings, if not found then it will first set default settings 
+        //and then return them
         this.getSettings = function() {
             if (localStorage.setting == null) {
                 localStorage.setting = JSON.stringify(setting);
             }
             return JSON.parse(localStorage.setting ||  null);
         }
-
-        // this.setSettings = function() {
-        //     console.log(setting);
-        //     localStorage.setting = JSON.stringify(setting);
-        // }
        
         //settingService.getSetting function will set pushnotification setting
         this.setPushNotificationSatus = function(status) {
@@ -45,18 +37,6 @@
             setting.imageViewEnabled = status;
             localStorage.setting = JSON.stringify(setting);         
         }          
-
-        //settingService.setSyncTime function will set last sync time set by the user
-        this.setSyncTime = function(date) {
-            setting = JSON.parse(localStorage.setting || setting);
-            setting.lastTimeSourceSynced = date;
-            localStorage.setting = JSON.stringify(setting);
-        };
-
-        //settingService.getAllSetting function will get all settings from LocalStorage
-        this.getAllSetting = function() {                    
-            return JSON.parse(localStorage.setting ||  null);
-        };
 
         //Wait until time is more than setsourceSyncIntervalTime
         this.setSourceSyncIntervalTime = function(hour) {            

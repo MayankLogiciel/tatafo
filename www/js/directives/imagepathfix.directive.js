@@ -7,7 +7,7 @@
 			scope: {},
 			link: function(scope, element, attrs) {
 
-				var imageViewEnabled = settingService.getAllSetting().imageViewEnabled;
+				var imageViewEnabled = settingService.getSettings().imageViewEnabled;
 
 				$rootScope.$on('imageViewEnabled', function(ev, args) {
 					imageViewEnabled = args;

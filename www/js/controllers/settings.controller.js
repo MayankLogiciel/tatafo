@@ -35,9 +35,9 @@
             ];
 
             $scope.interval = {};
-            $scope.interval.value = settingService.getAllSetting().sourceSyncIntervalTime;
-            $scope.push=settingService.getAllSetting().pushNotificationEnabled;
-            $scope.pictures = settingService.getAllSetting().imageViewEnabled;
+            $scope.interval.value = settingService.getSettings().sourceSyncIntervalTime;
+            $scope.push=settingService.getSettings().pushNotificationEnabled;
+            $scope.pictures = settingService.getSettings().imageViewEnabled;
 
             /**
             * Fecthing the title of Selected Interval by user
@@ -74,7 +74,7 @@
             * show popup for select interval
             */
             $scope.showPopup = function() {
-                  $scope.interval.value = settingService.getAllSetting().sourceSyncIntervalTime;
+                  $scope.interval.value = settingService.getSettings().sourceSyncIntervalTime;
                   var myPopup = $ionicPopup.show({
                         template: '<div ng-repeat="entry in syncIntervals"><ion-radio ng-model="interval.value" value="{{entry.value}}">{{entry.title}}</ion-radio></div>',	       
                         title: 'Please select the interval',		     
