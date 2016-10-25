@@ -15,8 +15,8 @@
                 <h4 ng-bind="entry.feed.title || entry.title | rawHtml" class="title" on-hold="copyText('Header')"></h4>
                 <h5>Posted by <span class="author" ng-bind="topic.author_name | rawHtml"></span><span class="feed-date" ng-bind="entry.updated_at | dateTimeFeedDetailFilter"></span></h5>
             </div>
-
-            <div class="feed-detail-content">
+            
+            <div class="feed-detail-content" image-path-fix ng-if="load">
                 <p dynamic-anchor-fix ng-bind-html="entry.feed.content || entry.feed.summary | rawHtml">
                 </p>
             </div>

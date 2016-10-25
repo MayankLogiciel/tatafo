@@ -13,7 +13,7 @@
             <div class="item item-divider"></div>
             <ion-toggle ng-model="push" toggle-class="toggle-assertive" ng-change="showStatus(push)"> Push Notifications</ion-toggle>
             <div class="item item-divider"></div>
-            <ion-toggle ng-model="pictures" toggle-class="toggle-assertive" ng-checked="true">Disable Picture</ion-toggle>
+            <ion-toggle ng-model="pictures" toggle-class="toggle-assertive" ng-change="disableImage(pictures)">Disable Picture</ion-toggle>
             <div class="item item-divider"></div>
             <div on-tap="showPopup()" class="item sync-interval-setting">
                 <div class="pull-left">Sync data after</div>

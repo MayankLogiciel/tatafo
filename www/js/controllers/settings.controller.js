@@ -2,7 +2,7 @@
       'use strict';
 
 
-      var SettingsController = function($scope, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, $ionicScrollDelegate, $ionicLoading, settingService, $filter) {
+      var SettingsController = function($scope, $rootScope, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, $ionicScrollDelegate, $ionicLoading, settingService, $filter) {
 
             /**
             * syncIntervals data
@@ -37,6 +37,7 @@
             $scope.interval = {};
             $scope.interval.value = settingService.getAllSetting().sourceSyncIntervalTime;
             $scope.push=settingService.getAllSetting().pushNotificationEnabled;
+            $scope.pictures = settingService.getAllSetting().imageViewEnabled;
 
             /**
             * Fecthing the title of Selected Interval by user
@@ -64,6 +65,11 @@
                   window.plugins.OneSignal.setSubscription(status);
             }
 
+            $scope.disableImage = function (status) {
+                settingService.setImageViewEnable(status);
+                $rootScope.$broadcast('imageViewEnabled', status);
+            };
+
             /**
             * show popup for select interval
             */
@@ -89,7 +95,7 @@
 	/**
 	* @dependencies injector $scope, $state, $ionicPopup, $timeout, $ionicSideMenuDelegate, $ionicScrollDelegate, $ionicLoading, settingService, $filter
 	*/
-	SettingsController.$inject=['$scope', '$state', '$ionicPopup', '$timeout', '$ionicSideMenuDelegate', '$ionicScrollDelegate', '$ionicLoading', 'settingService', '$filter'];
+	SettingsController.$inject=['$scope', '$rootScope', '$state', '$ionicPopup', '$timeout', '$ionicSideMenuDelegate', '$ionicScrollDelegate', '$ionicLoading', 'settingService', '$filter'];
 	angular
 		.module('tatafo')
 		.controller('SettingsController' , SettingsController);

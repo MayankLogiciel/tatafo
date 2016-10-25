@@ -24,12 +24,22 @@
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
-			$scope.defaultImage = 'img/feeds/logos/bbc.jpg';
+			$scope.defaultImage = 'img/imgUnavailable.png';
 
 			/**
 			* sourcesService.isFeedSourcesAvailable use to check source already available or not
 			* isSourceSyncRequired checks source sync is required
 			*/
+			getFeeds();
+			
+			loadPopOver();
+		};
+
+		// $rootScope.$on('imageViewEnabled', function(ev, args) {
+		// 	getFeeds();
+		// });
+
+		var getFeeds = function () {
 			if(sourcesService.isFeedSourcesAvailable() && !isSourceSyncRequired()){
 				//load all feeds
 				$log.debug(' Sources already Available');
@@ -39,14 +49,11 @@
 				//load feed source data first
 				$log.debug(' Sources  Unavailable');
 				$ionicLoading.show({
-          				template: '<ion-spinner icon="android"></ion-spinner>'
+          			template: '<ion-spinner icon="android"></ion-spinner>'
         		});
 				loadFeedSources();
 			}
-			
-			loadPopOver();
 		};
-
 
 		/**
 		* isSourceSyncRequired (settingService.getAllSetting) is used to get interval set by user
@@ -129,7 +136,8 @@
 					$ionicLoading.show({
 	          			template: '<ion-spinner icon="android"></ion-spinner>'
 	        		});
-					feedService.getFeeds($scope.feedsParams).then(function(feed) {					
+
+					feedService.getFeeds($scope.feedsParams).then(function(feed) {			
 		   				if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
 							$scope.isMoreFeeds = true;
 						}else{

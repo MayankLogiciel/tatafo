@@ -344,6 +344,9 @@ $content-banner-info-bg: #333   !default;
   text-align: center;
   margin-top: -15px; /* Note, this must be half the font size */
   color: #FFFFFF;
+  i {
+    color: inherit;
+  }
 }
 
 //POst Page FLoat button
@@ -377,6 +380,9 @@ $content-banner-info-bg: #333   !default;
   text-align: center;
   margin-top: -15px; /* Note, this must be half the font size */
   color: #FFFFFF;
+  i {
+    color: inherit;
+  }
 }
 .spinner svg {
   width: 28px;
@@ -596,4 +602,8 @@ ion-popover-view.fit ion-content {
 
 .no-margin {
   margin: 0;
+}
+
+.clearfix {
+  clear: both;
 }

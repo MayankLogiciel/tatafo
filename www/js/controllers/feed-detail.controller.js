@@ -17,8 +17,10 @@
 			};
 			$scope.sttButton=true;
 			$scope.allFeed=[];
+			$scope.load = false;
 			// fetching the feeds using feedDetailService.getPostData
 			$scope.entry = feedDetailService.getPostData();
+			$scope.load = true;
 			// fetching the feed source frm local storage
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
 			//console.log($scope.sourceData);
@@ -72,6 +74,7 @@
 	    * handling the Next button to show next article
 	    */
 		$scope.nextButton=function(){
+			$scope.load = false;
 			$scope.currentIndex = $scope.currentIndex + 1;
 
 			if(angular.isDefined($scope.allFeed[$scope.currentIndex])) {
@@ -80,20 +83,25 @@
 			 else {
 				$scope.entry = $scope.allFeed[$scope.currentIndex].doc.data;		
 			}
-
+			$timeout(function() {
+				$scope.load = true;
+			}, 0, false);
 		}
 
 		/**
 	    * handling the previous button to show next article
 	    */
 	    $scope.previousButton=function(){
+	    	$scope.load = false;
 			$scope.currentIndex = $scope.currentIndex - 1;
 			if(angular.isDefined($scope.allFeed[$scope.currentIndex])) {
 				$scope.entry = $scope.allFeed[$scope.currentIndex];		
 			} else {
 				$scope.entry = $scope.allFeed[$scope.currentIndex].doc.data;		
 			}
-
+			$timeout(function() {
+				$scope.load = true;
+			}, 0, false);
 		}
 
 		/**

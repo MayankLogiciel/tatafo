@@ -1,0 +1,28 @@
+<div>
+	<div on-tap="loadPostDetails(entry)">
+		<i ng-class= "{ 'icon ion-eye-disabled left read-unread':(entry.is_read==false) , 'icon ion-eye left read-unread':(entry.is_read==true) }"></i>
+		<p class="entry-author">
+			<span>By {{entry.source_name}}</span> 
+			<span class="feed-date-time" ng-bind="entry.updated_at | dateTimeFilter"></span>
+		</p>
+		<div class="list entry-content-section">
+			<a class="item" href="#">
+				<div class="entry-content-img">
+					<img ng-src="{{entry.image || defaultImage}}">
+				</div>
+				<div class="entry-content-title">
+					<h2 ng-bind="entry.feed.title"></h2>
+				</div>
+				<div class="clearfix"></div>
+			</a>
+		</div> 
+	</div>
+	<div class="card-footer">
+		<div class="button-bar">
+			<a class="button button-clear card-button primary" on-tap="bookmarkPost(entry)">
+				<i class="icon ion-android-bookmark"></i> Save
+			</a>
+			<a class="button button-clear card-button secondary" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+		</div>
+	</div>
+</div>

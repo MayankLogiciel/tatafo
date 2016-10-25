@@ -116,6 +116,9 @@
 			width: 100%;
 			height: auto;
 		}
+		iframe {
+			width: 100%;
+		}
 	}
 }
 
@@ -141,6 +144,23 @@
 		.credit-bar-link {
 			color: #33AC6B;
 		}
+	}
+}
+.entry-content {
+	.entry-content-section {
+		a {
+			padding: 16px 0;
+		}
+	}
+	.entry-content-img {
+		float: left;
+		width: 85px;
+		img {
+			width: 100%;
+		}
+	}
+	.entry-content-title {
+		padding-left: 100px;
 	}
 }
 

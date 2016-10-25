@@ -1,7 +1,9 @@
 (function () {
 
+	'use strict';
+
 	//Use this directive to open external links using inAppBrowser cordova plugin
-	var dynamicAnchorFix = function($ionicGesture, $timeout, $cordovaInAppBrowser) {
+	var dynamicAnchorFix = function($ionicGesture, $timeout, $cordovaInAppBrowser, ConnectivityMonitorFactory) {
 		return {
 			scope: {},
 			link: function(scope, element, attrs) {
@@ -17,18 +19,20 @@
 								event.preventDefault();
 								event.stopPropagation();
 
-								var href = event.currentTarget.href;
-								var	options = {};
+								if (event.currentTarget.href != 'javascript:void(0)' && ConnectivityMonitorFactory.isOnline()) {
+									var href = event.currentTarget.href;
+									var	options = {};
 
-								//inAppBrowser see documentation here: http://ngcordova.com/docs/plugins/inAppBrowser/
+									//inAppBrowser see documentation here: http://ngcordova.com/docs/plugins/inAppBrowser/
 
-								$cordovaInAppBrowser.open(href, '_system', options)
-									.then(function(e) {
-										// success
-									})
-									.catch(function(e) {
-										// error
-									});
+									$cordovaInAppBrowser.open(href, '_system', options)
+										.then(function(e) {
+											// success
+										})
+										.catch(function(e) {
+											// error
+										});
+								}
 							});
 
 						});
@@ -41,7 +45,7 @@
 		};
 	}
 
-	dynamicAnchorFix.$inject = ['$ionicGesture', '$timeout', '$cordovaInAppBrowser'];
+	dynamicAnchorFix.$inject = ['$ionicGesture', '$timeout', '$cordovaInAppBrowser', 'ConnectivityMonitorFactory'];
 
 	angular
 		.module('tatafo')

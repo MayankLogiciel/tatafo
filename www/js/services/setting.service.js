@@ -13,7 +13,7 @@
            lastTimeSourceSynced: '',
            sourceSyncIntervalTime: 0,
            pushNotificationEnabled: true,
-           imageViewEnabled: true
+           imageViewEnabled: false
         }
 
         /**
@@ -37,7 +37,14 @@
             setting = JSON.parse(localStorage.setting || setting);
             setting.pushNotificationEnabled = status;
             localStorage.setting = JSON.stringify(setting);         
-        }        
+        }
+
+        //settingService.getSetting function will set pushnotification setting
+        this.setImageViewEnable = function(status) {
+            setting = JSON.parse(localStorage.setting || setting);
+            setting.imageViewEnabled = status;
+            localStorage.setting = JSON.stringify(setting);         
+        }          
 
         //settingService.setSyncTime function will set last sync time set by the user
         this.setSyncTime = function(date) {
