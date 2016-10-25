@@ -6,7 +6,7 @@
 	*/
 	var feedDetailService = function() {
 		var post;
-		var postData;
+		var allVisiblePosts;
 
 		/**
 		* Get the post object
@@ -19,28 +19,28 @@
 
 		/**
 		* set the post object
-		* @param {object} articleInfo 
-		* set post = articleInfo
+		* @param {object} postDetail 
+		* set post = postDetail
 		*/
-		this.setPostData=function(articleInfo) {
-			post=articleInfo;			
+		this.setPostData = function(postDetail) {
+			post = postDetail;			
 		};
 
 		/**
-		* Get the postData object
+		* Get the allVisiblePosts object
 		* @return {object} 
 		*/
-		this.getCombinedPostDataForNextPrevious=function(){
-			return postData;
+		this.getCombinedPostDataForNextPrevious = function(){
+			return allVisiblePosts;
 		}
 
 		/**
 		* set the post object
 		* @param {object} data
-		* set postData = data
+		* set allVisiblePosts = data
 		*/
 		this.setCombinedPostDataForNextPrevious=function(data){
-			postData=data;
+			allVisiblePosts = data;
 		}
 	};
 	
