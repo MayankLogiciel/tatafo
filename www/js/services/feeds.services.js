@@ -58,7 +58,7 @@
 
             var docPosts = posts.map(function(post){
                 var docPost = {
-                    "_id" : new Date(post.date).toJSON(),
+                    "_id" : new Date(post.update_at).toJSON(),
                     "post" : post
                 }
                 return docPost.post;
@@ -171,7 +171,6 @@
 
                         console.log(result.indexes[1].ddoc);
                         _db.deleteIndex({
-
                             "ddoc" : result.indexes[1].ddoc,
                             "name": result.indexes[1].name,
                             "type": "json",
