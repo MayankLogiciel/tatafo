@@ -30,15 +30,16 @@
 		});
 		$scope.$on('$ionicView.beforeLeave', function (event, viewData) {
 		    viewData.enableBack = true;
-		    if(!angular.isDefined(localStorage.appRateStatus) || localStorage.appRateStatus == 'false') {		    	  	
-				var clickEvent = new MouseEvent("tap", {			    
-				});
-			    var element = document.getElementById('app-rate-model-source-feed');
-				element.dispatchEvent(clickEvent);
-		    } else {
-		    	console.log("true");
-		    }
-
+		    if(($state.current.name.indexOf('app.feeds.local') !== -1 ) || (($state.current.name.indexOf('app.feeds.foriegn') !== -1 ))) {
+			    if(!angular.isDefined(localStorage.appRateStatus) || localStorage.appRateStatus == 'false') {		    	  	
+					var clickEvent = new MouseEvent("tap", {			    
+					});
+				    var element = document.getElementById('app-rate-model-source-feed');
+					element.dispatchEvent(clickEvent);
+			    } else {
+			    	console.log("true");
+			    }
+			 }
 		});
 
 		/**
@@ -188,6 +189,9 @@
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
+				if($scope.feedsParams.page == 1) {
+					$scope.scrollTop(); 
+				}
 			}
 		});
 

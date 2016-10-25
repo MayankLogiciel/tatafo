@@ -129,7 +129,6 @@
                     isMorePostsPresent: true  
                 };
                 angular.forEach(docs.rows,function(value,key){
-                    console.log(value);
                     mydata.data.push(value.doc);
                 });
                 mydata.isMorePostsPresent = (docs.total_rows - docs.offset - docs.rows.length) > 0 ? true : false;
