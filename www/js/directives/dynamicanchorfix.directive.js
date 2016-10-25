@@ -19,7 +19,8 @@
 								event.preventDefault();
 								event.stopPropagation();
 
-								if (event.currentTarget.href != 'javascript:void(0)' && ConnectivityMonitorFactory.isOnline()) {
+								//if (event.currentTarget.href != 'javascript:void(0)' && ConnectivityMonitorFactory.isOnline()) {
+								if (event.currentTarget.href != 'javascript:void(0)') {
 									var href = event.currentTarget.href;
 									var	options = {};
 

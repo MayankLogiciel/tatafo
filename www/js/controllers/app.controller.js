@@ -10,7 +10,8 @@
 		* Initialization
 		*/
 		var setup=function(){
-			$log.debug('AppController setup');			
+			$log.debug('AppController setup');
+			$scope.defaultImage = 'img/imgUnavailable.png';		
 		};
 
 

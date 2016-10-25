@@ -24,7 +24,6 @@
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
-			$scope.defaultImage = 'img/imgUnavailable.png';
 			
 			/**
 			* sourcesService.isFeedSourcesAvailable use to check source already available or not
@@ -259,7 +258,7 @@
 		*/
 		$scope.onSearchIconClick = function() {
 			//$scope.mySearch = !$scope.mySearch;
-			$scope.isSearchOpen = !$scope.isSearchOpen;
+			$scope.isSearchOpen = $scope.isSearchOpen ? false : true;
         	// $scope.closed = !$scope.closed;
         	// $scope.searchbtn=!$scope.searchbtn
         	// $scope.sortPop=!$scope.sortPop;
