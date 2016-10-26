@@ -4,7 +4,7 @@
 	/**
 	* AllFeedsController Function
 	*/
-	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, $ionicLoading, $filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService,$cordovaNetwork,$timeout, ConnectivityMonitorFactory, settingService) {
+	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, $ionicLoading, $filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService, $timeout, ConnectivityMonitorFactory, settingService) {
 
 		/**
 		* AllFeedsController setup function for initialization
@@ -32,11 +32,17 @@
 			getFeeds();
 			
 			loadPopOver();
-		};
 
-		// $rootScope.$on('imageViewEnabled', function(ev, args) {
-		// 	getFeeds();
-		// });
+
+			$rootScope.$on("readArticle", function (event,args) {
+				$log.debug("Read Article event received in All Feed Controller");
+	      		angular.forEach($scope.allFeed,function(val, key){
+	      			if(val.id == args.id){
+	      				$scope.allFeed[key].is_read=true;
+	      			}
+	      		});
+	    	});			
+		};
 
 		var getFeeds = function () {
 			if(sourcesService.isFeedSourcesAvailable() && !isSourceSyncRequired()){
@@ -155,13 +161,7 @@
 			}			
 		};
 
-		$rootScope.$on("readArticle", function (event,args) {
-      		angular.forEach($scope.allFeed,function(val, key){
-      			if(val.id == args.id){
-      				$scope.allFeed[key].is_read=true;
-      			}
-      		});
-    	});
+
 
 
 		/**
@@ -384,9 +384,6 @@
 	  	setup();
 	};
 
-	/**
-	* @dependencies injector $log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, feedListService,$ionicLoading,$filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService,$cordovaNetwork,$timeout, ConnectivityMonitorFactory, settingService
-	*/
 	AllFeedsController.$inject = [
 		'$log',
 		'$ionicPopover', 
@@ -403,7 +400,6 @@
 		'bookMarkService',
 		'$ionicHistory',
 		'socialService',
-		'$cordovaNetwork',
 		'$timeout',
 		'ConnectivityMonitorFactory',
 		'settingService'		

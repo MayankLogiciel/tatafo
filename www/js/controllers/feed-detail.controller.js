@@ -10,19 +10,19 @@
 		* Initialization
 		*/
 		var setup = function(){
-			console.log("FeedDetailController");
+			$log.debug("FeedDetailController");
 			$scope.sttButton=true;
 			$scope.allFeed=[];
 			$scope.load = false;
-			// fetching the feeds using feedDetailService.getPostData
-			$scope.entry = feedDetailService.getPostData();
+			$scope.entry = feedDetailService.getPostData(); //load feed data
 			$scope.load = true;
-			// fetching the feed source frm local storage
+		
+			//find related source information from localStorage saved sources
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
-			//console.log($scope.sourceData);
+
+			//find related topic information from  related source(sourceData)
 			if($scope.sourceData.topics.data.length > 0) {
 				$scope.sourceData.topics.data.map(function(val) {
-					//console.log(val);
 					if (val.name == $scope.entry.topic_name) {
 						$scope.topic = val;
 					}
@@ -30,28 +30,27 @@
 			};
 			
 			loadFeeds();
-			if (!$scope.entry.is_read) {
+
+			if (!$scope.entry.is_read) { 
+				//if unread then mark as read
 				markAsRead();
 			}
 			
+		    $scope.$on('$ionicView.beforeLeave', function(e) {
+		        if (window.AdMob) AdMob.showInterstitial();	       
+		    });			
 		};
-		/**
-		* show ad Interstitial when click to the previous button
-		*/
- 
-	    $scope.$on('$ionicView.beforeLeave', function(e) {
-	        if (window.AdMob) AdMob.showInterstitial();	       
-	    });
 
 	    /**
 	    * getting the current index of th feed showing in article page
 	    */
-		var getFeedIndex=function(){
+		var getCurrentFeedIndex = function(){
 			angular.forEach($scope.allFeed, function(val, index) {
-				//console.log(val);
+				//$log.debug(val);
 				if(angular.isDefined(val.doc) && $scope.entry.id == val.doc.data.id) {
 					$scope.currentIndex = index;
 				}
+
 				if(!angular.isDefined(val.doc) && $scope.entry.id == val.id) {
 					$scope.currentIndex = index;
 				}
@@ -63,7 +62,7 @@
 	    */
 		var loadFeeds = function() {	
 			$scope.allFeed=feedDetailService.getCombinedPostDataForNextPrevious();
-			getFeedIndex();
+			getCurrentFeedIndex();
 		}
 
 		/**
@@ -75,8 +74,7 @@
 
 			if(angular.isDefined($scope.allFeed[$scope.currentIndex])) {
 				$scope.entry = $scope.allFeed[$scope.currentIndex];		
-			}
-			 else {
+			}else {
 				$scope.entry = $scope.allFeed[$scope.currentIndex].doc.data;		
 			}
 			$timeout(function() {
@@ -101,18 +99,19 @@
 		}
 
 		/**
-		* sending the request to the API to markAsRead is status is 1
+		* mark post status read
 		*/
-
-		var markAsRead=function() {
-			var query={
-				status:1,
+		var markAsRead = function() {
+			var params = {
+				status:"read",
 				ids:[$scope.entry.id]
 			};
-			feedService.getRaedOrUnread(query).then(function(res) {
+
+			feedService.markPostReadUnread(params).then(function(res) {
+				$log.debug(res);
 				$rootScope.$broadcast("readArticle", { id: res.data.data.updated_ids[0], status: true });
 			})
-		}
+		};
 
 		// $scope.OpenSocialWindow =function(url){
 		// 	window.open(url, '_system');
@@ -121,7 +120,7 @@
 		/**
 		*  bookmarkPost post the feed deatil for book mark for PouchDB
 		*/	
-		$scope.bookmarkPost = function(post) {	
+		$scope.bookmarkPost = function() {	
 			bookMarkService.addBookmarkToPouchDB($scope.entry);
 		};
 
@@ -133,19 +132,8 @@
 		});
 
 
-		/**
-		* sharePost checking the connection first
-		* if connection is online then socialService.share sending the parameter need to share from feeds
-		*/
 		$scope.sharePost = function(post) {
-			if(ConnectivityMonitorFactory.isOffline()) {
-				$ionicLoading.show({ template: 'Please check you network connection!', noBackdrop: true, duration: 1000 });
-			}
-			if(ConnectivityMonitorFactory.isOnline()) {
-				socialService.share($scope.entry.feed.title, $scope.entry.feed.summary,  $scope.entry.image, 
-		$scope.entry.feed.permalinkUrl);
-			}
-			
+			socialService.share($scope.entry.feed.title, $scope.entry.feed.summary, $scope.entry.image,	$scope.entry.feed.permalinkUrl);
 		}
 
 		$scope.openLink = function (link) {

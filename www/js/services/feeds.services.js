@@ -144,7 +144,7 @@
         */
         
         this.sortReadUnread=function(param){ 
-            console.log(param);
+            $log.debug(param);
             var _defer  = $q.defer();
             _db.createIndex({
                 index: {fields: ['is_read']}
@@ -169,7 +169,7 @@
                 }).then(function(res) {
                     _db.getIndexes().then(function (result) {
 
-                        console.log(result.indexes[1].ddoc);
+                        $log.debug(result.indexes[1].ddoc);
                         _db.deleteIndex({
                             "ddoc" : result.indexes[1].ddoc,
                             "name": result.indexes[1].name,
@@ -247,6 +247,52 @@
             return isRelated;
         };
 
+
+
+        /**
+        * Filtering feeds acording to Read/Unread Sort From API
+        */
+
+        this.markPostReadUnread=function(params) {
+
+            var _defer  = $q.defer();
+            $http({ method: 'POST',
+                url: TATAFO_API_URL + '/feed/status/'+params.status ,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data: {'ids[]': params.ids },
+                timeout: _defer.promise 
+            }).then(function( response ) {
+                _defer.resolve(response);
+            }, function(response) {
+                _defer.reject(response);
+            });
+
+            return _defer.promise;
+        }
+
+        /**
+        * Get the post object
+        * @return {object} 
+        */
+        this.getPostData = function() {
+            return post;
+        };
+
+        /**
+        * set the post object
+        * @param {object} articleInfo 
+        * set post = articleInfo
+        */
+        this.setPostData=function(articleInfo) {
+            post=articleInfo;           
+        };
+
         /**
         * Gettiong feed From API
         */
@@ -268,51 +314,7 @@
             });
 
             return _defer.promise;
-        }
-
-        /**
-        * Filtering feeds acording to Read/Unread Sort From API
-        */
-
-        this.getRaedOrUnread=function(query) {
-
-            var _defer  = $q.defer();
-            $http({ method: 'POST',
-                url: TATAFO_API_URL + '/feed/status/'+query.status ,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                },
-                data: {'ids[]': query.ids },
-                timeout: _defer.promise 
-            }).then(function( response ) {
-                _defer.resolve(response);
-            }, function(response) {
-                _defer.reject(response);
-            });
-
-            return _defer.promise;
-        }
-
-            /**
-            * Get the post object
-            * @return {object} 
-            */
-            this.getPostData = function() {
-                return post;
-            };
-
-            /**
-            * set the post object
-            * @param {object} articleInfo 
-            * set post = articleInfo
-            */
-            this.setPostData=function(articleInfo) {
-                post=articleInfo;           
-            };
+        }            
 
     }
     feedService.$inject = [

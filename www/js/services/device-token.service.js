@@ -11,11 +11,10 @@
         this.registerDeviceOnServer = function(data) {
             var _defer  = $q.defer();
             // Initiate the AJAX request.
-            console.log(data);
             $http({
-                method: 'post',
+                method: 'POST',
                 url: TATAFO_API_URL + '/register-device',
-                params: data,
+                data: data,
                 timeout: _defer.promise
             }).then(
                 function( response ) {

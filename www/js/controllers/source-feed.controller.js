@@ -4,7 +4,7 @@
 	/**
 	* SourceFeedController Function
 	*/
-	var SourceFeedController = function($log, $injector, $ionicHistory, $scope, $state, $stateParams, feedService , $http , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactory) {
+	var SourceFeedController = function($log, $injector, $rootScope, $ionicHistory, $scope, $state, $stateParams, feedService , $http , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactory) {
 
 		/**
 		* Intialization
@@ -20,6 +20,15 @@
 			$scope.sttButton=false;
 			$log.debug($scope.feedsParams.page);
 			loadFeed();
+
+			$rootScope.$on("readArticle", function (event,args) {
+				$log.debug("Read Article event received in Source Feed Controller");
+	      		angular.forEach($scope.feed,function(val, key){
+	      			if(val.id == args.id){
+	      				$scope.feed[key].is_read=true;
+	      			}
+	      		});
+	    	});			
 		};
 
 		/**
@@ -125,10 +134,7 @@
 				$ionicLoading.show({
 					template: '<ion-spinner icon="android"></ion-spinner>'
 				});
-				// if($scope.loadMoreActive==true){
-				// 	return;
-				// }			
-				// $scope.loadMoreActive = true;
+	
 				feedService.getFeeds($scope.feedsParams).then(function(feed) {
 					if(feed.data.data.meta.pagination.current_page == feed.data.data.meta.pagination.total_pages || feed.data.data.meta.pagination.total_pages == 0){
 
@@ -164,7 +170,6 @@
 		* loadPostDetails feedDetailService.setCombinedPostDataForNextPrevious sending the deatil of other feeds for next and previous Button
 		*/
 		$scope.loadPostDetails=function(post) {
-			post.is_read = true;
 			feedDetailService.setPostData(post);
 			feedDetailService.setCombinedPostDataForNextPrevious($scope.feed);
 			$state.go('app.feed-entries-details');
@@ -263,7 +268,7 @@
 /**
 * @dependencies injector $log, $injector, $ionicHistory, $scope, $state, $stateParams, feedService , $http , feedListService , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactory
 */
-SourceFeedController.$inject=['$log', '$injector', '$ionicHistory', '$scope','$state','$stateParams', 'feedService','$http', '$q', '$ionicLoading', '$ionicScrollDelegate', '$ionicPopover','bookMarkService','feedDetailService', 'socialService', '$cordovaNetwork', 'ConnectivityMonitorFactory' ];
+SourceFeedController.$inject=['$log', '$injector', '$rootScope', '$ionicHistory', '$scope','$state','$stateParams', 'feedService','$http', '$q', '$ionicLoading', '$ionicScrollDelegate', '$ionicPopover','bookMarkService','feedDetailService', 'socialService', '$cordovaNetwork', 'ConnectivityMonitorFactory' ];
 angular
 	.module('tatafo')
 	.controller('SourceFeedController',SourceFeedController)
