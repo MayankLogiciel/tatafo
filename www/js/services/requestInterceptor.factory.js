@@ -6,15 +6,13 @@
             request: function(config) {
                 config.headers = config.headers || {};
                 
+                //if( ionic.Platform.isWebView() && angular.isDefined(localStorage.deviceInfo) ){
                 if( ionic.Platform.isWebView() && angular.isDefined(localStorage.deviceInfo) ){
-                    
                     //set headers so that token can be verified and user's last activity can be captured
                     var deviceInfo = angular.fromJson(localStorage.deviceInfo);
-                    config.headers['device-id'] = deviceInfo.device_id;
-                    config.headers['device-token'] = deviceInfo.device_token;
-                    config.headers['push-token'] = deviceInfo.push_token;
-                    config.headers['test'] = 'false';
-
+                    config.headers["deviceId"] = deviceInfo.device_id;
+                    config.headers['deviceToken'] = deviceInfo.device_token;
+                    config.headers['pushToken'] = deviceInfo.push_token;
                 }else{
                     config.headers['test'] = 'true';
                 }

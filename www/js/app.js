@@ -1,35 +1,32 @@
 // Ionic Starter App
 angular
     .module('underscore', [])
-    .factory('_' , function() {
+    .factory('_', function() {
         return window._; // assumes underscore has already been loaded on the page
     });
 
 angular
-    .module('tatafo', ['ionic' , 'angularMoment' , 'tatafo.config' , 'underscore' , 'ngResource' , 'ngCordova' , 'slugifier' , 'youtube-embed', 'jett.ionic.content.banner' ])
+    .module('tatafo', ['ionic', 'angularMoment', 'tatafo.config', 'underscore', 'ngCordova', 'slugifier', 'youtube-embed', 'jett.ionic.content.banner' ])
 
     .run(function($log, $ionicPlatform, $rootScope, $state, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService) {
 
         ionic.Platform.ready(function() {
-
+            //if ( ionic.Platform.isWebView() && ionic.Platform.isAndroid() ) {
             if ( ionic.Platform.isWebView() && ionic.Platform.isAndroid() ) {
 
+                //$log.debug(window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4}));
+     
                 var notificationOpenedCallback = function(jsonData) {
                     console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
                 };
                 
-                window.plugins.OneSignal
-                    .startInit(ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER)
-                    .handleNotificationOpened(notificationOpenedCallback)
-                    .handleNotificationReceived(function(jsonData) {})
-                    .endInit();
-
-                window.plugins.OneSignal.getIds(function(pushobj) {
+                var idsReceivedCallback = function(pushObj){
+                    $log.debug(pushObj);
                     if( deviceTokenService.isRegisterOnServerRequired(pushObj) ){
                         $log.debug('Registeration on server required for push notification');
                         var params = {
-                            device_token : pushObj.userId,
-                            push_token : pushObj.pushToken
+                            device_token : pushObj.userId + '',
+                            push_token : pushObj.pushToken + ''
                         };
 
                         deviceTokenService.registerDeviceOnServer(params).then(function(res){
@@ -40,14 +37,23 @@ angular
                     }else{
                         $log.debug('No Need to register device on server');
                         $state.go('app.feeds.all');
+                    }                
+                };
 
-                    }
-               });
+                //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.DEBUG, OneSignal.LOG_LEVEL.DEBUG);
+                window.plugins.OneSignal
+                    .startInit(ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER)
+                    .handleNotificationOpened(notificationOpenedCallback)
+                    .handleNotificationReceived(function(jsonData) {})
+                    .endInit();
+
+                    window.plugins.OneSignal.getIds(idsReceivedCallback);
+
             }else{
                 // this is temp code, always intentionly run on browser to test register device feature
                 var pushObj = {
-                    'userId': 'userId',
-                    'pushToken' : 'pushToken'
+                    'userId': 'userId1',
+                    'pushToken' : 'pushToken1'
                 };
 
                 if( deviceTokenService.isRegisterOnServerRequired(pushObj) ){
@@ -58,6 +64,7 @@ angular
                     };     
 
                     deviceTokenService.registerDeviceOnServer(params).then(function(res){
+                        $log.debug('From Browser');
                         $log.debug(res.data.data.data);
                         deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
                         $state.go('app.feeds.all');
@@ -111,40 +118,19 @@ angular
                 });
             }
 
+            //set default user settings if not set
+            settingService.getSettings();
+
             //start watching online/offline event
             ConnectivityMonitorFactory.startWatching();
 
-                /**
-                    settingService.getSetting function will set default settings if already not set
-                    (means first Time) other wise it will return users setting
-                */
-                var appSetting = settingService.getSettings();  
-
-                if (appSetting.lastTimeSourceSynced == '') {
-                    settingService.setSyncTime(new Date());
-                }
-
-                /**
-                    settingService.getSetting function will set 6 hours default time for new sources
-                */
-
-                if (appSetting.sourceSyncIntervalTime == 0) {
-                    settingService.setSourceSyncIntervalTime(6);
-                }
-
-                /**
-                    settingService.pushNotificationEnabled function will set default pushnotification setting
-                */
-                if (angular.isDefined(appSetting.pushNotificationEnabled)) {
-                    window.plugins.OneSignal.setSubscription(appSetting.pushNotificationEnabled);                    
-                }
         });
 
 
         $ionicPlatform.on("resume", function() {});
 
     })
-    .config(function($stateProvider , $urlRouterProvider , $ionicConfigProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
         $ionicConfigProvider.tabs.position('bottom');
         $stateProvider

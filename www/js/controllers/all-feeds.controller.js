@@ -4,7 +4,7 @@
 	/**
 	* AllFeedsController Function
 	*/
-	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, $ionicLoading, $filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService,$cordovaNetwork,$timeout, ConnectivityMonitorFactory, settingService) {
+	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, $ionicLoading, $filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService, $timeout, ConnectivityMonitorFactory, settingService) {
 
 		/**
 		* AllFeedsController setup function for initialization
@@ -384,9 +384,6 @@
 	  	setup();
 	};
 
-	/**
-	* @dependencies injector $log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, feedListService,$ionicLoading,$filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService,$cordovaNetwork,$timeout, ConnectivityMonitorFactory, settingService
-	*/
 	AllFeedsController.$inject = [
 		'$log',
 		'$ionicPopover', 
@@ -403,7 +400,6 @@
 		'bookMarkService',
 		'$ionicHistory',
 		'socialService',
-		'$cordovaNetwork',
 		'$timeout',
 		'ConnectivityMonitorFactory',
 		'settingService'		

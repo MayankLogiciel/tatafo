@@ -44,7 +44,7 @@
 	    /**
 	    * getting the current index of th feed showing in article page
 	    */
-		var getCurrentFeedIndex=function(){
+		var getCurrentFeedIndex = function(){
 			angular.forEach($scope.allFeed, function(val, index) {
 				//$log.debug(val);
 				if(angular.isDefined(val.doc) && $scope.entry.id == val.doc.data.id) {
@@ -132,19 +132,8 @@
 		});
 
 
-		/**
-		* sharePost checking the connection first
-		* if connection is online then socialService.share sending the parameter need to share from feeds
-		*/
 		$scope.sharePost = function(post) {
-			if(ConnectivityMonitorFactory.isOffline()) {
-				$ionicLoading.show({ template: 'Please check you network connection!', noBackdrop: true, duration: 1000 });
-			}
-			if(ConnectivityMonitorFactory.isOnline()) {
-				socialService.share($scope.entry.feed.title, $scope.entry.feed.summary,  $scope.entry.image, 
-		$scope.entry.feed.permalinkUrl);
-			}
-			
+			socialService.share($scope.entry.feed.title, $scope.entry.feed.summary, $scope.entry.image,	$scope.entry.feed.permalinkUrl);
 		}
 
 		$scope.openLink = function (link) {
