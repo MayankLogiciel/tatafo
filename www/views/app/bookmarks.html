@@ -1,13 +1,17 @@
 <ion-view class="bookmarks-view">
-    <ion-nav-title>
-        <span>Bookmarks</span>
-    </ion-nav-title>
-    <ion-nav-buttons side="left">
-        <button class="button button-icon ion-navicon" menu-toggle="left">
-        </button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="right">        
-    </ion-nav-buttons>
+    <ion-nav-bar class="bar app-top-bar effect1">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+        <ion-nav-title>
+            <span>Bookmarks</span>
+        </ion-nav-title>
+        <ion-nav-buttons side="left">
+            <button class="button button-icon ion-navicon" menu-toggle="left">
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">        
+        </ion-nav-buttons>
+    </ion-nav-bar>
     <ion-content>
         <div class="bookmarks-container">
             <div ng-if="(bookmarks.feeds.length == 0 || bookmarks.length == 0)" class="row empty-bookmark">
@@ -22,8 +26,8 @@
                         <div class="bookmark-section">
                             <h2 class="post-title" ng-bind-html="bookmark.doc.data.feed.title | rawHtml"></h2>
                             <p class="entry-author">
-                                <span>By {{bookmark.topicName.author_name}} .</span>
-                                <span class="post-time" am-time-ago="bookmark.doc.data.feed.updated"></span> 
+                                <span>By {{bookmark.doc.data.source_name}} .</span>
+                                <span class="post-time" am-time-ago="bookmark.doc.data.updated_at"></span> 
                             </p>
                             <!-- <div class="item item-body">
                                 <img class="full-image" ng-src="{{bookmark.doc.image}}">

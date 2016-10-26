@@ -1,12 +1,16 @@
 <ion-view class="feed-entries-details-view">
-    <ion-nav-buttons side="left">          
-    </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-        <button class="button button-icon ion-android-share-alt" on-tap="sharePost(post)">
-        </button>
-        <button class="button button-icon button-clear ion-android-bookmark" on-tap="bookmarkPost(post)">
-        </button>
-    </ion-nav-buttons>
+    <ion-nav-bar class="bar app-top-bar effect1">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+        <ion-nav-buttons side="left">          
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-icon ion-android-share-alt" on-tap="sharePost(post)">
+            </button>
+            <button class="button button-icon button-clear ion-android-bookmark" on-tap="bookmarkPost(post)">
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
     <ion-content scroll="true" overflow-scroll="true">
 
         <div class="feed-detail-cont">

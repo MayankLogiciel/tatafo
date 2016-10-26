@@ -1,21 +1,41 @@
 <ion-view class="feed-entries-view">
-    <ion-nav-buttons side="left">          
-    </ion-nav-buttons>
-    <ion-nav-buttons side="right">                  
-<button class="button button-icon button-clear ion-refresh" on-tap="reload()" ng-hide="reload1"> </button>
-<form ng-submit="searchData(searchInput)">
-<input type="search"  ng-model="searchInput" name="search" ng-show="mySearch"></form>    
-<button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick() " ng-hide="searchbtn"> </button>
-<button class="button button-icon button-assertive ion-close-circled" ng-click="onClosedIconClick(); searchInput = '' " ng-show="closed"> </button>
-<header-popover ng-hide="mySearch"></header-popover>
-</ion-nav-buttons>
+    <ion-nav-bar class="bar app-top-bar effect1">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+        <ion-nav-buttons side="left">          
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">                  
+            <button class="button button-icon button-clear ion-refresh" on-tap="reload()" ng-hide="reload1"> </button>
+            <!-- <form ng-submit="searchData(searchInput)">
+            <input type="search"  ng-model="searchInput" name="search" ng-show="mySearch"></form>  -->   
+            <button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick() " ng-hide="searchbtn"> </button>
+            <!-- <button class="button button-icon button-assertive ion-close-circled" ng-click="onClosedIconClick(); searchInput = '' " ng-show="closed"> </button> -->
+            <header-popover ng-hide="mySearch"></header-popover>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-header-bar class="bar bar-subheader effect1 customer-search-box email-search-box" ng-if="mySearch">
+        <div class="search-container">
+            <span 
+                on-tap="onClosedIconClick(); searchInput = ''">
+                <i class="icon ion-chevron-left"></i>
+            </span>
+            <input 
+                type="search"
+                autocomplete="off" 
+                ng-model="searchInput" 
+                ng-model-options="{debounce: 1000}" 
+                placeholder="Search" 
+                action-enter="searchData(searchInput)"/>            
+        </div>
+    </ion-header-bar>
     <ion-content class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="sourceFeedhandler">
         <!-- Refresh to get the new posts -->
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
         <div class="entries-list feed-col">
             <div ng-repeat="entry in feed | orderBy : 'updated_at' : true track by $index" image-path-fix class="list card entry-item" >
-                <div class="entry-content item item-text-wrap">
+                <div class="entry-content item item-text-wrap" ng-class="{'entry-content-unread': !entry.status}">
                     <feed-listing-item></feed-listing-item>
                     <button id="app-rate-model-source-feed" app-rate-directive ng-hide="true"></button> 
                 </div>

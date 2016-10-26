@@ -32,3 +32,35 @@
     background-image: url(../img/rating.png);
     background-position: center, center;
 }
+
+.customer-search-box.email-search-box {
+    transform: translate(0,-100%);
+    -webkit-transform: translate(0,-100%);
+    transition: all .3s ease-in-out 0s;
+    z-index: 20;
+    border-bottom: 1px solid #ddd;
+    background-image: none;
+    padding: 0;
+}
+
+.search-container {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    padding: 0 40px 0 15px;
+    i {
+        left: 18px;
+        margin-top: -9px;
+        position: absolute;
+        top: 50%;
+        font-size: 1.1em;
+        color: #aaa;
+        font-weight: 800;
+    }
+    input {
+        height: 40px;
+        padding-left: 25px;
+        width: 100%;
+        font-weight: 600;
+    }
+}
