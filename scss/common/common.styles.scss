@@ -431,12 +431,12 @@ ion-popover-view.fit ion-content {
     }
     .toggle {
         .track {
-            width: 42px;
-            height: 25px;
+            /* width: 42px;
+            height: 25px; */
         }
         .handle {
-            width: 20px;
-            height: 20px;
+            /*width: 20px;
+            height: 20px;*/
         }
     }
 }
@@ -451,6 +451,7 @@ ion-popover-view.fit ion-content {
             // margin-bottom: 0;
             margin: 8px 7px 10px 7px;
             box-shadow: 0 1px 3px #f2f2f2;
+            background-color: transparent;
             // border: 1px solid #ccc;
             &:first-child {
                 //margin-top: 20px;
@@ -606,4 +607,39 @@ ion-popover-view.fit ion-content {
 
 .clearfix {
   clear: both;
+}
+
+.content-banner {
+    position: fixed;
+    top: 44px;
+    .content-banner-text {
+        color: #fff;
+    }
+    &.info {
+        background-color: #333;
+    }
+    &.content-banner-in {
+        opacity: 0.7;
+    }
+}
+
+.empty-container {
+    height: 100vh;
+    margin-top: -44px;
+    .empty-results
+    {
+      text-align: center;
+
+      .icon
+      {
+        font-size: 170px;
+        color: lighten($content-bg, 10);
+      }
+
+      .no-bookmarks
+      {
+        color: darken($content-bg, 10);
+        font-size: 22px;
+      }
+    }
 }

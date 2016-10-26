@@ -114,7 +114,7 @@
 		};
 
 		// $scope.OpenSocialWindow =function(url){
-		// 	window.open(url, '_system');
+		// 	window.open('http://' + url, '_system');
 		// }
 			
 		/**
@@ -132,12 +132,12 @@
 		});
 
 
-		$scope.sharePost = function(post) {
-			socialService.share($scope.entry.feed.title, $scope.entry.feed.summary, $scope.entry.image,	$scope.entry.feed.permalinkUrl);
+		$scope.sharePost = function() {
+			socialService.share($scope.entry.feed.summary || $scope.entry.feed.content, $scope.entry.feed.title, $scope.entry.image, $scope.entry.feed.permalinkUrl);
 		}
 
 		$scope.openLink = function (link) {
-			$window.open('//' + link, '_system');
+			$window.open('http://' + link, '_system');
 		};
 
 		setup();

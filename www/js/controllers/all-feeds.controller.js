@@ -110,6 +110,7 @@
 		*/
 
 		var loadFeeds = function(isLoadMore) {
+			$scope.loaded = false;
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.getfeedFromPouchDB($scope.feedsParams).then(function(response){
 					if(response.data.length>0){
@@ -127,7 +128,7 @@
 						$scope.isMoreFeeds = response.isMorePostsPresent;
 					}
 					$scope.$broadcast('scroll.infiniteScrollComplete');
-
+					$scope.loaded = true;
 				});	
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
@@ -149,6 +150,7 @@
 						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
 						//$scope.$broadcast('scroll.infiniteScrollComplete');
 						feedService.addNewFeeds($scope.allFeed);
+						$scope.loaded = true;
 					}).finally(function(){	
 						if(isLoadMore){
 							$scope.$broadcast('scroll.infiniteScrollComplete');
@@ -212,14 +214,7 @@
 		* if connection is online then socialService.share sending the parameter need to share from feeds
 		*/
 		$scope.sharePost = function(post) {
-			if(ConnectivityMonitorFactory.isOffline()) {
-				$ionicLoading.show({ template: 'Please check you network connection!', noBackdrop: true, duration: 1000 });
-			}
-			if(ConnectivityMonitorFactory.isOnline()) {
-
-				socialService.share(post.feed.title, post.feed.summary, post.image, post.feed.permalinkUrl);
-			}
-		
+			socialService.share(post.feed.summary || post.feed.content, post.feed.title, post.image, post.feed.permalinkUrl);
 		}
 
 		/**

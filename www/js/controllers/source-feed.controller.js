@@ -110,7 +110,8 @@
 		* if ConnectivityMonitorFactory.isOffline then loads the feeds from pouch db using feedService.getfeedFromPouchDB
 		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
-		var loadFeed = function(isLoadMore) {				
+		var loadFeed = function(isLoadMore) {	
+			$scope.loaded = false;			
 			$scope.feedsParams.source_id = $stateParams.sourceId;
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.getPostsHavingSource($scope.feedsParams).then(function(response){
@@ -127,7 +128,7 @@
 						$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
 					}
 					$scope.$broadcast('scroll.infiniteScrollComplete');
-
+					$scope.loaded = true;
 				});	
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {	
@@ -148,6 +149,7 @@
 					}
 					$scope.feed = $scope.feed.concat(feed.data.data.feed);
 					$scope.$broadcast('scroll.infiniteScrollComplete');
+					$scope.loaded = true;
 				})
 				.finally(function(){
 					$scope.$broadcast('scroll.refreshComplete');

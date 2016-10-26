@@ -70,7 +70,7 @@
                                     // if(isInternetConnected) return;
                                     // isInternetConnected= true;
                                     $log.debug("went online");
-                                    showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'fade', closeOnlineBannerAfter);         
+                                    showContentBanner(MESSAGES.GOES_ONLINE, 'info', 'fade', closeOnlineBannerAfter);         
                               });
 
                               $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
@@ -85,7 +85,7 @@
 
                               window.addEventListener("online", function(e) {
                                     $log.debug("went online");
-                                    showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'fade', closeOnlineBannerAfter);
+                                    showContentBanner(MESSAGES.GOES_ONLINE, 'info', 'fade', closeOnlineBannerAfter);
                               }, false);    
 
                               window.addEventListener("offline", function(e) {

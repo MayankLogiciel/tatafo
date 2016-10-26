@@ -21,9 +21,8 @@
 	
 	<ion-header-bar class="bar bar-subheader effect1 customer-search-box email-search-box" ng-if="isSearchOpen">
 		<div class="search-container">
-    		<span 
-    			on-tap="onClosedIconClick(); searchInput = ''">
-    			<i class="icon ion-chevron-left"></i>
+    		<span class="search-icon">
+    			<i class="icon ion-search"></i>
     		</span>
     		<input 
     			type="search"
@@ -31,19 +30,28 @@
     			ng-model="searchInput" 
     			ng-model-options="{debounce: 1000}" 
     			placeholder="Search" 
-    			action-enter="searchData(searchInput)"/>		 	
+    			action-enter="searchData(searchInput)"/>
+    		<span class="close-icon" 
+    			on-tap="onClosedIconClick(); searchInput = ''">
+    			<i class="icon ion-close-circled"></i>
+    		</span>		 	
     	</div>
 	</ion-header-bar>
 	<ion-content class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="feedshandler" >
 		 		
 		<ion-refresher ng-if="allFeed.length > 0" on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
-		</ion-refresher> 
+		</ion-refresher>
 		
-		<div class="entries-list feed-col">
+		<div class="row empty-container" ng-if="allFeed.length == 0 && loaded">
+            <div class="empty-results col col-center">
+                <i class="icon ion-ios-paper"></i>
+                <h3 class="no-bookmarks">There's nothing here yet.</h3>
+            </div>
+        </div> 
+		
+		<div class="entries-list feed-col" ng-if="allFeed.length > 0">
 			<div ng-repeat="entry in allFeed | orderBy : 'updated_at' : true" image-path-fix class="list card entry-item">
-				<div class="entry-content item item-text-wrap" ng-class="{'entry-content-unread': !entry.status}">
-					<feed-listing-item></feed-listing-item>
-				</div>
+				<feed-listing-item></feed-listing-item>
 			</div>
 		</div>
 		<!-- Infinit scroll -->
