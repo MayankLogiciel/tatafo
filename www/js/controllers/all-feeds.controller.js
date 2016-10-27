@@ -206,6 +206,7 @@
 				loadFeeds();
 				$scope.scrollTop();
 			}
+			$scope.popover.hide();
 		}
 
 
