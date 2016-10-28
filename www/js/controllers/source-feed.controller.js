@@ -113,6 +113,7 @@
 		var loadFeed = function(isLoadMore) {	
 			$scope.loaded = false;			
 			$scope.feedsParams.source_id = $stateParams.sourceId;
+			
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.getPostsHavingSource($scope.feedsParams).then(function(response){
 					if(response.posts.length>0){
@@ -129,8 +130,15 @@
 					}
 					$scope.$broadcast('scroll.infiniteScrollComplete');
 					$scope.loaded = true;
-				});	
+				}).finally(function(){	
+					if(isLoadMore){
+						$scope.$broadcast('scroll.infiniteScrollComplete');
+					}else{
+						$scope.$broadcast('scroll.refreshComplete');
+					}				
+				});;
 			}
+
 			if(ConnectivityMonitorFactory.isOnline()) {	
 				$ionicLoading.show({
 					template: '<ion-spinner icon="android"></ion-spinner>'

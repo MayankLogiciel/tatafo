@@ -111,6 +111,7 @@
 
 		var loadFeeds = function(isLoadMore) {
 			$scope.loaded = false;
+			
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedService.getfeedFromPouchDB($scope.feedsParams).then(function(response){
 					if(response.data.length>0){
@@ -129,8 +130,15 @@
 					}
 					$scope.$broadcast('scroll.infiniteScrollComplete');
 					$scope.loaded = true;
-				});	
+				}).finally(function(){	
+					if(isLoadMore){
+						$scope.$broadcast('scroll.infiniteScrollComplete');
+					}else{
+						$scope.$broadcast('scroll.refreshComplete');
+					}				
+				});;	
 			}
+			
 			if(ConnectivityMonitorFactory.isOnline()) {
 				if($state.current.name.indexOf('app.feeds.all') !== -1 ) {
 					$ionicLoading.show({
