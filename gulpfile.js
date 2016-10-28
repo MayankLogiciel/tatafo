@@ -26,6 +26,27 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
+gulp.task('copyplugins', function() {
+   gulp.src('./bower_components/ionic/fonts/*')
+   .pipe(gulp.dest('./www/lib/ionic/fonts'))
+   gulp.src('./bower_components/ionic/js/ionic.bundle.min.js')
+   .pipe(gulp.dest('./www/lib'))   
+   gulp.src('./bower_components/ngCordova/dist/ng-cordova.min.js')
+   .pipe(gulp.dest('./www/lib'))
+   gulp.src('./bower_components/underscore/underscore-min.js')
+   .pipe(gulp.dest('./www/lib'))   
+   gulp.src('./bower_components/ionic-content-banner/dist/ionic.content.banner.min.js')
+   .pipe(gulp.dest('./www/lib'))
+   gulp.src('./bower_components/ionic-content-banner/dist/ionic.content.banner.min.css')
+   .pipe(gulp.dest('./www/lib'))   
+   gulp.src('./bower_components/pouchdb/dist/pouchdb.min.js')
+   .pipe(gulp.dest('./www/lib'))
+   gulp.src('./bower_components/pouchdb-find/dist/pouchdb.find.min.js')
+   .pipe(gulp.dest('./www/lib'))
+   gulp.src('./bower_components/pouchdb-quick-search/dist/pouchdb.quick-search.min.js')
+   .pipe(gulp.dest('./www/lib'));
+});
+
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
 });

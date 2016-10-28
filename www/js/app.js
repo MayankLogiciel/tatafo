@@ -6,56 +6,56 @@ angular
     });
 
 angular
-    .module('tatafo', ['ionic', 'angularMoment', 'tatafo.config', 'underscore', 'ngCordova', 'slugifier', 'youtube-embed', 'jett.ionic.content.banner' ])
+    .module('tatafo', ['ionic', 'underscore', 'tatafo.config', 'ngCordova', 'jett.ionic.content.banner' ])
 
-    .run(function($log, $ionicPlatform, $rootScope, $state, $ionicConfig, $timeout, $cordovaNetwork, deviceTokenService, ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService, $cordovaSplashscreen) {
+    .run(function($log, $ionicPlatform, $rootScope, $state, $timeout, deviceTokenService, ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService, $cordovaSplashscreen) {
 
         ionic.Platform.ready(function() {
-            //if ( ionic.Platform.isWebView() && ionic.Platform.isAndroid() ) {
+
+            var hideSplashScreen = function (){
+                $timeout(function() {
+                    if(ionic.Platform.isWebView()) $cordovaSplashscreen.hide();
+                }, 1000);
+            };
+     
+            var idsReceivedCallback = function(pushObj){
+                $log.debug(pushObj);
+                if( deviceTokenService.isRegisterOnServerRequired(pushObj) ){
+                    $log.debug('Registeration on server required for push notification');
+                    var params = {
+                        device_token : pushObj.userId + '',
+                        push_token : pushObj.pushToken + ''
+                    };
+
+                    deviceTokenService.registerDeviceOnServer(params).then(function(res){
+                        $log.debug(res.data.data.data);
+                        deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
+                        $state.go('app.feeds.all');
+                        hideSplashScreen();
+                    });
+                }else{
+                    $log.debug('No Need to register device on server');
+                    $state.go('app.feeds.all');
+                    hideSplashScreen();
+                }                
+            };
+
             if ( ionic.Platform.isWebView() && ionic.Platform.isAndroid() ) {
 
                 //$log.debug(window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4}));
 
-                var hideSplashScreen = function (){
-                    setTimeout(function() {
-                        $cordovaSplashscreen.hide();
-                    }, 1000);
-                };
-     
                 var notificationOpenedCallback = function(jsonData) {
                     console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
                 };
-                
-                var idsReceivedCallback = function(pushObj){
-                    $log.debug(pushObj);
-                    if( deviceTokenService.isRegisterOnServerRequired(pushObj) ){
-                        $log.debug('Registeration on server required for push notification');
-                        var params = {
-                            device_token : pushObj.userId + '',
-                            push_token : pushObj.pushToken + ''
-                        };
 
-                        deviceTokenService.registerDeviceOnServer(params).then(function(res){
-                            $log.debug(res.data.data.data);
-                            deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
-                            hideSplashScreen();
-                            $state.go('app.feeds.all');
-                        });
-                    }else{
-                        $log.debug('No Need to register device on server');
-                        hideSplashScreen();
-                        $state.go('app.feeds.all');
-                    }                
-                };
 
-                //OneSignal.setLogLevel(OneSignal.LOG_LEVEL.DEBUG, OneSignal.LOG_LEVEL.DEBUG);
                 window.plugins.OneSignal
                     .startInit(ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER)
                     .handleNotificationOpened(notificationOpenedCallback)
                     .handleNotificationReceived(function(jsonData) {})
                     .endInit();
 
-                    window.plugins.OneSignal.getIds(idsReceivedCallback);
+                window.plugins.OneSignal.getIds(idsReceivedCallback);
 
             }else{
                 // this is temp code, always intentionly run on browser to test register device feature
@@ -64,23 +64,7 @@ angular
                     'pushToken' : 'pushToken1'
                 };
 
-                if( deviceTokenService.isRegisterOnServerRequired(pushObj) ){
-                    $log.debug('Registeration on server required for push notification');
-                    var params = {
-                        device_token : pushObj.userId,
-                        push_token : pushObj.pushToken
-                    };     
-
-                    deviceTokenService.registerDeviceOnServer(params).then(function(res){
-                        $log.debug('From Browser');
-                        $log.debug(res.data.data.data);
-                        deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
-                        $state.go('app.feeds.all');
-                    });
-                }else{
-                    $log.debug('No Need to register device on server');
-                    $state.go('app.feeds.all');
-                }
+                idsReceivedCallback(pushObj);
             }
 
             if (window.StatusBar) {
@@ -126,7 +110,7 @@ angular
                 });
             }
 
-            //set default user settings if not set
+            //it will set default user settings if not set
             settingService.getSettings();
 
             //start watching online/offline event
@@ -134,12 +118,6 @@ angular
         });
 
         $ionicPlatform.on("resume", function() {});
-
-        // $ionicPlatform.on("deviceready", function (){
-        //     setTimeout(function() {
-        //         $cordovaSplashscreen.hide();
-        //     }, 5000);
-        // });
     })
     .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 

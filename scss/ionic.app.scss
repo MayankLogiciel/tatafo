@@ -8,9 +8,11 @@
 
 
 // Include Bourbon
-@import "www/lib/bourbon/app/assets/stylesheets/_bourbon";
+//@import "www/lib/bourbon/app/assets/stylesheets/_bourbon";
+@import "bower_components/bourbon/app/assets/stylesheets/_bourbon";
 // Include all of Ionic
-@import "www/lib/ionic/scss/ionic";
+//@import "www/lib/ionic/scss/ionic";
+@import "bower_components/ionic/scss/ionic";
 
 // Include Ionic override styles
 @import "scss/utils/override_styles";
@@ -30,7 +32,8 @@
 
 // Include custom styles
 @import "scss/common/common.styles";
-@import "www/lib/ionic-content-banner/scss/ionic.content.banner";
+//@import "www/lib/ionic-content-banner/scss/ionic.content.banner";
+@import "bower_components/ionic-content-banner/scss/ionic.content.banner";
 @import "scss/auth/auth.styles";
 @import "scss/auth/walkthrough.styles";
 @import "scss/auth/login.styles";
