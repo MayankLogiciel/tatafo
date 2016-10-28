@@ -15,17 +15,24 @@
     <ion-content>
         <ul class="list">
             <div class="item item-divider"></div>
-            <ion-toggle ng-model="push" toggle-class="toggle-assertive" ng-change="showStatus(push)"> Push Notifications</ion-toggle>
+            <ion-toggle 
+                ng-model="userSettings.pushNotificationEnabled" 
+                toggle-class="toggle-assertive" 
+                ng-change="toggleUserPushChoice(userSettings.pushNotificationEnabled)"> 
+                Push Notifications
+            </ion-toggle>
             <div class="item item-divider"></div>
-            <ion-toggle ng-model="pictures" toggle-class="toggle-assertive" ng-change="disableImage(pictures)">Disable Picture</ion-toggle>
+            <ion-toggle 
+                ng-model="userSettings.imageViewEnabled" 
+                toggle-class="toggle-assertive" 
+                ng-change="toggleUserImageChoice(userSettings.imageViewEnabled)">
+                Disable Picture
+            </ion-toggle>
             <div class="item item-divider"></div>
             <div on-tap="showPopup()" class="item sync-interval-setting">
                 <div class="pull-left">Sync data after</div>
-                <div class="pull-right" ng-if="selectedInterval()" ng-bind="selectedInterval()"></div>
+                <div class="pull-right" ng-bind="userSettings.syncTimeOption.title"></div>
             </div>
-            <!-- <button class="button button-block button-light" ng-click="">
-            </button> -->
-            <!-- <div class="item item-divider"></div> -->
         </ul>
     </ion-content>
 </ion-view>

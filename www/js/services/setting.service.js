@@ -6,44 +6,73 @@
     */
 
     var settingService = function($log, $http, $q, TATAFO_API_URL) {
-        /**
-        * Initiallization
-        */
-        var setting = {
-           sourceSyncIntervalTime: 0,
+
+        var syncIntervalOptions = [
+            {
+                  title : '2 Hours',
+                  value : 2
+            },
+            {
+                  title : '4 Hours',
+                  value : 4
+            },
+            {
+                  title : '6 Hours',
+                  value : 6
+            },
+            {
+                  title : '8 Hours',
+                  value : 8
+            },
+            {
+                  title : '10 Hours',
+                  value : 10
+            },
+            {
+                  title : '12 Hours',
+                  value : 12
+            },            
+        ];
+
+        var settings = {
+           syncTimeOption: syncIntervalOptions[1], //set default value 4 Hours
            pushNotificationEnabled: true,
            imageViewEnabled: false
-        }
+        };
 
-        //get user settings, if not found then it will first set default settings 
-        //and then return them
+        this.getSyncIntervalOptions = function(){
+            return syncIntervalOptions;
+        };
+
+        /**
+        * get user settings, if not found then it will first set default settings 
+        * and then return them
+        */
         this.getSettings = function() {
-            if (localStorage.setting == null) {
-                localStorage.setting = JSON.stringify(setting);
+            if (localStorage.settings == null) {
+                localStorage.settings = JSON.stringify(settings);
             }
-            return JSON.parse(localStorage.setting ||  null);
+            return JSON.parse(localStorage.settings ||  null);
         }
        
-        //settingService.getSetting function will set pushnotification setting
-        this.setPushNotificationSatus = function(status) {
-            setting = JSON.parse(localStorage.setting || setting);
-            setting.pushNotificationEnabled = status;
-            localStorage.setting = JSON.stringify(setting);         
+        this.setPushNotificationSatus = function(isPushEnabled) {
+            settings = JSON.parse(localStorage.settings || settings);
+            settings.pushNotificationEnabled = isPushEnabled;
+            localStorage.settings = JSON.stringify(settings);         
         }
 
-        //settingService.getSetting function will set pushnotification setting
-        this.setImageViewEnable = function(status) {
-            setting = JSON.parse(localStorage.setting || setting);
-            setting.imageViewEnabled = status;
-            localStorage.setting = JSON.stringify(setting);         
-        }          
+        this.setImageViewEnable = function(isImageEnabled) {
+            settings = JSON.parse(localStorage.settings || settings);
+            settings.imageViewEnabled = isImageEnabled;
+            localStorage.settings = JSON.stringify(settings);         
+        };        
 
-        //Wait until time is more than setsourceSyncIntervalTime
-        this.setSourceSyncIntervalTime = function(hour) {            
-            setting = JSON.parse(localStorage.setting || setting);
-            setting.sourceSyncIntervalTime = hour;
-            localStorage.setting = JSON.stringify(setting);
+        this.setSyncTimeOption = function(option){
+            settings = JSON.parse(localStorage.settings || settings);
+            settings.syncTimeOption = option;
+            localStorage.settings = JSON.stringify(settings);            
         };
+
     }
 
     settingService.$inject = [

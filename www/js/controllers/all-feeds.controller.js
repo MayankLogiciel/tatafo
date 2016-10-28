@@ -66,7 +66,7 @@
 		*/
 
 		var isSourceSyncRequired = function(){
-			var syncSetting = settingService.getSettings().sourceSyncIntervalTime;
+			var syncSetting = settingService.getSettings().syncTimeOption;
 			var syncIntervalInMS = syncSetting.value*60*60*1000;
 			//var syncIntervalInMS =1*60*1000;
 			var lastSynced = Date.parse(sourcesService.getLastSourceSyncTime());
