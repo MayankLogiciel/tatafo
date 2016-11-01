@@ -45,7 +45,7 @@
         </div>  
 
         <div class="entries-list feed-col" ng-if="feed.length > 0">
-            <div ng-repeat="entry in feed | orderBy : 'updated_at' : true track by $index" image-path-fix class="list card entry-item" >
+            <div ng-repeat="entry in feed | orderBy:'feed.updated': true track by $index" image-path-fix class="list card entry-item" >
                 <feed-listing-item></feed-listing-item>
                 <button id="app-rate-model-source-feed" app-rate-directive ng-hide="true"></button> 
             </div>

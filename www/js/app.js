@@ -93,7 +93,7 @@ angular
             }
 
             function initApp() {
-                if (! AdMob ) { alert( 'admob plugin not ready' ); return; }
+                if (!AdMob ) { $log.debug( 'admob plugin not ready' ); return; }
 
                 AdMob.createBanner( {
                     adId: admobid.banner, 
