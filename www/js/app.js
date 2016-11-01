@@ -5,6 +5,21 @@ angular
         return window._; // assumes underscore has already been loaded on the page
     });
 
+var postsDBSettings = {
+  'POSTS_DB_NAME' : 'tatafo-posts',
+  'MAX_RECENT_POST_STORE' : 25,
+  'PER_PAGE_POSTS' : 10,
+  'AUTO_COMPACTION' : true
+};
+
+var bookmarksDBSettings = {
+  'BOOKMARKS_DB_NAME' : 'tatafo-bookmarks',
+  'AUTO_COMPACTION' : true
+};
+
+var postsDB = new PouchDB(postsDBSettings.POSTS_DB_NAME, { auto_compaction: postsDBSettings.AUTO_COMPACTION });
+var bookmarksDB = new PouchDB(bookmarksDBSettings.BOOKMARKS_DB_NAME, { auto_compaction: bookmarksDBSettings.AUTO_COMPACTION });
+
 angular
     .module('tatafo', ['ionic', 'underscore', 'tatafo.config', 'ngCordova', 'jett.ionic.content.banner' ])
 

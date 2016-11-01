@@ -4,33 +4,29 @@
 	/**
 	* AllFeedsController Function
 	*/
-	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, $ionicLoading, $filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService, $timeout, ConnectivityMonitorFactory, settingService) {
+	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, feedsDAOService, $ionicLoading, $filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService, $timeout, ConnectivityMonitorFactory, settingService) {
 
-		/**
-		* AllFeedsController setup function for initialization
-		*/
 		var setup = function(){
 			$log.debug('AllFeedsController setup');
 			$scope.allFeed = [];
 			$scope.feedSources = [];
-			$scope.param=[];
 			$scope.feedsParams = {
 				page:1,
 				limit:10
 			};
-			$scope.feedStatus = {};
-			$scope.feedStatus.read=true;
-			$scope.feedStatus.unread=true;
+
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
-			
-			/**
-			* sourcesService.isFeedSourcesAvailable use to check source already available or not
-			* isSourceSyncRequired checks source sync is required
-			*/
-			getFeeds();
-			
+			$scope.searchQuery = '';
+
+
+			$scope.feedStatus = {};
+			$scope.feedStatus.read=true;
+			$scope.feedStatus.unread=true;
+
+
+			getFeeds();			
 			loadPopOver();
 
 
@@ -105,21 +101,21 @@
 
 		/**
 		* loadFeeds loads the all feeds
-		* if ConnectivityMonitorFactory.isOffline then loads the feeds from pouch db using feedService.getfeedFromPouchDB
+		* if ConnectivityMonitorFactory.isOffline then loads the feeds from pouch db using feedsDAOService.getfeedFromPouchDB
 		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
-
 		var loadFeeds = function(isLoadMore) {
 			$scope.loaded = false;
 			
 			if(ConnectivityMonitorFactory.isOffline()) {
-				feedService.getfeedFromPouchDB($scope.feedsParams).then(function(response){
-					if(response.data.length>0){
+				feedsDAOService.getRecentPostsFromPouchDB($scope.feedsParams).then(function(response){
+					console.log(response);
+					if(response.posts.length>0){
 
 						if(!isLoadMore) {
 							$scope.allFeed = [];
 						}
-						angular.forEach(response.data, function(feed, key) {	
+						angular.forEach(response.posts, function(feed, key) {	
 							$scope.allFeed = $scope.allFeed.concat(feed);
 						});
 						$scope.isMoreFeeds = response.isMorePostsPresent;
@@ -128,7 +124,6 @@
 					else{
 						$scope.isMoreFeeds = response.isMorePostsPresent;
 					}
-					$scope.$broadcast('scroll.infiniteScrollComplete');
 					$scope.loaded = true;
 				}).finally(function(){	
 					if(isLoadMore){
@@ -156,8 +151,7 @@
 						}
 
 						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
-						//$scope.$broadcast('scroll.infiniteScrollComplete');
-						feedService.addNewFeeds($scope.allFeed);
+						feedsDAOService.addNewFeeds($scope.allFeed);
 						$scope.loaded = true;
 					}).finally(function(){	
 						if(isLoadMore){
@@ -188,9 +182,9 @@
 				if( $scope.feedStatus.read || $scope.feedStatus.unread ) {
 
 					$scope.feedsParams.is_read = ($scope.feedStatus.read) ? true : false;
-					feedService.sortReadUnread($scope.feedsParams).then(function(response){
+					feedsDAOService.getReadUnreadPosts($scope.feedsParams).then(function(response){
 						$scope.allFeed = [];
-						$scope.allFeed = response;
+						$scope.allFeed = response.posts;
 						$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
 					});			
 				}					
@@ -215,59 +209,31 @@
 				$scope.scrollTop();
 			}
 			$scope.popover.hide();
-		}
+		};
 
 
-		/**
-		* sharePost checking the connection first
-		* if connection is online then socialService.share sending the parameter need to share from feeds
-		*/
-		$scope.sharePost = function(post) {
-			socialService.share(post.feed.summary || post.feed.content, post.feed.title, post.image, post.feed.permalinkUrl);
-		}
-
-		/**
-		* reload on clicking closed button after search(braodcast metthod)
-		*/
-		$scope.$on('getallfeeds',function(event) {
-			$scope.feedsParams.page = 1;
-			delete($scope.feedsParams.name);
-			$scope.scrollTop();
-			loadFeeds();
-		});
-
-		/**
-		* search the feeds enter in search box on from pouchDB if offline otherwise from API
-		*/	
-		$scope.$on('getFeedsBySearch',function(event,search){
+		$scope.search = function(query){
 			$scope.isSearchUsed = true;
-			$scope.feedsParams.name = search;
+			$scope.feedsParams.page = 1;
+			$scope.feedsParams.name = query;
 			if(ConnectivityMonitorFactory.isOffline()) {
-				feedService.searchFromPouchDB($scope.feedsParams).then(function(response) {
+				feedsDAOService.searchFromPouchDB($scope.feedsParams).then(function(response) {
 					$scope.allFeed = [];
-					$scope.allFeed = response.data;
-					$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
+					$scope.allFeed = response.posts;
+					$scope.isMoreFeeds = response.isMorePostsPresent;
+       				$scope.scrollTop();
 				});
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
-				// if($scope.feedsParams.page == 1) {
-				// 	$scope.scrollTop(); 
-				// }
-			}
-		});
+			}		
+		};
 
 		/**
 		* show and hide button not needed while clicking search button
 		*/
 		$scope.onSearchIconClick = function() {
-			//$scope.mySearch = !$scope.mySearch;
 			$scope.isSearchOpen = $scope.isSearchOpen ? false : true;
-        	// $scope.closed = !$scope.closed;
-        	// $scope.searchbtn=!$scope.searchbtn
-        	// $scope.sortPop=!$scope.sortPop;
-        	// $scope.reload1=!$scope.reload1;
-
       	};
 
       	/**
@@ -276,13 +242,6 @@
     	$scope.onClosedIconClick = function() {
         	$scope.isSearchOpen = false;
         	delete $scope.feedsParams.name;
-        	//$scope.reload();
-        	// $scope.mySearch = !$scope.mySearch;
-        	// $scope.closed = !$scope.closed;
-        	// $scope.searchbtn = !$scope.searchbtn
-        	// $scope.sortPop = !$scope.sortPop;
-        	// $scope.reload1 = !$scope.reload1;
-        	//$scope.$broadcast('getallfeeds');
         	if($scope.isSearchUsed){
 	        	$scope.doRefresh();
         		$scope.isSearchUsed = false;
@@ -290,21 +249,12 @@
         	
     	};
 
-    	/**
-		* reloads all  feeds after clicking reaload button
-		*/
-
-		$scope.$on('reloadFeeds',function(){
-			$scope.doRefresh();
-		});
-
-
-  		/**
-		* bookMarkService.addBookmarkToPouchDB post the deatil to pouchDB
-		* 
-		*/
 		$scope.bookmarkPost = function(post) {
 			bookMarkService.addBookmarkToPouchDB(post);
+		};
+
+		$scope.sharePost = function(post) {
+			socialService.share(post.feed.summary || post.feed.content, post.feed.title, post.image, post.feed.permalinkUrl);
 		};
 
 		/**
@@ -331,7 +281,6 @@
 
 		}
 
-
 		/**
 		* loadPostDetails feedDetailService.setPostData posting the deatil of single feed to article page
 		* loadPostDetails feedDetailService.setCombinedPostDataForNextPrevious sending the deatil of other feeds for next and previous Button
@@ -356,7 +305,8 @@
 		*/
 		$scope.doRefresh = function() {	
 			$scope.feedsParams.page = 1;
-	  		$scope.isMoreFeeds = true;	  		
+	  		$scope.isMoreFeeds = true;	
+			$scope.sttButton=false;  		  		
        		loadFeeds();
        		$scope.scrollTop();
 		};
@@ -382,8 +332,8 @@
 	    		}else	{
 	       			$scope.sttButton=false;
 	     		}
-	    	}); //apply
-	  	};  //getScrollPosition
+	    	});
+	  	};
 
 	  	setup();
 	};
@@ -396,6 +346,7 @@
 		'$http', 
 		'sourcesService',
 		'feedService',
+		'feedsDAOService',
 		'$ionicLoading',
 		'$filter',
 		'$state',

@@ -4,7 +4,7 @@
 	/**
 	* FeedDetailController function
 	*/
-	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $location,$stateParams,feedService, socialService, $cordovaNetwork,$timeout, sourcesService, $window, $rootScope) {
+	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $stateParams, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $window, $rootScope) {
 		
 		/**
 		* Initialization
@@ -31,7 +31,7 @@
 			
 			loadFeeds();
 
-			if (!$scope.entry.is_read) { 
+			if (!$scope.entry.is_read && ConnectivityMonitorFactory.isOnline()) { 
 				//if unread then mark as read
 				markAsRead();
 			}
@@ -143,10 +143,8 @@
 		setup();
 	};
 
-	/**
-	* @dependencies injector $log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $location,$stateParams,feedService, socialService, $cordovaNetwork,$timeout, sourcesService
-	*/
-	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService','bookMarkService', '$ionicLoading', '$state','$ionicHistory','$location', '$stateParams','feedService','socialService','$cordovaNetwork','$timeout','sourcesService', '$window', '$rootScope'];
+	
+	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService','bookMarkService', '$ionicLoading', '$state','$ionicHistory', '$stateParams', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$window', '$rootScope'];
 
 	angular
 		.module('tatafo')

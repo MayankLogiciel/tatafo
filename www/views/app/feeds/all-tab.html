@@ -8,7 +8,7 @@
 			</button>
 		</ion-nav-buttons>
 		<ion-nav-buttons side="right">                  
-			<button class="button button-icon button-clear ion-refresh" on-tap="reload()"> 
+			<button class="button button-icon button-clear ion-refresh" on-tap="doRefresh()"> 
 			</button>
 			<!-- <form ng-submit="searchData(searchInput)">
 				<input type="search"  ng-model="searchInput" name="search" ng-show="isSearchOpen">
@@ -27,17 +27,16 @@
     		<input 
     			type="search"
     			autocomplete="off" 
-    			ng-model="searchInput" 
-    			ng-model-options="{debounce: 1000}" 
+    			ng-model="searchQuery" 
     			placeholder="Search" 
-    			action-enter="searchData(searchInput)"/>
+    			action-enter="search(searchQuery)"/>
     		<span class="close-icon" 
-    			on-tap="onClosedIconClick(); searchInput = ''">
+    			on-tap="onClosedIconClick(); searchQuery = ''">
     			<i class="icon ion-close-circled"></i>
     		</span>		 	
     	</div>
 	</ion-header-bar>
-	<ion-content class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="feedshandler" >
+	<ion-content has-bouncing="false" class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="feedshandler" >
 		 		
 		<ion-refresher ng-if="allFeed.length > 0" on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
 		</ion-refresher>

@@ -5,16 +5,16 @@
         <ion-nav-buttons side="left">          
         </ion-nav-buttons>
         <ion-nav-buttons side="right">                  
-            <button class="button button-icon button-clear ion-refresh" on-tap="reload()" ng-hide="reload1"> </button>
+            <button class="button button-icon button-clear ion-refresh" on-tap="doRefresh()"> </button>
             <!-- <form ng-submit="searchData(searchInput)">
             <input type="search"  ng-model="searchInput" name="search" ng-show="mySearch"></form>  -->   
-            <button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick() " ng-hide="searchbtn"> </button>
+            <button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick()"> </button>
             <!-- <button class="button button-icon button-assertive ion-close-circled" ng-click="onClosedIconClick(); searchInput = '' " ng-show="closed"> </button> -->
             <header-popover ng-hide="mySearch"></header-popover>
         </ion-nav-buttons>
     </ion-nav-bar>
 
-    <ion-header-bar class="bar bar-subheader effect1 customer-search-box email-search-box" ng-if="mySearch">
+    <ion-header-bar class="bar bar-subheader effect1 customer-search-box email-search-box" ng-if="isSearchOpen">
         <div class="search-container">
             <span class="search-icon">
                 <i class="icon ion-search"></i>
@@ -22,36 +22,39 @@
             <input 
                 type="search"
                 autocomplete="off" 
-                ng-model="searchInput" 
-                ng-model-options="{debounce: 1000}" 
+                ng-model="searchQuery" 
                 placeholder="Search" 
-                action-enter="searchData(searchInput)"/> 
+                action-enter="search(searchQuery)"/>
             <span class="close-icon" 
-                on-tap="onClosedIconClick(); searchInput = ''">
+                on-tap="onClosedIconClick(); searchQuery = ''">
                 <i class="icon ion-close-circled"></i>
-            </span>            
+            </span>         
         </div>
     </ion-header-bar>
-    <ion-content class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="sourceFeedhandler">
-        <!-- Refresh to get the new posts -->
-        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
-        </ion-refresher>
 
+    <ion-content has-bouncing="false" class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="sourceFeedHandler" >
+                
+        <ion-refresher ng-if="feed.length > 0" on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
+        </ion-refresher>
+        
         <div class="row empty-container" ng-if="feed.length == 0 && loaded">
             <div class="empty-results col col-center">
                 <i class="icon ion-ios-paper"></i>
                 <h3 class="no-bookmarks">There's nothing here yet.</h3>
             </div>
-        </div>  
-
+        </div> 
+        
         <div class="entries-list feed-col" ng-if="feed.length > 0">
-            <div ng-repeat="entry in feed | orderBy:'feed.updated': true track by $index" image-path-fix class="list card entry-item" >
+            <div ng-repeat="entry in feed | orderBy:'feed.updated': true track by $index" image-path-fix class="list card entry-item">
                 <feed-listing-item></feed-listing-item>
-                <button id="app-rate-model-source-feed" app-rate-directive ng-hide="true"></button> 
             </div>
         </div>
         <!-- Infinit scroll -->
-        <ion-infinite-scroll on-infinite="loadMore()" distance="15px" immediate-check="false" ng-if="!isMoreFeeds">
+        <ion-infinite-scroll 
+            immediate-check="false" 
+            on-infinite="loadMore()" 
+            distance="1%" 
+            ng-if="isMoreFeeds">
         </ion-infinite-scroll>
     </ion-content>
     <div class="float-button effect1" ng-show="sttButton" ng-click="scrollTop()">
@@ -61,4 +64,5 @@
             </a>
         </span>
     </div>
+   <button id="app-rate-model-source-feed" app-rate-directive ng-hide="true"></button> 
 </ion-view>

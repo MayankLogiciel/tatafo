@@ -22,18 +22,6 @@
     		$scope.$broadcast('reloadFeeds');			
 		};
 
-		/**
-		* Broadcast method for search
-		*/
-		$scope.searchData=function(search){
-			
-			var param='';
-			if(search.length==0){
-					return;
-			};			
-			
-	    	$scope.$broadcast('getFeedsBySearch',search);
-		};
     	setup();  		
 	};
 
