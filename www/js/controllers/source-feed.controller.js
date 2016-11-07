@@ -1,10 +1,11 @@
 (function() {
+
 	'use strict';
 
 	/**
 	* SourceFeedController Function
 	*/
-	var SourceFeedController = function($log, $injector, $rootScope, $ionicHistory, $scope, $state, $stateParams, feedService, feedsDAOService, $http , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactory, settingService) {
+	var SourceFeedController = function($log, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, $ionicScrollDelegate, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService) {
 
 		var setup = function() {		
 			$log.debug('SourceFeedController setup');
@@ -13,14 +14,11 @@
 				page:1,
 				limit:10
 			};
-
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
-			$scope.searchQuery = '';			
-
+			$scope.searchQuery = '';
 			loadFeeds();
-
 			$rootScope.$on("readArticle", function (event,args) {
 				$log.debug("Read Article event received in Source Feed Controller");
 	      		angular.forEach($scope.feed,function(val, key){
@@ -55,19 +53,6 @@
 		});
 
 		/**
-		* Load read/ Unread feeds
-		*/	
-		var loadReadUnreadFeeds=function(param,id){
-			$ionicLoading.show({
-          				template: '<ion-spinner icon="android"></ion-spinner>'
-        	});
-			feedService.getRaedOrUnread(param).then(function(feed){
-				$scope.feed =feed.data.data.feed;	
-			});
-		};
-
-
-		/**
 		* Post bookmark
 		*/	
 		$scope.bookmarkPost = function(post) {
@@ -86,8 +71,7 @@
 		*/
 		var loadFeeds = function(isLoadMore) {	
 			$scope.loaded = false;			
-			$scope.feedsParams.source_id = $stateParams.sourceId;
-			
+			$scope.feedsParams.source_id = $stateParams.sourceId;			
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedsDAOService.getPostsHavingSource($scope.feedsParams).then(function(response){
 					if(response.posts.length>0){
@@ -111,7 +95,6 @@
 					}				
 				});;
 			}
-
 			if(ConnectivityMonitorFactory.isOnline()) {	
 				$ionicLoading.show({
 					template: '<ion-spinner icon="android"></ion-spinner>'
@@ -214,25 +197,22 @@
 	 	/**
 		* getting the scroll postion
 		*/
-		$scope.getScrollPosition = function() {
-			
+		$scope.getScrollPosition = function() {			
 	  		//monitor the scroll
 	  		var moveData = $ionicScrollDelegate.$getByHandle('sourceFeedHandler').getScrollPosition();
 	  		$scope.$apply(function() {
 	     		if(angular.isDefined(moveData) && moveData.top > 150) {
 	       			$scope.sttButton=true;
-	     		}else	{
+	     		}else {
 	        			$scope.sttButton=false;
 	      			}
 	     	});
 	   	};
 	
-	setup();
-};
-
-SourceFeedController.$inject=['$log', '$injector', '$rootScope', '$ionicHistory', '$scope','$state','$stateParams', 'feedService', 'feedsDAOService', '$http', '$q', '$ionicLoading', '$ionicScrollDelegate', '$ionicPopover','bookMarkService','feedDetailService', 'socialService', '$cordovaNetwork', 'ConnectivityMonitorFactory', 'settingService'];
-angular
-	.module('tatafo')
-	.controller('SourceFeedController',SourceFeedController)
-
+		setup();
+	};
+	SourceFeedController.$inject=['$log', '$rootScope', '$scope', '$state', '$stateParams', 'feedService', 'feedsDAOService', '$ionicLoading', '$ionicScrollDelegate', 'bookMarkService', 'feedDetailService', 'socialService', 'ConnectivityMonitorFactory', 'settingService'];
+	angular
+		.module('tatafo')
+		.controller('SourceFeedController',SourceFeedController)
 })();
