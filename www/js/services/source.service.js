@@ -8,7 +8,7 @@
     var sourcesService = function($log, $http, $q, TATAFO_API_URL, settingService) {
 
         this.isFeedSourcesAvailable = function() {            
-            var sources = JSON.parse(localStorage.sources || '[]');
+            var sources = JSON.parse(localStorage.tatafo_sources || '[]');
 
             if(angular.isDefined(sources) && sources.length > 0 ){
                 return true;
@@ -24,14 +24,14 @@
         */
         var setFeedSourcesinLocalStorage = function(sources){
             $log.debug('setFeedSourcesinLocalStorage');
-            localStorage.sources = JSON.stringify(sources);
+            localStorage.tatafo_sources = JSON.stringify(sources);
         };
 
         /**
         *  getFeedSourcesinLocalStorage is used to get sources from Local Storage
         */
         this.getFeedSourcesFromLocalStorage = function(){
-           return JSON.parse(localStorage.sources ||  null)
+           return JSON.parse(localStorage.tatafo_sources ||  null)
         };
 
 
@@ -39,7 +39,7 @@
         *  getFeedSourceinLocalStorage is used to individual source from Local Storage accroding to the feed
         */
         this.getFeedSourceFromLocalStorage = function(id){
-            var getSources= JSON.parse(localStorage.sources ||  null);
+            var getSources= JSON.parse(localStorage.tatafo_sources ||  null);
             var singleSource={}
             angular.forEach(getSources, function(val,key){ 
                 if(val.id==id){
@@ -80,11 +80,11 @@
         };
 
         var setLastSourceSyncTime = function(date){
-            localStorage.lastSourceSyncTime = date;
+            localStorage.tatafo_lastSourceSyncTime = date;
         };
 
         this.getLastSourceSyncTime = function(){
-            return localStorage.lastSourceSyncTime || new Date("October 13, 2000 00:00:00");
+            return localStorage.tatafo_lastSourceSyncTime || new Date("October 13, 2000 00:00:00");
         };
 
     }

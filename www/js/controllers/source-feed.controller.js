@@ -4,7 +4,7 @@
 	/**
 	* SourceFeedController Function
 	*/
-	var SourceFeedController = function($log, $injector, $rootScope, $ionicHistory, $scope, $state, $stateParams, feedService, feedsDAOService, $http , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactory) {
+	var SourceFeedController = function($log, $injector, $rootScope, $ionicHistory, $scope, $state, $stateParams, feedService, feedsDAOService, $http , $q , $ionicLoading , $ionicScrollDelegate , $ionicPopover , bookMarkService , feedDetailService, socialService, $cordovaNetwork, ConnectivityMonitorFactory, settingService) {
 
 		var setup = function() {		
 			$log.debug('SourceFeedController setup');
@@ -37,14 +37,20 @@
 		$scope.$on('$ionicView.beforeEnter', function (event, viewData) {
 		    viewData.enableBack = true;
 		});
+
+		/**
+		* Back Button Handling before leave
+		* checking the current url(is it Loacl/Foriegn ?)
+		* confirming that need to show popup or not for App rate using settingService.doWeNeedToShowAppRatePopup function
+		*/
 		$scope.$on('$ionicView.beforeLeave', function (event, viewData) {
 		    viewData.enableBack = true;
 		    if(($state.current.name.indexOf('app.feeds.local') != -1 ) || (($state.current.name.indexOf('app.feeds.foreign') != -1 ))) {
-			    if(!angular.isDefined(localStorage.appRateStatus) || localStorage.appRateStatus == 'false') {		    	  	
-					var clickEvent = new MouseEvent("tap", {});
+			  	if(settingService.doWeNeedToShowAppRatePopup()) {
+			  		var clickEvent = new MouseEvent("tap", {});
 				    var element = document.getElementById('app-rate-model-source-feed');
 					element.dispatchEvent(clickEvent);
-			    }
+			  	}
 			}
 		});
 
@@ -224,7 +230,7 @@
 	setup();
 };
 
-SourceFeedController.$inject=['$log', '$injector', '$rootScope', '$ionicHistory', '$scope','$state','$stateParams', 'feedService', 'feedsDAOService', '$http', '$q', '$ionicLoading', '$ionicScrollDelegate', '$ionicPopover','bookMarkService','feedDetailService', 'socialService', '$cordovaNetwork', 'ConnectivityMonitorFactory' ];
+SourceFeedController.$inject=['$log', '$injector', '$rootScope', '$ionicHistory', '$scope','$state','$stateParams', 'feedService', 'feedsDAOService', '$http', '$q', '$ionicLoading', '$ionicScrollDelegate', '$ionicPopover','bookMarkService','feedDetailService', 'socialService', '$cordovaNetwork', 'ConnectivityMonitorFactory', 'settingService'];
 angular
 	.module('tatafo')
 	.controller('SourceFeedController',SourceFeedController)

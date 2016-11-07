@@ -37,12 +37,12 @@
         */
         this.isRegisterOnServerRequired = function(pushObj){
 
-            if( !localStorage.deviceInfo ){
+            if( !localStorage.tatafo_deviceInfo ){
                 $log.debug('deviceInfo not present in localStorage');
                 return true;
             }
 
-            var deviceInfo = angular.fromJson(localStorage.deviceInfo);
+            var deviceInfo = angular.fromJson(localStorage.tatafo_deviceInfo);
 
             if( deviceInfo.push_token != pushObj.pushToken || deviceInfo.device_token != pushObj.userId ){
                 $log.debug('deviceInfo has changed from device & localStorage');
@@ -54,11 +54,11 @@
         };
 
         this.setDeviceInfoInLocalStorage = function(deviceInfo){
-            localStorage.deviceInfo = angular.toJson(deviceInfo);
+            localStorage.tatafo_deviceInfo = angular.toJson(deviceInfo);
         };
 
         this.getDeviceInfoFromLocalStorage = function(){
-            return angular.fromJson(localStorage.deviceInfo);
+            return angular.fromJson(localStorage.tatafo_deviceInfo);
         };
 
     }

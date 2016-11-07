@@ -5,7 +5,7 @@
 	/**
 	* appRateDirective Directive function
 	*/
-	var appRateDirective=function($ionicModal, $state, $ionicPopup, $window) {		
+	var appRateDirective=function($ionicModal, $state, $ionicPopup, $window, settingService) {		
 		return {
 			restrict: 'A',
 			scope: {},
@@ -47,8 +47,8 @@
 				}
 
 				scope.appRate = function () {
+					settingService.setAppRateStatus(true);		
 					$window.open("market://details?id=com.wec.tatafo", "_system");
-					localStorage.appRateStatus = true;			
 				}
 
 				/**
@@ -82,7 +82,7 @@
 	/**
 	* @dependencies injector $ionicModal, $state, $ionicPopup
 	*/
-	appRateDirective.$inject=['$ionicModal', '$state', '$ionicPopup', '$window'];
+	appRateDirective.$inject=['$ionicModal', '$state', '$ionicPopup', '$window', 'settingService'];
 	angular
 		.module('tatafo')
 		.directive('appRateDirective',appRateDirective)
