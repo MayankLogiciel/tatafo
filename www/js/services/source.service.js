@@ -18,7 +18,6 @@
            
         };
 
-        this.set
         /**
         *  setFeedSourcesinLocalStorage is used store sources in Local Storage
         */
