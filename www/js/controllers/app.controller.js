@@ -4,7 +4,7 @@
 	/**
 	* AppController function
 	*/
-	var AppController = function($log, $stateParams, $scope, $rootScope, $ionicConfig , $state, $ionicLoading, feedService, $ionicPopover,$cordovaNetwork) {
+	var AppController = function($log, $scope) {
 
 		/**
 		* Initialization
@@ -26,9 +26,9 @@
 	};
 
 	/**
-	* @dependencies injector $log, $stateParams, $scope, $rootScope, $ionicConfig , $state, $ionicLoading, feedService, $ionicPopover,$cordovaNetwork
+	* @dependencies injector $log, $scope,  
 	*/
-	AppController.$inject=['$log','$stateParams', '$scope', '$rootScope', '$ionicConfig', '$state', '$ionicLoading', 'feedService', '$ionicPopover','$cordovaNetwork'];
+	AppController.$inject=['$log', '$scope'];
 
 	angular
 		.module('tatafo')

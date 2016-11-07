@@ -4,7 +4,7 @@
 	/**
 	* AllFeedsController Function
 	*/
-	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, $http, sourcesService, feedService, feedsDAOService, $ionicLoading, $filter,$state,feedDetailService, $ionicScrollDelegate, bookMarkService, $ionicHistory,socialService, $timeout, ConnectivityMonitorFactory, settingService) {
+	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService) {
 
 		var setup = function(){
 			$log.debug('AllFeedsController setup');
@@ -14,22 +14,15 @@
 				page:1,
 				limit:10
 			};
-
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
 			$scope.searchQuery = '';
-
-
 			$scope.feedStatus = {};
 			$scope.feedStatus.read=true;
 			$scope.feedStatus.unread=true;
-
-
 			getFeeds();			
 			loadPopOver();
-
-
 			$rootScope.$on("readArticle", function (event,args) {
 				$log.debug("Read Article event received in All Feed Controller");
 	      		angular.forEach($scope.allFeed,function(val, key){
@@ -64,7 +57,6 @@
 		var isSourceSyncRequired = function(){
 			var syncSetting = settingService.getSettings().syncTimeOption;
 			var syncIntervalInMS = syncSetting.value*60*60*1000;
-			//var syncIntervalInMS =0.1*60*1000;
 			var lastSynced = Date.parse(sourcesService.getLastSourceSyncTime());
 			var currenTime = Date.parse(new Date());
 			var timeSinceLastSyncInMS = currenTime - lastSynced;
@@ -109,7 +101,7 @@
 			
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedsDAOService.getRecentPostsFromPouchDB($scope.feedsParams).then(function(response){
-					console.log(response);
+					$log.debug(response);
 					if(response.posts.length>0){
 
 						if(!isLoadMore) {
@@ -165,9 +157,6 @@
 			}			
 		};
 
-
-
-
 		/**
 		* selectOption to geting the read and unread feeds
 		* if ConnectivityMonitorFactory.isOffline then feedService.sortReadUnread loads the feeds from pouchDB(after filtering) 
@@ -211,7 +200,6 @@
 			$scope.popover.hide();
 		};
 
-
 		$scope.search = function(query){
 			$scope.isSearchUsed = true;
 			$scope.feedsParams.page = 1;
@@ -245,8 +233,7 @@
         	if($scope.isSearchUsed){
 	        	$scope.doRefresh();
         		$scope.isSearchUsed = false;
-        	}
-        	
+        	}        	
     	};
 
 		$scope.bookmarkPost = function(post) {
@@ -255,19 +242,6 @@
 
 		$scope.sharePost = function(post) {
 			socialService.share(post.feed.summary || post.feed.content, post.feed.title, post.image, post.feed.permalinkUrl);
-		};
-
-		/**
-		* feedService.getRaedOrUnread fetching the feeds from API
-		*/
-		var loadReadUnreadFeeds=function(param,id){
-			$ionicLoading.show({
-          		template: '<ion-spinner icon="android"></ion-spinner>'
-        	});
-			feedService.getRaedOrUnread(param,id).then(function(feed){
-				$scope.allFeed =feed.data.data.feed;
-	
-			});
 		};
 
 		/**
@@ -339,24 +313,23 @@
 	  	setup();
 	};
 
+	/*
+	* AllFeedController injector $log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService
+	*/
 	AllFeedsController.$inject = [
 		'$log',
 		'$ionicPopover', 
 		'$rootScope',
 		'$scope', 
-		'$http', 
 		'sourcesService',
 		'feedService',
 		'feedsDAOService',
 		'$ionicLoading',
-		'$filter',
 		'$state',
 		'feedDetailService',
 		'$ionicScrollDelegate',
 		'bookMarkService',
-		'$ionicHistory',
 		'socialService',
-		'$timeout',
 		'ConnectivityMonitorFactory',
 		'settingService'		
 	];
@@ -364,5 +337,4 @@
 	angular
 		.module('tatafo')
 		.controller('AllFeedsController', AllFeedsController);
-
 })();
