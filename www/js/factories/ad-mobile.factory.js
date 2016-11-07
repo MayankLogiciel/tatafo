@@ -4,28 +4,27 @@
 	/**
 	* adMobileFactory function
 	*/
-	var adMobileFactory = function($window) {
+	var adMobileFactory = function($log, $window) {
 
 		var adMob = $window.adMob;
-
         if(adMob) {
             /** Register adMobileFactory events
             * new events, with variable to differentiate: adNetwork, adType, adEvent
             */
             document.addEventListener('onAdFailLoad', function(data) {
-                console.log('error: ' + data.error + ', reason: ' + data.reason + ', adNetwork:' + data.adNetwork + ', adType:' + data.adType + ', adEvent:' + data.adEvent); // adType: 'banner' or 'interstitial'
+                $log.debug('error: ' + data.error + ', reason: ' + data.reason + ', adNetwork:' + data.adNetwork + ', adType:' + data.adType + ', adEvent:' + data.adEvent); // adType: 'banner' or 'interstitial'
             });
             document.addEventListener('onAdLoaded', function(data) {
-              console.log('onAdLoaded: ' + data);
+              $log.debug('onAdLoaded: ' + data);
             });
             document.addEventListener('onAdPresent', function(data) {
-              console.log('onAdPresent: ' + data);
+              $log.debug('onAdPresent: ' + data);
             });
             document.addEventListener('onAdLeaveApp', function(data) {
-              console.log('onAdLeaveApp: ' + data);
+              $log.debug('onAdLeaveApp: ' + data);
             });
             document.addEventListener('onAdDismiss', function(data) {
-              console.log('onAdDismiss: ' + data);
+              $log.debug('onAdDismiss: ' + data);
             });
 
             var defaultOptions = {
@@ -59,61 +58,57 @@
                 adId: admobid.interstitial,
                 autoShow: false,
                 success: function() {
-                    console.log('interstitial prepared');
+                    $log.debug('interstitial prepared');
                 },
                 error: function() {
-                    console.log('failed to prepare interstitial');
+                    $log.debug('failed to prepare interstitial');
                 }
             });
+        }else {
+            $log.debug("No adMobileFactory?");
         }
-        else {
-            console.log("No adMobileFactory?");
-        }
-
         return {
-        showBanner: function() {
-              if(adMob)
-              {
+            showBanner: function() {
+                if(adMob)
+                {
                     adMob.createBanner({
-                    adId:admobid.banner,
-                    position:adMobileFactory.AD_POSITION.BOTTOM_CENTER,
-                    autoShow:true,
-                    success: function() {
-                        console.log('banner created');
-                    },
-                      error: function() {
-                        console.log('failed to create banner');
-                      }
-                });
-              }
-        },
-        showInterstitial: function() {
-          if(adMob)
-          {
-            // If you didn't prepare it before, you can show it like this
-            // adMobileFactory.prepareInterstitial({adId:admobid.interstitial, autoShow:autoshow});
-
-            // If you did prepare it before, then show it like this
-            // 		- (for example: check and show it at end of a game level)
-            adMob.showInterstitial();
-          }
-        },
-        removeAds: function() {
-          if(adMob)
-          {
-            adMob.removeBanner();
-          }
-        }
-      };
-	}
+                        adId:admobid.banner,
+                        position:adMobileFactory.AD_POSITION.BOTTOM_CENTER,
+                        autoShow:true,
+                        success: function() {
+                            $log.debug('banner created');
+                        },
+                        error: function() {
+                            $log.debug('failed to create banner');
+                        }
+                    });
+                }
+            },
+            showInterstitial: function() {
+                if(adMob)
+                {
+                    // If you didn't prepare it before, you can show it like this
+                    // adMobileFactory.prepareInterstitial({adId:admobid.interstitial, autoShow:autoshow});
+                    // If you did prepare it before, then show it like this
+                    // 		- (for example: check and show it at end of a game level)
+                    adMob.showInterstitial();
+                }
+            },
+            removeAds: function() {
+                if(adMob)
+                {
+                    adMob.removeBanner();
+                }
+            }
+        };
+    };
 	/**
 	* @dependencies injector $window
 	*/
 
-	adMobileFactory.$inject=['$window'];
+	adMobileFactory.$inject=['$log', '$window'];
 
 	angular
 		.module('tatafo')
 		.factory('adMobileFactory',adMobileFactory);
-
 })();
