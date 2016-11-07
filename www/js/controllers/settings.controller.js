@@ -5,11 +5,10 @@
       var SettingsController = function($log, $scope, $rootScope, $ionicPopup, settingService) {
 
             var setup = function(){
+                  $log.debug('SettingsController');
                   $scope.syncIntervalOptions = settingService.getSyncIntervalOptions();
                   $log.debug($scope.syncIntervalOptions);
-
                   $scope.userSettings = settingService.getSettings();
-
                   $log.debug($scope.userSettings);
             };
 
@@ -25,7 +24,6 @@
                 settingService.setImageViewEnable(status);
                 $rootScope.$broadcast('imageViewEnabled', status);
             };
-
 
             /**
             * show popup for select interval
