@@ -3,10 +3,10 @@
 
 	var utcTimestampToLocalDateFilter = function($filter){
 		return function(uTimeStampInSeconds, formatName){
-			var format = 'yyyy-MM-dd | HH:mm';
+			var format = 'yyyy-MMM-dd | HH:mm a';
 
 			if(angular.isDefined(formatName) && formatName == "timeFirst"){
-				format = 'HH:mm | yyyy-MM-dd';
+				format = 'yyyy-MMM-dd | HH:mm a';
 			}
 
 			/**
