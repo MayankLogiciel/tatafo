@@ -5,7 +5,7 @@
 	* BookMarks Controller function
 	*/
 
-	var BookMarksController = function($scope , $rootScope , bookMarkService , $state, $ionicPopup, $ionicLoading, feedDetailService,  $window, $cordovaNetwork) {
+	var BookMarksController = function($scope, bookMarkService, $state, $ionicPopup, feedDetailService) {
 
 		
 		/**
@@ -52,9 +52,9 @@
 	};
 
 	/**
-	* @dependencies injector $scope , $rootScope , bookMarkService , $state, $ionicPopup, $ionicLoading, feedDetailService,  $window, $cordovaNetwork
+	* @dependencies injector $scope, bookMarkService, $state, $ionicPopup, feedDetailService, 
 	*/
-	BookMarksController.$inject=['$scope' ,'$rootScope' , 'bookMarkService' , '$state', '$ionicPopup', '$ionicLoading', 'feedDetailService', '$window','$cordovaNetwork'];
+	BookMarksController.$inject=['$scope' , 'bookMarkService' , '$state', '$ionicPopup', 'feedDetailService'];
 
 	angular
 		.module('tatafo')
