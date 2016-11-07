@@ -3,7 +3,7 @@
 	'use strict';
 
 	//Use this directive to open external links using inAppBrowser cordova plugin
-	var dynamicAnchorFix = function($ionicGesture, $timeout, $cordovaInAppBrowser, ConnectivityMonitorFactory) {
+	var dynamicAnchorFix = function($timeout, $cordovaInAppBrowser) {
 		return {
 			scope: {},
 			link: function(scope, element, attrs) {
@@ -46,7 +46,7 @@
 		};
 	}
 
-	dynamicAnchorFix.$inject = ['$ionicGesture', '$timeout', '$cordovaInAppBrowser', 'ConnectivityMonitorFactory'];
+	dynamicAnchorFix.$inject = ['$timeout', '$cordovaInAppBrowser'];
 
 	angular
 		.module('tatafo')
