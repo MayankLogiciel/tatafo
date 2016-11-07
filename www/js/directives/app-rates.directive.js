@@ -5,7 +5,7 @@
 	/**
 	* appRateDirective Directive function
 	*/
-	var appRateDirective=function($ionicModal, $state, $ionicPopup, $window, settingService) {		
+	var appRateDirective=function($ionicModal, $window, settingService) {		
 		return {
 			restrict: 'A',
 			scope: {},
@@ -80,9 +80,9 @@
 	}
 
 	/**
-	* @dependencies injector $ionicModal, $state, $ionicPopup
+	* @dependencies injector $ionicModal, $window, settingService
 	*/
-	appRateDirective.$inject=['$ionicModal', '$state', '$ionicPopup', '$window', 'settingService'];
+	appRateDirective.$inject=['$ionicModal', '$window', 'settingService'];
 	angular
 		.module('tatafo')
 		.directive('appRateDirective',appRateDirective)
