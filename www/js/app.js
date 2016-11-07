@@ -209,11 +209,11 @@ angular
                 }
             }
         })
-        .state('app.bookmarks', {
+        .state('app.feeds.bookmarks', {
             url: "/bookmarks",
             cache: false,
             views: {
-                'menuContent': {
+                'bookmark-tab': {
                     templateUrl: "views/app/bookmarks.html",
                     controller: 'BookMarksController'
                 }
