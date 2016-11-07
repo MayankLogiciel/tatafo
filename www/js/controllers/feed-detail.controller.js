@@ -4,7 +4,7 @@
 	/**
 	* FeedDetailController function
 	*/
-	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, $ionicLoading, $state, $ionicHistory, $stateParams, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $window, $rootScope) {
+	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope) {
 		
 		/**
 		* Initialization
@@ -137,14 +137,14 @@
 		}
 
 		$scope.openLink = function (link) {
-			$window.open('http://' + link, '_system');
+			window.open('http://' + link, '_system');
 		};
 
 		setup();
 	};
 
 	
-	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService','bookMarkService', '$ionicLoading', '$state','$ionicHistory', '$stateParams', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$window', '$rootScope'];
+	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope'];
 
 	angular
 		.module('tatafo')

@@ -6,7 +6,6 @@
 	*/
 
 	var BookMarksController = function($scope, bookMarkService, $state, $ionicPopup, feedDetailService) {
-
 		
 		/**
 		* getBookmarks
