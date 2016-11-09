@@ -103,7 +103,6 @@
 				feedsDAOService.getRecentPostsFromPouchDB($scope.feedsParams).then(function(response){
 					$log.debug(response);
 					if(response.posts.length>0){
-
 						if(!isLoadMore) {
 							$scope.allFeed = [];
 						}
@@ -111,11 +110,11 @@
 							$scope.allFeed = $scope.allFeed.concat(feed);
 						});
 						$scope.isMoreFeeds = response.isMorePostsPresent;
-
 					}	
 					else{
 						$scope.isMoreFeeds = response.isMorePostsPresent;
 					}
+					getBookMarksfromPouchDBToChangeSaveButtonColor();					
 					$scope.loaded = true;
 				}).finally(function(){	
 					if(isLoadMore){
@@ -123,9 +122,8 @@
 					}else{
 						$scope.$broadcast('scroll.refreshComplete');
 					}				
-				});;	
-			}
-			
+				});	
+			}			
 			if(ConnectivityMonitorFactory.isOnline()) {
 				if($state.current.name.indexOf('app.feeds.all') !== -1 ) {
 					$ionicLoading.show({
@@ -141,8 +139,8 @@
 						if(!isLoadMore) {
 							$scope.allFeed = [];
 						}
-
-						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
+						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);						
+						getBookMarksfromPouchDBToChangeSaveButtonColor();
 						feedsDAOService.addNewFeeds($scope.allFeed);
 						$scope.loaded = true;
 					}).finally(function(){	
@@ -154,8 +152,38 @@
 						$ionicLoading.hide();
 					});
 				}
-			}			
+			}
 		};
+		/*
+		* deleteBookMarks used to make the bookmark unselected form
+		*/
+		$rootScope.$on("deleteBookMarks", function (event,arg) {
+			$scope.allFeed.map(function(v) {
+				if(v.id == arg.id){
+					v.bookmarkSaved = false;
+				}
+			});						
+		});
+
+		/*
+		* getBookMarksfromPouchDBToChangeSaveButtonColor used change to save Button color 
+		* Getting all bookmark from PouchDB
+		* comparing them with Feed List 
+		*/
+		var getBookMarksfromPouchDBToChangeSaveButtonColor  = function() {
+			var getBookMarksfromPouchDB  = [];
+			bookMarkService.getBookmarkList().then(function(response){
+				getBookMarksfromPouchDB = response;
+				$scope.allFeed.map(function(value) {
+					value.bookmarkSaved = false;
+					getBookMarksfromPouchDB.map(function(val) {
+						if(val.doc.data.id == value.id) {
+							value.bookmarkSaved = true;
+						}
+					})								
+				});
+			});
+		}	
 
 		/**
 		* selectOption to geting the read and unread feeds
@@ -237,6 +265,7 @@
     	};
 
 		$scope.bookmarkPost = function(post) {
+			post.bookmarkSaved = true;
 			bookMarkService.addBookmarkToPouchDB(post);
 		};
 
@@ -331,7 +360,8 @@
 		'bookMarkService',
 		'socialService',
 		'ConnectivityMonitorFactory',
-		'settingService'		
+		'settingService'
+				
 	];
 
 	angular

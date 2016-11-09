@@ -10781,6 +10781,9 @@ ion-side-menu .heading-item .message {
   .entry-content-unread .item {
     background-color: #f5f5f5; }
 
+.bookmark-save-icon {
+  color: red; }
+
 .feeds-categories-view {
   background-color: #ccc; }
   .feeds-categories-view .categories-list {

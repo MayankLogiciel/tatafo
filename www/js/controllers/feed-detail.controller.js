@@ -121,6 +121,7 @@
 		*  bookmarkPost post the feed deatil for book mark for PouchDB
 		*/	
 		$scope.bookmarkPost = function() {	
+			$scope.entry.bookmarkSaved = true;
 			bookMarkService.addBookmarkToPouchDB($scope.entry);
 		};
 

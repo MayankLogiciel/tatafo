@@ -18,28 +18,22 @@
 	        .then(function(docs) {
 	        	//check if this post is already saved
 				var existing_post = _.find(docs.rows, function(data) { 
-					console.log(data);
 					if(angular.isUndefined(data.doc.data.id)){
 						return null;
 					}
-					if(data.doc.data.id==bookmark_post.id){
-						
-						$ionicLoading.show({ template: 'Bookmark already exist!', noBackdrop: true, duration: 1000 });
-					
+					if(data.doc.data.id==bookmark_post.id){						
+						$ionicLoading.show({ template: 'Bookmark already exist!', noBackdrop: true, duration: 1000 });					
 						return data.doc.data.id == bookmark_post.id; 
-					}				
-
+					}
 				});
 		
 				if(!existing_post) {
 					bookmarksDB.post({
 						data:bookmark_post
 					});
-					$ionicLoading.show({ template: 'Bookmark Saved!', noBackdrop: true, duration: 1000 });
-
+					$ionicLoading.show({ template: 'Bookmark Saved!', noBackdrop: true, duration: 1000 });					
 				}
-	        });
-         	$rootScope.$broadcast("new-bookmark");
+	        }); 
 		};
 
 		/**

@@ -56,6 +56,7 @@
 		* Post bookmark
 		*/	
 		$scope.bookmarkPost = function(post) {
+			post.bookmarkSaved = true;
 			bookMarkService.addBookmarkToPouchDB(post);
 			
 		};
@@ -71,7 +72,8 @@
 		*/
 		var loadFeeds = function(isLoadMore) {	
 			$scope.loaded = false;			
-			$scope.feedsParams.source_id = $stateParams.sourceId;			
+			$scope.feedsParams.source_id = $stateParams.sourceId;
+
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedsDAOService.getPostsHavingSource($scope.feedsParams).then(function(response){
 					if(response.posts.length>0){
@@ -86,6 +88,7 @@
 					else{
 						$scope.isMoreFeeds = response.isMorePostsPresent;
 					}
+					getBookMarksfromPouchDBToChangeSaveButtonColor();					
 					$scope.loaded = true;
 				}).finally(function(){	
 					if(isLoadMore){
@@ -98,8 +101,7 @@
 			if(ConnectivityMonitorFactory.isOnline()) {	
 				$ionicLoading.show({
 					template: '<ion-spinner icon="android"></ion-spinner>'
-				});
-	
+				});	
 				feedService.getFeeds($scope.feedsParams).then(function(feed) {
 					if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
 
@@ -111,6 +113,7 @@
 					if(!isLoadMore) {
 						$scope.feed = [];
 					}
+					getBookMarksfromPouchDBToChangeSaveButtonColor();
 					$scope.feed = $scope.feed.concat(feed.data.data.feed);
 					$scope.loaded = true;
 				}).finally(function(){	
@@ -123,7 +126,36 @@
 				});
 			};
 		}
+		/*
+		* deleteBookMarks used to make the bookmark unselected form
+		*/
+		$rootScope.$on("deleteBookMarks", function (event,arg) {
+			$scope.feed.map(function(v) {
+				if(v.id == arg.id){
+					v.bookmarkSaved = false;
+				}
+			});						
+		});
 
+		/*
+		* getBookMarksfromPouchDBToChangeSaveButtonColor used change to save Button color 
+		* Getting all bookmark from PouchDB
+		* comparing them with Feed List 
+		*/
+		var getBookMarksfromPouchDBToChangeSaveButtonColor  = function() {
+			var getBookMarksfromPouchDB  = [];
+			bookMarkService.getBookmarkList().then(function(response){
+				getBookMarksfromPouchDB = response;
+				$scope.feed.map(function(value) {
+					value.bookmarkSaved = false;
+					getBookMarksfromPouchDB.map(function(val) {
+						if(val.doc.data.id == value.id) {
+							value.bookmarkSaved = true;
+						}
+					})							
+				});
+			});
+		}		
 		/**
 		*loadMore incrementing page by one and calling the loadFeeds
 		*/	

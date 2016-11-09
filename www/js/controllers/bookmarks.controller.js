@@ -5,7 +5,7 @@
 	* BookMarks Controller function
 	*/
 
-	var BookMarksController = function($scope, bookMarkService, $state, $ionicPopup, feedDetailService) {
+	var BookMarksController = function($scope, bookMarkService, $state, $ionicPopup, feedDetailService, $rootScope) {
 		
 		/**
 		* getBookmarks
@@ -21,7 +21,7 @@
 		/**
 		* bookMarkService.deleteBookMark delete the book mark (perticular Id)
 		*/
-		$scope.deleteBookMark = function(postId) {			
+		$scope.deleteBookMark = function(postId) {	
 			var confirmPopup = $ionicPopup.confirm({
      				title: 'Delete BookMark',
      				template: 'Are you sure you want to delete this bookmark?'
@@ -32,6 +32,7 @@
 					angular.forEach($scope.bookmarks,function(val,index){
 						if(postId._id==val.id){
 			       			$scope.bookmarks.splice(index, true);
+							$rootScope.$broadcast("deleteBookMarks", {id: postId.data.id});
 						}
 					})
 			    }
@@ -53,7 +54,7 @@
 	/**
 	* @dependencies injector $scope, bookMarkService, $state, $ionicPopup, feedDetailService, 
 	*/
-	BookMarksController.$inject=['$scope' , 'bookMarkService' , '$state', '$ionicPopup', 'feedDetailService'];
+	BookMarksController.$inject=['$scope' , 'bookMarkService' , '$state', '$ionicPopup', 'feedDetailService', '$rootScope'];
 
 	angular
 		.module('tatafo')
