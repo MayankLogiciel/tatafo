@@ -27,6 +27,13 @@
             </div>
         </div>
 
+        <div class="button-bar button-bar-detail-page">
+            <a class="button button-clear card-button primary" on-tap="bookmarkPost(entry)">
+                <i ng-class= "{ 'icon ion-android-bookmark bookmark-save-icon':(entry.bookmarkSaved) , 'icon ion-android-bookmark':(!entry.bookmarkSaved) }"></i> Save            
+            </a>
+            <a class="button button-clear card-button secondary" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+        </div>
+
         <div class="credit-bar-section">
             <div class="pull-left credit-bar-icon">
                 <i class="icon ion-happy-outline"></i>
@@ -44,7 +51,7 @@
             <div class = "col social-list-border" ng-show="topic.social_links.instagram_url" on-tap="sharePost()"> <i class="icon ion-social-instagram"></i>{{Instagram}}</div>
             <div class = "col social-list-border" ng-show="topic.social_links.email" on-tap="sharePost()"> <i class="icon ion-email"></i>{{Email}}</div>
         </div>
-    </ion-content>
+    </ion-content>    
     <div class="float-button-left effect1" on-tap="previousButton()" ng-hide="currentIndex==0">
         <span class="height-fix">
             <a ng-click="" class="cont">

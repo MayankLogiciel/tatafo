@@ -10283,6 +10283,15 @@ ion-popover-view.fit ion-content {
   .feed-entries-details-view .button-bar a p span {
     color: #fff; }
 
+.feed-entries-details-view .button-bar-detail-page {
+  background-color: #333; }
+  .feed-entries-details-view .button-bar-detail-page a {
+    color: #FFF; }
+    .feed-entries-details-view .button-bar-detail-page a:first-child {
+      border-right: 2px dotted #fff; }
+    .feed-entries-details-view .button-bar-detail-page a i {
+      color: #F37168; }
+
 .word-wrap {
   white-space: nowrap;
   text-overflow: ellipsis;
