@@ -6,7 +6,7 @@
     * TourController function
     * This is the controller that handles the app tour page
     */
-    var TourController = function($scope, $state, $ionicSlideBoxDelegate) {
+    var TourController = function($scope, $state, $ionicSlideBoxDelegate, settingService) {
 
         $scope.$on('$ionicView.enter', function() {
             //Customizations
@@ -62,6 +62,7 @@
             //End tour.
             $scope.skip = function() {
                 //Return to first page.
+                settingService.setTutorialTourStatus(true);
                 $ionicSlideBoxDelegate.slide(0);
                 $state.go($scope.pages.redirect);
             };
@@ -90,9 +91,9 @@
     };
 
     /**
-    * @dependencies injector $scope, $state, $ionicSlideBoxDelegate
+    * @dependencies injector $scope, $state, $ionicSlideBoxDelegate, settingService
     */
-    TourController.$inject=['$scope', '$state', '$ionicSlideBoxDelegate'];
+    TourController.$inject=['$scope', '$state', '$ionicSlideBoxDelegate', 'settingService'];
 
     angular
         .module('tatafo')

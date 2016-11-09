@@ -114,16 +114,16 @@
         }
       }
 
-      // this.setTutorialTourStatus = function() {
-      //   var appTutorialTourStatus = JSON.parse(localStorage.tatafo_AppTutorialTourStatus || false);
-      //   localStorage.tatafo_AppTutorialTourStatus = sourceFeedVisitedCount;
-      // }
-      // this.doWeNeedToShowTutorialTour = function() {                   
-      //   var getTutorialTourStatus =  localStorage.tatafo_AppTutorialTourStatus;
-      //   if(getTutorialTourStatus ) {
-      //     return true;          
-      //   }
-      // }
+      this.setTutorialTourStatus = function(status) {
+        //var appTutorialTourStatus = JSON.parse(localStorage.tatafo_AppTutorialTourStatus || false);
+        localStorage.tatafo_AppTutorialTourStatus = status;
+      }
+      this.doWeNeedToShowTutorialTour = function() {                   
+        var getTutorialTourStatus =  localStorage.tatafo_AppTutorialTourStatus;
+        if(getTutorialTourStatus == 'true') {
+          return true;          
+        }
+      }
     }
     settingService.$inject = [
         '$log',

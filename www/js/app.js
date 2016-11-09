@@ -45,12 +45,20 @@ angular
                     deviceTokenService.registerDeviceOnServer(params).then(function(res){
                         $log.debug(res.data.data.data);
                         deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
-                        $state.go('app.feeds.all');
+                        if(!settingService.doWeNeedToShowTutorialTour()) {
+                            $state.go('tour');
+                        }else {
+                            $state.go('app.feeds.all');                            
+                        }
                         hideSplashScreen();
                     });
                 }else{
                     $log.debug('No Need to register device on server');
-                    $state.go('tour');
+                    if(!settingService.doWeNeedToShowTutorialTour()) {
+                        $state.go('tour');
+                    }else {
+                        $state.go('app.feeds.all');                            
+                    }
                     hideSplashScreen();
                 }                
             };
