@@ -18,7 +18,7 @@
 	<div class="card-footer">
 		<div class="button-bar">
 			<a class="button button-clear card-button primary" on-tap="bookmarkPost(entry)">
-				<i class="icon ion-android-bookmark"></i> Save
+				<i ng-class= "{ 'icon ion-android-bookmark bookmark-save-icon':(entry.bookmarkSaved) , 'icon ion-android-bookmark':(!entry.bookmarkSaved) }"></i> Save				
 			</a>
 			<a class="button button-clear card-button secondary" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
 		</div>
