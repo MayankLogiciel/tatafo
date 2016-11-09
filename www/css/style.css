@@ -1,1 +1,81 @@
-/* Empty. Add your own CSS if you like */
+.logo {
+  width: 100%;
+  height: auto;
+  margin-top: 25px;
+  margin-bottom: -25px;
+}
+.button {
+  border-radius: 5px;
+  text-shadow: 1.5px 1.5px 5px rgba(0, 0, 0, 0.25);
+  color: #e5e5e5 !important;
+}
+.bold {
+  font-weight: 900;
+}
+.line-height-160 {
+  line-height: 160%;
+}
+.slider {
+  height: 100%;
+}
+.slider-slide {
+  color: #000;
+  background-color: #fff;
+  text-align: center;
+}
+.slider a {
+  font-size: 200%;
+}
+.slider-pager {
+  margin-bottom: 25px;
+}
+.slider-pager .slider-pager-page {
+  color: #000000 !important;
+  opacity: 0.5 !important;
+  font-size: 10px;
+}
+.slider-pager .slider-pager-page.active {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+.tour-button-left {
+  display: inline-block;
+  float: left;
+  margin-top: 30px;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.25);
+}
+.tour-button-right {
+  display: inline-block;
+  float: right;
+  margin-top: 30px;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.25);
+}
+.tour-button {
+  font-weight: bold;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.25);
+}
+.tour-image {
+  height: auto;
+  margin-top: 20px;
+  box-shadow: 0px 4px #000;
+}
+.tour-title, .tour-subtitle {
+  margin-left: auto;
+  margin-right: auto;
+}
+.tour-title {
+  font-weight: bold;
+  text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.25);
+}
+.tour-subtitle {
+  text-shadow: 1.5px 1.5px 5px rgba(0, 0, 0, 0.25);
+}
+.item.clear {
+  border: 0px !important;
+}
+ion-item:hover {
+  background: transparent !important;
+}
+h4 a {
+  text-decoration: none;
+}

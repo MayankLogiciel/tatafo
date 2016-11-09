@@ -50,7 +50,7 @@ angular
                     });
                 }else{
                     $log.debug('No Need to register device on server');
-                    $state.go('app.feeds.all');
+                    $state.go('tour');
                     hideSplashScreen();
                 }                
             };
@@ -60,7 +60,7 @@ angular
                 //$log.debug(window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4}));
 
                 var notificationOpenedCallback = function(jsonData) {
-                    console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+                    $log.debug('notificationOpenedCallback: ' + JSON.stringify(jsonData));
                 };
 
 
@@ -138,6 +138,11 @@ angular
 
         $ionicConfigProvider.tabs.position('bottom');
         $stateProvider
+        .state('tour', {
+            url: '/tour',
+            templateUrl: 'views/app/tour.html',
+            controller: 'TourController'
+        })
         .state('app', {
             url: "/app",
             abstract: true,
