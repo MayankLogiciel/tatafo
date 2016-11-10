@@ -46,10 +46,11 @@
         <div class = "row" >
             <div class = "col col-50 social-list-border" >Reach {{entry.source_name}}</div>
             <div class = "col social-list-border" ng-show="topic.social_links.website_url" on-tap="openLink(topic.social_links.website_url)"> <i class="icon ion-ios-world"></i></div>
-            <div class = "col social-list-border" ng-show="topic.social_links.facebook_url" on-tap="sharePost()"> <i class="icon ion-social-facebook"></i>{{facebook}}</div>
-            <div class = "col social-list-border" ng-show="topic.social_links.twitter_url" on-tap="sharePost()"> <i class="icon ion-social-twitter"></i>{{twitter}}</div>
-            <div class = "col social-list-border" ng-show="topic.social_links.instagram_url" on-tap="sharePost()"> <i class="icon ion-social-instagram"></i>{{Instagram}}</div>
-            <div class = "col social-list-border" ng-show="topic.social_links.email" on-tap="sharePost()"> <i class="icon ion-email"></i>{{Email}}</div>
+            <div class = "col social-list-border" ng-show="topic.social_links.facebook_url" on-tap="openLink(topic.social_links.facebook_url)"> <i class="icon ion-social-facebook"></i>{{facebook}}</div>
+            <div class = "col social-list-border" ng-show="topic.social_links.twitter_url" on-tap="openLink(topic.social_links.twitter_url)"> <i class="icon ion-social-twitter"></i>{{twitter}}</div>
+            <div class = "col social-list-border" ng-show="topic.social_links.instagram_url" on-tap="openLink(topic.social_links.instagram_url)"> <i class="icon ion-social-instagram"></i>{{Instagram}}</div>
+            <div class = "col social-list-border" ng-show="topic.social_links.youtube_url" on-tap="openLink(topic.social_links.youtube_url)"> <i class="icon ion-social-youtube"></i>{{Youtube}}</div>
+            <div class = "col social-list-border" ng-show="topic.social_links.email" on-tap="openLink(topic.social_links.email)"> <i class="icon ion-email"></i>{{Email}}</div>
         </div>
     </ion-content>    
     <div class="float-button-left effect1" on-tap="previousButton()" ng-hide="currentIndex==0">

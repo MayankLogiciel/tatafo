@@ -508,6 +508,10 @@ ion-popover-view.fit ion-content {
                 &:before {
                     padding: 0;
                     font-size: 25px;
+                    margin-right: 2px;
+                }
+                &:last_child {
+                  margin-right: 0;
                 }
             }
             .button.button-icon.ion-ios-arrow-down {
@@ -524,11 +528,15 @@ ion-popover-view.fit ion-content {
     .buttons-right {
         span {
             .button.button-icon {
-                &:after,
-                &:before {
-                    padding: 0;
-                    font-size: 25px;
-                }
+              &:after,
+              &:before {
+                padding: 0;
+                font-size: 25px;
+                margin-left: 10px;
+              }
+              &:first-child {
+                 margin-left: 0;
+              }
             }
             form {
                 input[type="search"] {
