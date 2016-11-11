@@ -40,17 +40,17 @@
             </div>
             <div class="credit-bar">
                 <p>Credit:</p>
-                <p>This content is owned by <span class="credit-bar-link" on-tap="openLink(topic.social_links.website_url)">{{entry.source_name}} </span></p>
+                <p>This content is owned by <a class="credit-bar-link" ng-href="{{topic.social_links.website_url}}">{{entry.source_name}} </a></p>
             </div>           
         </div>
         <div class = "row" >
-            <div class = "col col-50 social-list-border" >Reach {{entry.source_name}}</div>
-            <div class = "col social-list-border" ng-show="topic.social_links.website_url" on-tap="openLink(topic.social_links.website_url)"> <i class="icon ion-ios-world"></i></div>
-            <div class = "col social-list-border" ng-show="topic.social_links.facebook_url" on-tap="openLink(topic.social_links.facebook_url)"> <i class="icon ion-social-facebook"></i>{{facebook}}</div>
-            <div class = "col social-list-border" ng-show="topic.social_links.twitter_url" on-tap="openLink(topic.social_links.twitter_url)"> <i class="icon ion-social-twitter"></i>{{twitter}}</div>
-            <div class = "col social-list-border" ng-show="topic.social_links.instagram_url" on-tap="openLink(topic.social_links.instagram_url)"> <i class="icon ion-social-instagram"></i>{{Instagram}}</div>
-            <div class = "col social-list-border" ng-show="topic.social_links.youtube_url" on-tap="openLink(topic.social_links.youtube_url)"> <i class="icon ion-social-youtube"></i>{{Youtube}}</div>
-            <div class = "col social-list-border" ng-show="topic.social_links.email" on-tap="openLink(topic.social_links.email)"> <i class="icon ion-email"></i>{{Email}}</div>
+            <div class = "col col-50 social-list-border text-color" >Reach {{entry.source_name}}</div>
+            <a class = "col social-list-border" ng-show="topic.social_links.website_url" ng-href="{{topic.social_links.website_url}}"> <i class="icon ion-ios-world"></i></a>
+            <a class = "col social-list-border" ng-show="topic.social_links.facebook_url" ng-href="{{topic.social_links.facebook_url}}"> <i class="icon ion-social-facebook"></i>{{facebook}}</a>
+            <a class = "col social-list-border" ng-show="topic.social_links.twitter_url" ng-href="{{topic.social_links.twitter_url}}"> <i class="icon ion-social-twitter"></i>{{twitter}}</a>
+            <a class = "col social-list-border" ng-show="topic.social_links.instagram_url" ng-href="{{topic.social_links.instagram_url}}"> <i class="icon ion-social-instagram"></i>{{Instagram}}</a>
+            <a class = "col social-list-border" ng-show="topic.social_links.youtube_url" ng-href="{{topic.social_links.youtube_url}}"> <i class="icon ion-social-youtube"></i>{{Youtube}}</a>
+            <a class = "col social-list-border" ng-show="topic.social_links.email" ng-href="{{topic.social_links.email}}"> <i class="icon ion-email"></i>{{Email}}</a>
         </div>
     </ion-content>    
     <div class="float-button-left effect1" on-tap="previousButton()" ng-hide="currentIndex==0">

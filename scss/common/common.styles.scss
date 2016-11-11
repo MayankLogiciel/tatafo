@@ -3,6 +3,10 @@
 {
 	color: $content-color;
 }
+a{
+  outline: none;
+  text-decoration: none;
+}
 
 .bar.app-top-bar
 {
@@ -586,6 +590,8 @@ ion-popover-view.fit ion-content {
     .social-list-border {
         text-align: center;
         position: relative;
+        color: transparent;
+        border: 1px solid #000;
         &:first-child {
             text-align: left;
         }
@@ -597,6 +603,9 @@ ion-popover-view.fit ion-content {
             left: 0;
             right: 0;
         }
+    }
+    .text-color {
+      color:#333;
     }
     .button-bar {
         a {

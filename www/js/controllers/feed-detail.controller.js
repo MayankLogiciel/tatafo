@@ -136,11 +136,6 @@
 		$scope.sharePost = function() {
 			socialService.share($scope.entry.feed.summary || $scope.entry.feed.content, $scope.entry.feed.title, $scope.entry.image, $scope.entry.feed.permalinkUrl);
 		}
-
-		$scope.openLink = function (link) {
-			window.open('http://' + link, '_system');
-		};
-
 		setup();
 	};
 

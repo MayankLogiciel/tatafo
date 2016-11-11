@@ -9808,6 +9808,10 @@ a.button {
 * {
   color: #444444; }
 
+a {
+  outline: none;
+  text-decoration: none; }
+
 .bar.app-top-bar {
   background-color: #E74D4D; }
   .bar.app-top-bar .title {
@@ -10218,7 +10222,11 @@ ion-popover-view.fit ion-content {
 
 .bar .buttons-left span .button.button-icon:after, .bar .buttons-left span .button.button-icon:before {
   padding: 0;
-  font-size: 25px; }
+  font-size: 25px;
+  margin-right: 2px; }
+
+.bar .buttons-left span .button.button-icon:last_child {
+  margin-right: 0; }
 
 .bar .buttons-left span .button.button-icon.ion-ios-arrow-down:before, .bar .buttons-left span .button.button-icon.ion-ios-arrow-downafter {
   margin-top: 2px;
@@ -10228,7 +10236,11 @@ ion-popover-view.fit ion-content {
 
 .bar .buttons-right span .button.button-icon:after, .bar .buttons-right span .button.button-icon:before {
   padding: 0;
-  font-size: 25px; }
+  font-size: 25px;
+  margin-left: 10px; }
+
+.bar .buttons-right span .button.button-icon:first-child {
+  margin-left: 0; }
 
 .bar .buttons-right span form input[type="search"] {
   width: 250px;
@@ -10263,7 +10275,9 @@ ion-popover-view.fit ion-content {
 
 .feed-entries-details-view .social-list-border {
   text-align: center;
-  position: relative; }
+  position: relative;
+  color: transparent;
+  border: 1px solid #000; }
   .feed-entries-details-view .social-list-border:first-child {
     text-align: left; }
   .feed-entries-details-view .social-list-border .icon {
@@ -10273,6 +10287,9 @@ ion-popover-view.fit ion-content {
     transform: translateY(-50%);
     left: 0;
     right: 0; }
+
+.feed-entries-details-view .text-color {
+  color: #333; }
 
 .feed-entries-details-view .button-bar a p {
   color: #fff;
@@ -10288,7 +10305,7 @@ ion-popover-view.fit ion-content {
   .feed-entries-details-view .button-bar-detail-page a {
     color: #FFF; }
     .feed-entries-details-view .button-bar-detail-page a:first-child {
-      border-right: 2px dotted #fff; }
+      border-right: 1px dotted #fff; }
     .feed-entries-details-view .button-bar-detail-page a i {
       color: #F37168; }
 
