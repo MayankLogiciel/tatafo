@@ -4,7 +4,7 @@
 	/**
 	* FeedDetailController function
 	*/
-	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope) {
+	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading) {
 		
 		/**
 		* Initialization
@@ -113,9 +113,37 @@
 			})
 		};
 
+		// $scope.openLink = function (link) {
+		// 	window.open(link, '_blank');
+		// };
+
 		$scope.openLink = function (link) {
-			window.open(link, '_blank');
-		};
+			cordova.ThemeableBrowser.open(link, '_blank', {
+			    statusbar: {
+			        color: '#FFFFFF'
+			    },
+			    toolbar: {
+			        height: 44,
+			        color: '#f0f0f0ff'
+			    },
+			    title: {
+			        color: '#E74D4D',
+			        showPageTitle: true
+			    },
+			    closeButton: {
+			        image: 'ic_action_remove',
+			        imagePressed: 'close_pressed',
+			        align: 'left',
+			        event: 'closePressed'
+			    },			   
+			    backButtonCanClose: true
+			}).addEventListener('backPressed', function(e) {
+				}).addEventListener(cordova.ThemeableBrowser.EVT_ERR, function(e) {
+			    	$log.debug(e.message);
+				}).addEventListener(cordova.ThemeableBrowser.EVT_WRN, function(e) {
+			    	$log.debug(e.message);
+				});
+			};
 			
 		/**
 		*  bookmarkPost post the feed deatil for book mark for PouchDB
@@ -140,7 +168,7 @@
 	};
 
 	
-	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope'];
+	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope', '$ionicLoading'];
 
 	angular
 		.module('tatafo')
