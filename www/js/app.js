@@ -152,7 +152,7 @@ angular
         $ionicPlatform.on("resume", function() {});
     })
     .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
-
+        $ionicConfigProvider.scrolling.jsScrolling(false);
         $ionicConfigProvider.tabs.position('bottom');
         $stateProvider
         .state('tour', {
