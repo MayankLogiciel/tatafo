@@ -63,6 +63,15 @@ angular
                 }                
             };
 
+            $ionicPlatform.registerBackButtonAction(function (event) {
+                if($state.current.name=="app.feeds.all"){
+                    window.plugins.appMinimize.minimize();
+                }
+                else {
+                  navigator.app.backHistory();
+                }
+            }, 100);
+
             if ( ionic.Platform.isWebView() && ionic.Platform.isAndroid() ) {
 
                 //$log.debug(window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4}));
