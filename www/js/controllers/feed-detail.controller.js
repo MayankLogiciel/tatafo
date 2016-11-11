@@ -113,9 +113,9 @@
 			})
 		};
 
-		// $scope.OpenSocialWindow =function(url){
-		// 	window.open('http://' + url, '_system');
-		// }
+		$scope.openLink = function (link) {
+			window.open(link, '_blank');
+		};
 			
 		/**
 		*  bookmarkPost post the feed deatil for book mark for PouchDB
