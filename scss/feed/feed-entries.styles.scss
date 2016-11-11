@@ -64,7 +64,7 @@
   &.secondary
   {
     color: #FF4C4C;
-
+	line-height: 48px;	
   }
 
    &.university
@@ -173,4 +173,16 @@
 }
 .bookmark-save-icon {
 	color: red;
+}
+
+.tabs-striped  {
+	.tabs {
+		background-color: #ccc;
+		a {
+			i, 
+			span.tab-title {
+				color: #000;
+			}
+		}
+	}
 }
