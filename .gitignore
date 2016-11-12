@@ -6,3 +6,5 @@ platforms/
 plugins/
 www/lib
 bower_components/
+www/css/ionic.app.min.css
+*.css

@@ -3,6 +3,123 @@
 {
 	color: $content-color;
 }
+
+//Night Mode
+$night-mode-background: #141d26;
+$night-mode-text: #fff;
+$night-mode-header: #1b2936;
+.night-mode {
+  * {
+    color: $night-mode-text;
+  }
+  .tabs-striped .tabs {
+    background-color: $night-mode-header;
+    border-top: 1px solid #333!important;
+    *{
+      color: $night-mode-text;
+    }
+    a span.tab-title {
+      color: $night-mode-text;
+    }
+  }
+  ion-side-menu {
+    ion-item.item {
+      border-color: $night-mode-background;
+      * {
+        color: $night-mode-text;
+      }
+      .item-content {
+        background-color: $night-mode-header;
+        color: $night-mode-text;
+        * {
+          color: $night-mode-text;
+        }
+      }
+      .item-content.activated {
+        background-color: $night-mode-background;
+      }
+    } 
+    ion-item.heading-item {
+      .item-content {
+        background-color: $night-mode-background;
+      }  
+    }
+  } 
+  .overflow-scroll,
+  .item,
+  .item-divider {
+    background: $night-mode-background;
+    color: $night-mode-text;
+  }
+  .item-toggle,
+  .sync-interval-setting {
+    background: $night-mode-header;
+    border-color: $night-mode-background;
+  }
+  .bar.app-top-bar {
+    background: $night-mode-header;
+    color: $night-mode-text;
+  }
+  .feed-entries-view {
+    .feed-col{
+      .card {
+        .entry-content {
+          background: $night-mode-background;
+          color: $night-mode-text;     
+        }
+      }
+    }
+  }
+  .bookmarks-view {
+    .bookmarks-container {
+      .bookmarks-list {
+        .bookmark-item {
+          * {
+            color: $night-mode-text;
+          }
+          &:last-child {
+            border-bottom: 1px solid rgba(225, 225, 225, 0.9);
+          }
+        }
+      } 
+    } 
+  } 
+  .categories-list {
+     .source-section {
+      .feed-category {
+        background-color: $night-mode-header;
+        .source-title {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+     }
+  }
+  .popup-container {
+    .popup {
+      border: 1px solid #fff;
+      background: $night-mode-background;
+      .item {
+        background: $night-mode-background;
+      }
+      .item-radio {
+        .item-content {
+          background: $night-mode-background;
+        }
+      } 
+    }
+  }
+  .popover{
+    .item,
+    .list {
+      background: $night-mode-background;
+      color:$night-mode-text;
+    }
+  }
+  .titleuni  {
+    background: $night-mode-background;
+  }
+}
+
 .bar.app-top-bar
 {
 	background-color: $top-bar-bg;
