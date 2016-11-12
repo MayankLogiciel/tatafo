@@ -36,7 +36,7 @@
     		</span>		 	
     	</div>
 	</ion-header-bar>
-	<ion-content has-bouncing="false" class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="feedshandler" >
+	<ion-content ng-show = "feedLoaded" has-bouncing="false" class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="feedshandler" >
 		 		
 		<ion-refresher ng-if="allFeed.length > 0" on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
 		</ion-refresher>

@@ -4,7 +4,7 @@
 	/**
 	* AllFeedsController Function
 	*/
-	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService) {
+	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout) {
 
 		var setup = function(){
 			$log.debug('AllFeedsController setup');
@@ -98,6 +98,7 @@
 		*/
 		var loadFeeds = function(isLoadMore) {
 			$scope.loaded = false;
+			$scope.feedLoaded = false;
 			
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedsDAOService.getRecentPostsFromPouchDB($scope.feedsParams).then(function(response){
@@ -116,6 +117,9 @@
 					}
 					getBookMarksfromPouchDBToChangeSaveButtonColor();					
 					$scope.loaded = true;
+					$timeout(function() {
+						$scope.feedLoaded = true;
+					}, 200);
 				}).finally(function(){	
 					if(isLoadMore){
 						$scope.$broadcast('scroll.infiniteScrollComplete');
@@ -129,7 +133,6 @@
 					$ionicLoading.show({
 	          			template: '<ion-spinner icon="android"></ion-spinner>'
 	        		});
-
 					feedService.getFeeds($scope.feedsParams).then(function(feed) {			
 		   				if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
 							$scope.isMoreFeeds = true;
@@ -143,6 +146,9 @@
 						getBookMarksfromPouchDBToChangeSaveButtonColor();
 						feedsDAOService.addNewFeeds($scope.allFeed);
 						$scope.loaded = true;
+						$timeout(function() {
+							$scope.feedLoaded = true;
+						}, 200);
 					}).finally(function(){	
 						if(isLoadMore){
 							$scope.$broadcast('scroll.infiniteScrollComplete');
@@ -360,7 +366,8 @@
 		'bookMarkService',
 		'socialService',
 		'ConnectivityMonitorFactory',
-		'settingService'
+		'settingService',
+		'$timeout'
 				
 	];
 

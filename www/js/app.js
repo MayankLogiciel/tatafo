@@ -30,7 +30,7 @@ angular
             var hideSplashScreen = function (){
                 $timeout(function() {
                     if(ionic.Platform.isWebView()) $cordovaSplashscreen.hide();
-                }, 1000);
+                }, 800);
             };
      
             var idsReceivedCallback = function(pushObj){
