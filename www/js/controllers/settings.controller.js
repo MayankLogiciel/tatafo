@@ -25,6 +25,11 @@
                 $rootScope.$broadcast('imageViewEnabled', status);
             };
 
+            $scope.toggleNightModeChoice = function (status) {
+                settingService.setNightModeEnable(status);
+                $rootScope.$broadcast('nightModeEnabled', status);
+            };
+
             /**
             * show popup for select interval
             */

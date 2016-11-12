@@ -14,21 +14,28 @@
     </ion-nav-bar>
     <ion-content>
         <ul class="list">
-            <div class="item item-divider"></div>
+            <!-- <div class="item item-divider"></div> -->
             <ion-toggle 
                 ng-model="userSettings.pushNotificationEnabled" 
                 toggle-class="toggle-assertive" 
                 ng-change="toggleUserPushChoice(userSettings.pushNotificationEnabled)"> 
                 Push Notifications
             </ion-toggle>
-            <div class="item item-divider"></div>
+            <!-- <div class="item item-divider"></div> -->
             <ion-toggle 
                 ng-model="userSettings.imageViewEnabled" 
                 toggle-class="toggle-assertive" 
                 ng-change="toggleUserImageChoice(userSettings.imageViewEnabled)">
                 Disable Picture
             </ion-toggle>
-            <div class="item item-divider"></div>
+            <!-- <div class="item item-divider"></div> -->
+            <ion-toggle 
+                ng-model="userSettings.nightModeEnabled" 
+                toggle-class="toggle-assertive" 
+                ng-change="toggleNightModeChoice(userSettings.nightModeEnabled)">
+                Night Mode
+            </ion-toggle>
+            <!-- <div class="item item-divider"></div> -->
             <div on-tap="showPopup()" class="item sync-interval-setting">
                 <div class="pull-left">Sync data after</div>
                 <div class="pull-right" ng-bind="userSettings.syncTimeOption.title"></div>
