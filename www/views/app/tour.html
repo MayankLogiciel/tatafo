@@ -8,8 +8,8 @@
                         <button ng-click="next()" class="button button-clear button-light tour-button-right" style="font-size: {{ioniconSize}}; color: {{ioniconColor}} !important;" ng-show="!atLastPage"><i class="ion-android-arrow-forward"></i></button>
                         <button ng-click="skip()" class="button button-clear button-light tour-button-right" style="font-size: {{ioniconSize}}; color: {{ioniconColor}} !important;" ng-show="atLastPage"><i class="ion-android-close"></i></button>
                   </div>
-                  <h3 class="tour-title" style="max-width: {{textWidth}}; color: {{fontColor}}; font-size: {{titleSize}};">{{page.title}}</h3>
-                  <h4 class="line-height-160 tour-subtitle" style="max-width: {{textWidth}}; color: {{fontColor}}; font-size: {{subtitleSize}};">{{page.subtitle}}</h4>
+                  <center><h5 class="tour-title" style="max-width: {{textWidth}}; color: {{fontColor}}; font-size: {{titleSize}};">{{page.title}}</h5>
+                  <h5 class="line-height-160 tour-subtitle" style="max-width: {{textWidth}}; color: {{fontColor}}; font-size: {{subtitleSize}};">{{page.subtitle}}</h5></center>
                   <button class="button button-clear tour-button" ng-show="!atLastPage" style="font-size: {{textSize}}; color: {{fontColor}} !important;">{{pages.nextPageText}}</button>
                   <button ng-click="skip()" class="button button-clear tour-button" ng-show="atLastPage" style="font-size: {{textSize}}; color: {{fontColor}} !important;">{{pages.endText}}</button>
             </ion-slide>

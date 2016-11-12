@@ -30,7 +30,7 @@
 	      				$scope.allFeed[key].is_read=true;
 	      			}
 	      		});
-	    	});			
+	    	});	    		
 		};
 
 		var getFeeds = function () {
@@ -203,12 +203,13 @@
 					loadFeeds();
 				}else 
 				if( $scope.feedStatus.read || $scope.feedStatus.unread ) {
-
 					$scope.feedsParams.is_read = ($scope.feedStatus.read) ? true : false;
-					feedsDAOService.getReadUnreadPosts($scope.feedsParams).then(function(response){
-						$scope.allFeed = [];
-						$scope.allFeed = response.posts;
-						$scope.isMoreFeeds = (response.isMorePostsPresent == false) ? true : false;
+					feedsDAOService.getReadUnreadPosts($scope.feedsParams).then(function(response) {
+						if(response.posts.length>0){
+							$scope.allFeed = [];											
+							$scope.allFeed = response.posts;							
+							$scope.isMoreFeeds = response.isMorePostsPresent;
+						}
 					});			
 				}					
 			}

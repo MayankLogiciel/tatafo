@@ -4,7 +4,7 @@
 	/**
 	* FeedDetailController function
 	*/
-	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading) {
+	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService) {
 		
 		/**
 		* Initialization
@@ -16,7 +16,6 @@
 			$scope.load = false;
 			$scope.entry = feedDetailService.getPostData(); //load feed data
 			$scope.load = true;
-		
 			//find related source information from localStorage saved sources
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
 
@@ -31,7 +30,7 @@
 			
 			loadFeeds();
 
-			if (!$scope.entry.is_read && ConnectivityMonitorFactory.isOnline()) { 
+			if(!$scope.entry.is_read && ConnectivityMonitorFactory.isOnline()) { 
 				//if unread then mark as read
 				markAsRead();
 			}
@@ -106,11 +105,18 @@
 				status:"read",
 				ids:[$scope.entry.id]
 			};
-
-			feedService.markPostReadUnread(params).then(function(res) {
-				$log.debug(res);
-				$rootScope.$broadcast("readArticle", { id: res.data.data.updated_ids[0], status: true });
-			})
+			if (!$scope.entry.is_read && ConnectivityMonitorFactory.isOnline()) {
+				feedService.markPostReadUnread(params).then(function(res) {
+					$log.debug(res);
+					$rootScope.$broadcast("readArticle", { id: res.data.data.updated_ids[0], status: true });
+				})
+			}
+			// if (!$scope.entry.is_read && ConnectivityMonitorFactory.isOffline()) {
+			// 	feedsDAOService.markPostReadUnread($scope.entry).then(function(res) {
+			// 		$log.debug(res);
+			// 		//$rootScope.$broadcast("readArticle", { id: res.ids[0], status: true });
+			// 	})
+			// }
 		};
 
 		// $scope.openLink = function (link) {
@@ -168,7 +174,7 @@
 	};
 
 	
-	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope', '$ionicLoading'];
+	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope', '$ionicLoading', 'feedsDAOService'];
 
 	angular
 		.module('tatafo')
