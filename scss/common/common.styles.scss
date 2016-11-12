@@ -307,7 +307,7 @@ $content-banner-info-bg: #333   !default;
   height: 100%;
   width: 100%;
   text-align: center;
-  margin-top: -15px; /* Note, this must be half the font size */
+  margin-top: -13px; /* Note, this must be half the font size */
   color: #FFFFFF;
 }
 
@@ -459,9 +459,16 @@ ion-popover-view.fit ion-content {
                 border-top: 1px dashed #ccc;
                 .card-button.primary {
                   border-right: 1px dashed #ccc;
+                  line-height: 48px;
                 }
                 .icon {
                     font-size: 20px;
+                    margin-right: 5px;
+                    &:before {
+                      line-height: 20px;
+                      vertical-align: middle;
+                      margin-top: 0;
+                    }
                 }
             }
         }
@@ -618,13 +625,23 @@ ion-popover-view.fit ion-content {
       a {
           &:first-child {
             border-right: 1px dotted #fff;
+            line-height: 48px;
           }
           color : #FFF;
           i {
             color: #F37168;
+            margin-right: 5px;
+            &:before {
+              line-height: 20px;
+              vertical-align: middle;
+              margin-top: -2px;
+            }
           }
         }
       }
+    }
+    .secondary {
+      line-height: 48px;
     }
 
 
