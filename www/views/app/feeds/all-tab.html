@@ -8,18 +8,40 @@
 			</button>
 		</ion-nav-buttons>
 		<ion-nav-buttons side="right">                  
+			<!-- <div class="searchBar" ng-show="isSearchOpen">
+				<div class="searchTxt">
+					<div class="bgdiv"></div>
+					<div class="bgtxt">
+						<span class="search-icon">
+							<i class="icon ion-search"></i>
+						</span>
+						<input 
+			    			type="search"
+			    			autocomplete="off" 
+			    			ng-model="searchQuery" 
+			    			placeholder="Search" 
+			    			action-enter="search(searchQuery)"/>
+			    		<span class="close-icon" 
+			    			on-tap="onClosedIconClick(); searchQuery = ''">
+			    			<i class="icon ion-close-circled"></i>
+			    		</span>
+						<input type="text" placeholder="Search..." ng-model="searchInput" name="search">
+					</div>
+				</div>
+				<i class="icon placeholder-icon" ng-click=""></i>
+			</div> -->
 			<button class="button button-icon button-clear ion-refresh" on-tap="doRefresh()"> 
-			</button>
+			</button>	
 			<!-- <form ng-submit="searchData(searchInput)">
 				<input type="search"  ng-model="searchInput" name="search" ng-show="isSearchOpen">
-			</form>  -->   
+			</form> -->    
 			<button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick()"> </button>
-			<!-- <button class="button button-icon button-assertive ion-close-circled" ng-click="" ng-show="isSearchOpen"> </button> -->
+			<button class="button button-icon button-assertive ion-close-circled" ng-click="" ng-show="isSearchOpen"> </button>
 			<header-popover></header-popover>                   
 		</ion-nav-buttons>
 	</ion-nav-bar>
 	
-	<ion-header-bar class="bar bar-subheader effect1 customer-search-box email-search-box" ng-if="isSearchOpen">
+	<ion-header-bar class="bar bar-subheader effect1 customer-search-box email-search-box filter-bar-wrapper filter-bar-transition-horizontal" ng-class="{ 'filter-bar-in':isSearchOpen }">
 		<div class="search-container">
     		<span class="search-icon">
     			<i class="icon ion-search"></i>

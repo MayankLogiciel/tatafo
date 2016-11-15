@@ -118,6 +118,10 @@ $night-mode-header: #1b2936;
   .titleuni  {
     background: $night-mode-background;
   }
+  .customer-search-box.email-search-box,
+  .search-container input {
+    background: $night-mode-header;
+  }
 }
 
 .bar.app-top-bar
