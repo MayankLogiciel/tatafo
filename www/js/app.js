@@ -203,7 +203,7 @@ angular
             }
         })
         .state('app.feed-entries', {
-            url: "/feed/:sourceId",
+            url: "/feed/:sourceId/:sourceName",
             views: {
                 'menuContent': {
                     templateUrl: "views/app/feeds/source-feed.html",

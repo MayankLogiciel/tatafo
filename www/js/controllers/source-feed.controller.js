@@ -73,6 +73,7 @@
 		var loadFeeds = function(isLoadMore) {	
 			$scope.loaded = false;			
 			$scope.feedsParams.source_id = $stateParams.sourceId;
+			$scope.feedsParams.source_name = $stateParams.sourceName;
 
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedsDAOService.getPostsHavingSource($scope.feedsParams).then(function(response){

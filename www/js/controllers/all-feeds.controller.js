@@ -21,6 +21,7 @@
 			$scope.feedStatus = {};
 			$scope.feedStatus.read=true;
 			$scope.feedStatus.unread=true;
+			$scope.feedLoaded = false;			
 			getFeeds();			
 			loadPopOver();
 			$rootScope.$on("readArticle", function (event,args) {
@@ -98,8 +99,6 @@
 		*/
 		var loadFeeds = function(isLoadMore) {
 			$scope.loaded = false;
-			$scope.feedLoaded = false;
-			
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedsDAOService.getRecentPostsFromPouchDB($scope.feedsParams).then(function(response){
 					$log.debug(response);
@@ -305,9 +304,9 @@
 		/**
 		* opening the url app.feed-entries with perticular source Id
 		*/
-		$scope.feedDetail = function (sourceId) {
+		$scope.feedDetail = function (sourceId,sourceName) {
 			settingService.setSourceFeedVisitedCount();
-			$state.go('app.feed-entries', {sourceId: sourceId});
+			$state.go('app.feed-entries', {sourceId: sourceId, sourceName: sourceName});
 		} 
 
 		/**
@@ -316,9 +315,8 @@
 		*/
 		$scope.doRefresh = function() {	
 			$scope.feedsParams.page = 1;
-	  		$scope.isMoreFeeds = true;	
-			$scope.sttButton=false;  		  		
-       		loadFeeds();
+			$scope.isMoreFeeds = true;
+			loadFeeds();
        		$scope.scrollTop();
 		};
 
