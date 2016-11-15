@@ -17,7 +17,6 @@
 		.entry-author
 		{
 			font-weight: 500;
-	
 		}
 	}
 
@@ -48,7 +47,16 @@
   padding:16px 16px 16px 8px;
 }
 
-
+.entry-author-name {
+	display: inline-block;
+	width: 35%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.detail-page-author {
+	vertical-align: middle;
+}
 
 .card-button
 {
@@ -185,4 +193,16 @@
 			}
 		}
 	}
+}
+
+.entry-author-name {
+	display: inline-block;
+	width: 35%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.detail-page-author {
+	width: 30%;
+	vertical-align: middle;
 }
