@@ -34,13 +34,16 @@
 }
 
 .customer-search-box.email-search-box {
-    transform: translate(0,-100%);
-    -webkit-transform: translate(0,-100%);
-    transition: all .3s ease-in-out 0s;
     z-index: 20;
-    border-bottom: 1px solid #ddd;
     background-image: none;
     padding: 0;
+    width: 90%;
+    right: 0;
+    left: auto;
+    background: #E74D4D;
+    * {
+        color: #fff;
+    }
 }
 
 .search-container {
@@ -73,5 +76,23 @@
         height: 40px;
         padding-left: 25px;
         width: 90%;
+        background: #E74D4D;
+        color: #fff;
+        border-bottom: 1px solid #fff;
+        &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+          color: #fff;
+        }
+        &::-moz-placeholder { /* Firefox 19+ */
+          color: #fff;
+        }
+        &:-ms-input-placeholder { /* IE 10+ */
+          color: #fff;
+        }
+        &:-moz-placeholder { /* Firefox 18- */
+          color: #fff;
+        }
     }
+}
+.has-subheader {
+    top: 44px;
 }
