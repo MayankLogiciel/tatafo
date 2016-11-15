@@ -172,7 +172,29 @@
             return relatedPosts;
 		};
 
-	        /**
+        this.markPostReadUnread = function(params) { 
+            params.is_read = true;
+            var deferred = $q.defer();
+            var val = {
+                _id : new Date(params.feed.updated * 1000).toJSON()               
+            };
+            postsDB.get(val._id).then(function(doc) {  
+                $log.debug(doc);              
+                postsDB.put({
+                    _id: val._id,
+                    _rev: doc._rev,
+                    post: params
+
+                }).then(function(response) {
+                    $log.debug(response);                
+                }).catch(function (err) {
+                    $log.debug(err);
+                });               
+            });
+            return deferred.promise;
+        };
+
+	    /**
         * get matching post with source Id
         * @param  {Array}  rows  rows/post fetched from pouch db
         * @param  {String/Integer}  sourceId 

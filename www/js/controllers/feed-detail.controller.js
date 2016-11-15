@@ -29,11 +29,7 @@
 			};
 			
 			loadFeeds();
-
-			if(!$scope.entry.is_read && ConnectivityMonitorFactory.isOnline()) { 
-				//if unread then mark as read
-				markAsRead();
-			}
+			markAsRead();		
 			
 		    $scope.$on('$ionicView.beforeLeave', function(e) {
 		        if (window.AdMob) AdMob.showInterstitial();	       
@@ -111,12 +107,10 @@
 					$rootScope.$broadcast("readArticle", { id: res.data.data.updated_ids[0], status: true });
 				})
 			}
-			// if (!$scope.entry.is_read && ConnectivityMonitorFactory.isOffline()) {
-			// 	feedsDAOService.markPostReadUnread($scope.entry).then(function(res) {
-			// 		$log.debug(res);
-			// 		//$rootScope.$broadcast("readArticle", { id: res.ids[0], status: true });
-			// 	})
-			// }
+			if (!$scope.entry.is_read && ConnectivityMonitorFactory.isOffline()) {
+			 	feedsDAOService.markPostReadUnread($scope.entry).then(function(res) {			 		
+			 	})
+			 }
 		};
 
 		// $scope.openLink = function (link) {
