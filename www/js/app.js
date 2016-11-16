@@ -204,6 +204,7 @@ angular
         })
         .state('app.feed-entries', {
             url: "/feed/:sourceId/:sourceName",
+            cache: false,
             views: {
                 'menuContent': {
                     templateUrl: "views/app/feeds/source-feed.html",

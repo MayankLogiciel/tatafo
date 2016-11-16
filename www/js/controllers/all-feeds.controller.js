@@ -100,33 +100,12 @@
 		var loadFeeds = function(isLoadMore) {
 			$scope.loaded = false;
 			if(ConnectivityMonitorFactory.isOffline()) {
-				feedsDAOService.getRecentPostsFromPouchDB($scope.feedsParams).then(function(response){
-					$log.debug(response);
-					if(response.posts.length>0){
-						if(!isLoadMore) {
-							$scope.allFeed = [];
-						}
-						angular.forEach(response.posts, function(feed, key) {	
-							$scope.allFeed = $scope.allFeed.concat(feed);
-						});
-						$scope.isMoreFeeds = response.isMorePostsPresent;
-					}	
-					else{
-						$scope.isMoreFeeds = response.isMorePostsPresent;
-					}
-					getBookMarksfromPouchDBToChangeSaveButtonColor();					
-					$scope.loaded = true;
-					$timeout(function() {
-						$scope.feedLoaded = true;
-					}, 200);
-				}).finally(function(){	
-					if(isLoadMore){
-						$scope.$broadcast('scroll.infiniteScrollComplete');
-					}else{
-						$scope.$broadcast('scroll.refreshComplete');
-					}				
-				});	
-			}			
+				if( ($scope.feedStatus.read && $scope.feedStatus.unread) || (!$scope.feedStatus.read && !$scope.feedStatus.unread) ){
+					LoadAllFeedsByCheckingReadUnreadFilter(isLoadMore);
+				}else {
+					loadFeedsByFilteringReadOrUnread();
+				}
+			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				if($state.current.name.indexOf('app.feeds.all') !== -1 ) {
 					$ionicLoading.show({
@@ -159,6 +138,38 @@
 				}
 			}
 		};
+
+			/**
+			* LoadFeeds 
+			*/
+			var LoadAllFeedsByCheckingReadUnreadFilter = function(isLoadMore) {
+				feedsDAOService.getRecentPostsFromPouchDB($scope.feedsParams).then(function(response){
+					$log.debug(response);
+					if(!isLoadMore) {
+						$scope.allFeed = [];
+					}
+					if(response.posts.length>0){
+						angular.forEach(response.posts, function(feed, key) {	
+							$scope.allFeed = $scope.allFeed.concat(feed);
+						});						
+						$scope.isMoreFeeds = response.isMorePostsPresent;
+					}	
+					else{
+						$scope.isMoreFeeds = response.isMorePostsPresent;
+					}
+					getBookMarksfromPouchDBToChangeSaveButtonColor();					
+					$scope.loaded = true;
+					$timeout(function() {
+						$scope.feedLoaded = true;
+					}, 200);
+				}).finally(function(){	
+					if(isLoadMore){
+						$scope.$broadcast('scroll.infiniteScrollComplete');
+					}else{
+						$scope.$broadcast('scroll.refreshComplete');
+					}				
+				});	
+			}
 		/*
 		* deleteBookMarks used to make the bookmark unselected form
 		*/
@@ -200,18 +211,11 @@
 			if(ConnectivityMonitorFactory.isOffline()) {	
 				if( ($scope.feedStatus.read && $scope.feedStatus.unread) || (!$scope.feedStatus.read && !$scope.feedStatus.unread) ){
 					loadFeeds();
-				}else 
-				if( $scope.feedStatus.read || $scope.feedStatus.unread ) {
-					$scope.feedsParams.is_read = ($scope.feedStatus.read) ? true : false;
-					feedsDAOService.getReadUnreadPosts($scope.feedsParams).then(function(response) {
-						if(response.posts.length>0){
-							$scope.allFeed = [];											
-							$scope.allFeed = response.posts;							
-							$scope.isMoreFeeds = response.isMorePostsPresent;
-						}
-					});			
-				}					
-			}
+				}else {
+					loadFeedsByFilteringReadOrUnread();
+				}
+							
+			}			
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$ionicLoading.show({
 	          		template: '<ion-spinner icon="android"></ion-spinner>'
@@ -233,6 +237,20 @@
 			}
 			$scope.popover.hide();
 		};
+
+		var loadFeedsByFilteringReadOrUnread = function() {
+			if( $scope.feedStatus.read || $scope.feedStatus.unread ) {
+				$scope.feedsParams.is_read = ($scope.feedStatus.read) ? true : false;
+				feedsDAOService.getReadUnreadPosts($scope.feedsParams).then(function(response) {
+						$scope.allFeed = [];											
+						$scope.allFeed = response.posts;							
+						$scope.isMoreFeeds = response.isMorePostsPresent;
+				}).finally(function(){	
+					$scope.$broadcast('scroll.infiniteScrollComplete');
+					$scope.$broadcast('scroll.refreshComplete');									
+				});				
+			}		
+		}
 
 		$scope.search = function(query){
 			$scope.isSearchUsed = true;
@@ -278,6 +296,7 @@
 		*loadMore incrementing page by one and calling the loadFeeds
 		*/
 		$scope.loadMore = function() {
+			console.log("testtsggsgh");
 			if($scope.allFeed.length > 0){
 				$scope.feedsParams.page++;
 		 		loadFeeds(true);	
@@ -310,7 +329,7 @@
 		*/
 		$scope.doRefresh = function() {	
 			$scope.feedsParams.page = 1;
-			$scope.isMoreFeeds = true;
+			$scope.isMoreFeeds = true;			
 			loadFeeds();
        		$scope.scrollTop();
 		};

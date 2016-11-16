@@ -62,7 +62,7 @@
 	          });
 
 	          data.isMorePostsPresent = (docs.total_rows - docs.offset - docs.rows.length) > 0 ? true : false;
-	            deferred.resolve(data);
+                deferred.resolve(data);
 	        });
 
 	        return deferred.promise;
