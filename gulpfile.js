@@ -40,9 +40,8 @@ gulp.task('copyplugins', function() {
    gulp.src('./bower_components/ionic-content-banner/dist/ionic.content.banner.min.css')
    .pipe(gulp.dest('./www/lib'))   
    gulp.src('./bower_components/pouchdb/dist/pouchdb.min.js')
-   .pipe(gulp.dest('./www/lib'))
-   gulp.src('./bower_components/pouchdb-quick-search/dist/pouchdb.quick-search.min.js')
    .pipe(gulp.dest('./www/lib'));
+   
 });
 
 gulp.task('watch', function() {

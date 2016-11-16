@@ -238,13 +238,8 @@
 			$scope.isSearchUsed = true;
 			$scope.feedsParams.page = 1;
 			$scope.feedsParams.name = query;
-			if(ConnectivityMonitorFactory.isOffline()) {
-				feedsDAOService.searchFromPouchDB($scope.feedsParams).then(function(response) {
-					$scope.allFeed = [];
-					$scope.allFeed = response.posts;
-					$scope.isMoreFeeds = response.isMorePostsPresent;
-       				$scope.scrollTop();
-				});
+			if(ConnectivityMonitorFactory.isOffline()) {				
+				ConnectivityMonitorFactory.showErrorBanner('Network unavailable');
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
