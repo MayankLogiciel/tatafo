@@ -113,9 +113,9 @@
 			 }
 		};
 
-		// $scope.openLink = function (link) {
-		// 	window.open(link, '_blank');
-		// };
+		$scope.openEmail = function (link) {
+			window.open("mailto:"+link, '_system');
+		};
 
 		$scope.openLink = function (link) {
 			cordova.ThemeableBrowser.open(link, '_blank', {

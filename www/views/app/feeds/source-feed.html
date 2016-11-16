@@ -1,9 +1,12 @@
-<ion-view class="feed-entries-view" view-title="{{feedsParams.source_name}}">
-    <ion-nav-bar class="bar app-top-bar effect1">
+<ion-view class="feed-entries-view">
+    <ion-nav-bar class="bar app-top-bar effect1 header-item-titles header-item-buttons">
         <ion-nav-back-button>
         </ion-nav-back-button>
         <ion-nav-buttons side="left">          
-        </ion-nav-buttons>
+        </ion-nav-buttons> 
+        <ion-nav-title>
+            <span ng-bind="feedsParams.source_name"></span>
+        </ion-nav-title>
         <ion-nav-buttons side="right">                  
             <button class="button button-icon button-clear ion-refresh" on-tap="doRefresh()"> </button>
             <!-- <form ng-submit="searchData(searchInput)">

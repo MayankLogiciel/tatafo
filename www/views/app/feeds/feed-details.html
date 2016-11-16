@@ -1,9 +1,9 @@
 <ion-view class="feed-entries-details-view">
-    <ion-nav-bar class="bar app-top-bar effect1">
+    <ion-nav-bar class="bar app-top-bar effect1 header-item-buttons">
         <ion-nav-back-button>
         </ion-nav-back-button>
         <ion-nav-title>
-            <span>{{topic.author_name}}</span>
+            <span ng-bind = "topic.author_name"></span>
         </ion-nav-title>
         <ion-nav-buttons side="right">
             <button class="button button-icon ion-android-share-alt" on-tap="sharePost(post)">
@@ -50,7 +50,7 @@
             <div class = "col social-list-border" ng-show="topic.social_links.twitter_url" on-tap="openLink(topic.social_links.twitter_url)"> <i class="icon ion-social-twitter">{{twitter}}</i></div>
             <div class = "col social-list-border" ng-show="topic.social_links.instagram_url" on-tap="openLink(topic.social_links.instagram_url)"> <i class="icon ion-social-instagram">{{Instagram}}</i></div>
             <div class = "col social-list-border" ng-show="topic.social_links.youtube_url" on-tap="openLink(topic.social_links.youtube_url)"> <i class="icon ion-social-youtube">{{Youtube}}</i></div>
-             <div class = "col social-list-border" ng-show="topic.social_links.email" on-tap="openLink(topic.social_links.email)"> <i class="icon ion-email">{{Email}}</i></div>
+             <div class = "col social-list-border" ng-show="topic.social_links.email" on-tap="openEmail(topic.social_links.email)"> <i class="icon ion-email">{{Email}}</i></div>
         </div>      
     </ion-content>    
     <div class="float-button-left effect1" on-tap="previousButton()" ng-hide="currentIndex==0">

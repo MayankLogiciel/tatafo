@@ -814,3 +814,17 @@ ion-popover-view.fit ion-content {
       }
     }
 }
+.header-item-titles .title.header-item {
+    transition: none;
+    -webkit-transition: none;
+    padding: 0 10px;
+    left:0 !important;
+    right:0 !important;
+    margin:auto;
+    text-align:center;
+}
+
+.header-item-buttons .buttons {
+  transition: none;
+  -webkit-transition: none;   
+}
