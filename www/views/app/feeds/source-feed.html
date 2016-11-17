@@ -1,8 +1,9 @@
 <ion-view class="feed-entries-view">
     <ion-nav-bar class="bar app-top-bar effect1 header-item-titles header-item-buttons">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
         <ion-nav-buttons side="left">          
+            <div class="buttons">
+                <button class="button button-icon button-assertive ion-android-arrow-back" ng-click="myGoBack()"></button>
+            </div>
         </ion-nav-buttons> 
         <ion-nav-title>
             <span ng-bind="feedsParams.source_name"></span>
@@ -56,7 +57,7 @@
         <ion-infinite-scroll 
             immediate-check="false" 
             on-infinite="loadMore()" 
-            distance="1%" 
+            distance="100px" 
             ng-if="isMoreFeeds">
         </ion-infinite-scroll>
     </ion-content>
@@ -67,5 +68,4 @@
             </a>
         </span>
     </div>
-   <button id="app-rate-model-source-feed" app-rate-directive ng-hide="true"></button> 
 </ion-view>

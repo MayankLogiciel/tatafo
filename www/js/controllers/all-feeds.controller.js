@@ -127,7 +127,8 @@
 						$timeout(function() {
 							$scope.feedLoaded = true;
 						}, 200);
-					}).finally(function(){	
+					})
+					.finally(function(){	
 						if(isLoadMore){
 							$scope.$broadcast('scroll.infiniteScrollComplete');
 						}else{
@@ -296,13 +297,23 @@
 		*loadMore incrementing page by one and calling the loadFeeds
 		*/
 		$scope.loadMore = function() {
-			console.log("testtsggsgh");
 			if($scope.allFeed.length > 0){
 				$scope.feedsParams.page++;
-		 		loadFeeds(true);	
+	 			loadFeeds(true);
 			}
-
 		}
+
+
+		/**
+		* doRefresh setting up the page 1 
+		* calling the loadFeeds
+		*/
+		$scope.doRefresh = function() {
+			$scope.isMoreFeeds = false;	
+			$scope.feedsParams.page = 1;				
+			loadFeeds(false);
+       		$scope.scrollTop();
+		};
 
 		/**
 		* loadPostDetails feedDetailService.setPostData posting the deatil of single feed to article page
@@ -323,16 +334,7 @@
 			$state.go('app.feed-entries', {sourceId: sourceId, sourceName: sourceName});
 		} 
 
-		/**
-		* doRefresh setting up the page 1 
-		* calling the loadFeeds
-		*/
-		$scope.doRefresh = function() {	
-			$scope.feedsParams.page = 1;
-			$scope.isMoreFeeds = true;			
-			loadFeeds();
-       		$scope.scrollTop();
-		};
+		
 
 		/**
 		* scrolling up to top by clicking sttButton
