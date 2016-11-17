@@ -21,7 +21,7 @@ var postsDB = new PouchDB(postsDBSettings.POSTS_DB_NAME, { auto_compaction: post
 var bookmarksDB = new PouchDB(bookmarksDBSettings.BOOKMARKS_DB_NAME, { auto_compaction: bookmarksDBSettings.AUTO_COMPACTION });
 
 angular
-    .module('tatafo', ['ionic', 'underscore', 'tatafo.config', 'ngCordova', 'jett.ionic.content.banner' ])
+    .module('tatafo', ['ionic', 'underscore', 'tatafo.config', 'ngCordova', 'jett.ionic.content.banner','ionicLazyLoad'])
 
     .run(function($log, $ionicPlatform, $rootScope, $state, $timeout, deviceTokenService, ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService, $cordovaSplashscreen) {
 

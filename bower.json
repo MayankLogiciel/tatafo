@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "underscore": "1.8.3",
-    "pouchdb-quick-search": "~1.2.0",
     "pouchdb-find": "^0.10.3",
-    "pouchdb": "~6.0.7"
+    "pouchdb": "~6.0.7",
+    "ionic-image-lazy-load": "ion-image-lazy-load#*", 
   }
 }

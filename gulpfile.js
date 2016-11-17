@@ -41,6 +41,8 @@ gulp.task('copyplugins', function() {
    .pipe(gulp.dest('./www/lib'))   
    gulp.src('./bower_components/pouchdb/dist/pouchdb.min.js')
    .pipe(gulp.dest('./www/lib'));
+   gulp.src('./bower_components/ionic-image-lazy-load/ionic-image-lazy-load.js')
+   .pipe(gulp.dest('./www/lib'));
    
 });
 

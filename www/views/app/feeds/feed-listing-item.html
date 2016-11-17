@@ -7,7 +7,7 @@
 		</p>
 		<div class="entry-content-section">
 			<div class="entry-content-img">
-				<img ng-src="{{entry.image || defaultImage}}">
+				<img image-lazy-src="{{entry.image || defaultImage}}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="3000">
 			</div>
 			<div class="entry-content-title">
 				<h2 ng-bind="entry.feed.title"></h2>
