@@ -11,6 +11,7 @@
 		</ion-nav-buttons> 
 	</ion-nav-bar>
 <ion-content class="has-header">   
+
 	<div class="categories-list feed-col">
 		<div class="source-section" ng-repeat="source in feedSources | orderBy : 'image_character'" ng-show="source.locale=='local'">
 			<a class="feed-category" on-tap="feedDetail(source.id,source.name)">
@@ -30,4 +31,5 @@
 		</div>
 	</div>
 </ion-content>
+<button id="app-rate-model-source-feed" app-rate-directive ng-hide="true"></button> 
 </ion-view>

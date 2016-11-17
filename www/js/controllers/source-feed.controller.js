@@ -5,7 +5,7 @@
 	/**
 	* SourceFeedController Function
 	*/
-	var SourceFeedController = function($log, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, $ionicScrollDelegate, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService) {
+	var SourceFeedController = function($log, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, $ionicScrollDelegate, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService, $ionicHistory, $window) {
 
 		var setup = function() {		
 			$log.debug('SourceFeedController setup');
@@ -31,18 +31,26 @@
 
 		/**
 		* Back Button Handling
+		* Solution for Back button because it does not behave properly after few moves
+		* Due to BackView():null problem($window.history.go(-1) resolve this problem)  
 		*/
-		$scope.$on('$ionicView.beforeEnter', function (event, viewData) {
-		    viewData.enableBack = true;
-		});
+		$scope.myGoBack = function() {
+    		$window.history.go(-1);
+  		};
+
+		/**
+		* Back Button Handling
+		*/
+		// $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+		//     viewData.enableBack = true;
+		// });
 
 		/**
 		* Back Button Handling before leave
 		* checking the current url(is it Loacl/Foriegn ?)
 		* confirming that need to show popup or not for App rate using settingService.doWeNeedToShowAppRatePopup function
 		*/
-		$scope.$on('$ionicView.beforeLeave', function (event, viewData) {
-		    viewData.enableBack = true;
+		$rootScope.$on('$ionicView.beforeLeave', function (event, viewData) {
 		    if(($state.current.name.indexOf('app.feeds.local') != -1 ) || (($state.current.name.indexOf('app.feeds.foreign') != -1 ))) {
 			  	if(settingService.doWeNeedToShowAppRatePopup()) {
 			  		var clickEvent = new MouseEvent("tap", {});
@@ -71,6 +79,7 @@
 		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
 		var loadFeeds = function(isLoadMore) {	
+		console.log(isLoadMore);
 			$scope.loaded = false;			
 			$scope.feedsParams.source_id = $stateParams.sourceId;
 			$scope.feedsParams.source_name = $stateParams.sourceName;
@@ -92,41 +101,45 @@
 					getBookMarksfromPouchDBToChangeSaveButtonColor();					
 					$scope.loaded = true;
 				}).finally(function(){	
-					if(isLoadMore){
-						$scope.$broadcast('scroll.infiniteScrollComplete');
-					}else{
+					if(!isLoadMore){
 						$scope.$broadcast('scroll.refreshComplete');
+					}else{
+						$scope.$broadcast('scroll.infiniteScrollComplete');
 					}				
 				});;
 			}
-			if(ConnectivityMonitorFactory.isOnline()) {	
+			
+			if(ConnectivityMonitorFactory.isOnline()) {
+					
 				$ionicLoading.show({
-					template: '<ion-spinner icon="android"></ion-spinner>'
-				});	
-				feedService.getFeeds($scope.feedsParams).then(function(feed) {
-					if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
-
+          			template: '<ion-spinner icon="android"></ion-spinner>'
+        		});
+				feedService.getFeeds($scope.feedsParams).then(function(feed) {			
+	   				if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
 						$scope.isMoreFeeds = true;
-					}
-					else{
+					}else{
 						$scope.isMoreFeeds = false;
 					}
 					if(!isLoadMore) {
 						$scope.feed = [];
 					}
+					$scope.feed = $scope.feed.concat(feed.data.data.feed);						
 					getBookMarksfromPouchDBToChangeSaveButtonColor();
-					$scope.feed = $scope.feed.concat(feed.data.data.feed);
 					$scope.loaded = true;
-				}).finally(function(){	
-					if(isLoadMore){
-						$scope.$broadcast('scroll.infiniteScrollComplete');
-					}else{
-						$scope.$broadcast('scroll.refreshComplete');
-					}				
-					$ionicLoading.hide();
-				});
-			};
-		}
+					}).finally(function(){	
+						if(isLoadMore){					
+							$scope.$broadcast('scroll.infiniteScrollComplete');
+						}else{
+							console.log("testtststtstst");
+							$scope.$broadcast('scroll.refreshComplete');
+						}				
+						$ionicLoading.hide();
+					});
+					
+				}
+			}
+
+
 		/*
 		* deleteBookMarks used to make the bookmark unselected form
 		*/
@@ -163,9 +176,9 @@
 		$scope.loadMore = function() {
 			if($scope.feed.length > 0){
 				$scope.feedsParams.page++;
-		 		loadFeeds(true);	
-			}			
-		};
+		 		loadFeeds(true);
+			}
+		}
 
 		/**
 		* loadPostDetails feedDetailService.setPostData posting the deatil of single feed to article page
@@ -181,13 +194,8 @@
 			$scope.isSearchUsed = true;
 			$scope.feedsParams.page = 1;
 			$scope.feedsParams.name = query;
-			if(ConnectivityMonitorFactory.isOffline()) {
-				feedsDAOService.searchFromPouchDB($scope.feedsParams).then(function(response) {
-					$scope.feed = [];
-					$scope.feed = response.posts;
-					$scope.isMoreFeeds = response.isMorePostsPresent;
-       				$scope.scrollTop();
-				});
+			if(ConnectivityMonitorFactory.isOffline()) {								
+				ConnectivityMonitorFactory.showErrorBanner('Network unavailable');			
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
@@ -216,9 +224,9 @@
     	};
 
 		$scope.doRefresh = function() {	
-			$scope.feedsParams.page = 1;
-			$scope.isMoreFeeds = true;
-			loadFeeds();
+			$scope.isMoreFeeds = false;
+			$scope.feedsParams.page = 1;				
+			loadFeeds(false);
        		$scope.scrollTop();
 		};
 
@@ -244,7 +252,7 @@
 	
 		setup();
 	};
-	SourceFeedController.$inject=['$log', '$rootScope', '$scope', '$state', '$stateParams', 'feedService', 'feedsDAOService', '$ionicLoading', '$ionicScrollDelegate', 'bookMarkService', 'feedDetailService', 'socialService', 'ConnectivityMonitorFactory', 'settingService'];
+	SourceFeedController.$inject=['$log', '$rootScope', '$scope', '$state', '$stateParams', 'feedService', 'feedsDAOService', '$ionicLoading', '$ionicScrollDelegate', 'bookMarkService', 'feedDetailService', 'socialService', 'ConnectivityMonitorFactory', 'settingService', '$ionicHistory', '$window'];
 	angular
 		.module('tatafo')
 		.controller('SourceFeedController',SourceFeedController)

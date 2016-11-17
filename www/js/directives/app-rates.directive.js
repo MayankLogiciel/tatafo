@@ -8,7 +8,7 @@
 	var appRateDirective=function($ionicModal, $window, settingService) {		
 		return {
 			restrict: 'A',
-			scope: {},
+			
 			link: function(scope, element, attrs) {
 				/**
 				* ionicModal for rate app or not
@@ -25,6 +25,7 @@
 	            }
 
   				scope.hideModel = function() {
+  					console.log("this is is");
 					scope.appRateModel.hide();
 				}
   				

@@ -4,7 +4,7 @@
 	/**
 	* FeedDetailController function
 	*/
-	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService) {
+	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $ionicHistory, $window) {
 		
 		/**
 		* Initialization
@@ -14,7 +14,7 @@
 			$scope.sttButton=true;
 			$scope.allFeed=[];
 			$scope.load = false;
-			$scope.entry = feedDetailService.getPostData(); //load feed data
+			$scope.entry = feedDetailService.getPostData(); //load feed data			
 			$scope.load = true;
 			//find related source information from localStorage saved sources
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
@@ -154,11 +154,13 @@
 		};
 
 		/**
-		* handling Back Button
+		* Back Button Handling
+		* Solution for Back button because it does not behave properly after few moves
+		* Due to BackView():null problem($window.history.go(-1) resolve this problem)  
 		*/
-		$scope.$on('$ionicView.beforeEnter', function (event, viewData) {
-		    viewData.enableBack = true;
-		});
+		$scope.myGoBack = function() {
+    		$window.history.go(-1);
+  		};
 
 
 		$scope.sharePost = function() {
@@ -168,7 +170,7 @@
 	};
 
 	
-	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope', '$ionicLoading', 'feedsDAOService'];
+	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope', '$ionicLoading', 'feedsDAOService', '$ionicHistory', '$window'];
 
 	angular
 		.module('tatafo')
