@@ -17,15 +17,15 @@
     </ion-nav-bar>
     <ion-content scroll="true" overflow-scroll="true">
 
-        <div class="feed-detail-cont">
+        <div class="feed-detail-cont" lazy-scroll>
 
             <div class="feed-entries-card post" post-content>
                 <h4 ng-bind="entry.feed.title || entry.title | rawHtml" class="title" on-hold="copyText('Header')"></h4>
                 <h5>Posted by <span class="author entry-author-name detail-page-author" ng-bind="topic.author_name | rawHtml"></span><span class="feed-date" ng-bind="entry.feed.updated | utcTimestampToLocalDateFilter "></span></h5>
             </div>
             
-            <div class="feed-detail-content" image-path-fix ng-if="load">
-                <p dynamic-anchor-fix ng-bind-html="entry.feed.content || entry.feed.summary | rawHtml">
+            <div class="feed-detail-content" image-path-fix ng-if="load">                            
+                <p dynamic-anchor-fix compile="entry.feed.content || entry.feed.summary | rawHtml">
                 </p>
             </div>
         </div>

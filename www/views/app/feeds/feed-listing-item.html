@@ -1,4 +1,4 @@
-<div class="entry-content item item-text-wrap" ng-class="{'entry-content-unread': !entry.status}">
+<div class="entry-content item item-text-wrap" ng-class="{'entry-content-unread': !entry.status}" lazy-scroll>
 	<div on-tap="loadPostDetails(entry)">
 		<i ng-class= "{ 'icon ion-eye-disabled left read-unread':(entry.is_read==false) , 'icon ion-eye left read-unread':(entry.is_read==true) }"></i>
 		<p class="entry-author">
@@ -7,7 +7,7 @@
 		</p>
 		<div class="entry-content-section">
 			<div class="entry-content-img">
-				<img image-lazy-src="{{entry.image || defaultImage}}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="300">
+				<img image-lazy-src="{{entry.image || defaultImage}}" image-lazy-loader="android" image-lazy-distance-from-bottom-to-load="3500px" lazy-scroll-resize="true">
 			</div>
 			<div class="entry-content-title">
 				<h2 ng-bind="entry.feed.title"></h2>

@@ -14,7 +14,9 @@
 			$scope.sttButton=true;
 			$scope.allFeed=[];
 			$scope.load = false;
-			$scope.entry = feedDetailService.getPostData(); //load feed data			
+			var postData = feedDetailService.getPostData();
+			fetchImagesFromString(postData);
+			$scope.entry = postData; //load feed data
 			$scope.load = true;
 			//find related source information from localStorage saved sources
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
@@ -35,6 +37,24 @@
 		        if (window.AdMob) AdMob.showInterstitial();	       
 		    });			
 		};
+
+
+		var fetchImagesFromString = function(data) {		
+			var elem= document.createElement("div");
+			elem.innerHTML = data.feed.content;
+			var images = elem.getElementsByTagName("img");
+			angular.forEach(images, function(val,key){
+				val.setAttribute("image-lazy-src", val.src);
+				val.setAttribute("image-lazy-loader", "android");
+				val.setAttribute("image-lazy-distance-from-bottom-to-load",100);
+				val.removeAttribute("src");
+				val.removeAttribute("border");
+			});
+			data.feed.content = elem.innerHTML;
+			console.log(elem.innerHTML);
+		};	
+
+
 
 	    /**
 	    * getting the current index of th feed showing in article page
