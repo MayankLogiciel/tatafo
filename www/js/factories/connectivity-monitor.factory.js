@@ -94,6 +94,10 @@
                               }, false); 
 
                         }
+                        if((!$cordovaNetwork.isOnline())) {                                                                 
+                              showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', closeOfflineBannerAfter);                            
+                        }
+
                   }
             }
       }
