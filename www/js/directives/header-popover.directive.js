@@ -5,7 +5,7 @@
 	/**
 	* headerPopover Directive function for header popover
 	*/
-	var headerPopover=function($ionicPopover, $state){
+	var headerPopover=function($ionicPopover, $state, feedsDAOService, $ionicLoading, $timeout){
 		
 		return {
 			restrict: 'E',
@@ -28,6 +28,17 @@
 				scope.closePopover = function() {
     				scope.headerPopover.hide();
   				};
+
+  				scope.destroyPostDB =function(){
+  					$ionicLoading.show({
+          				template: '<ion-spinner icon="android"></ion-spinner><p>Clearing Cache</p>'
+        			});
+        			$timeout(function() {
+        				$ionicLoading.hide();
+        			},3000);
+					feedsDAOService.destroyPostsDBForClearChache().then(function(response){
+					});
+				}
  			}
 		}
 	}
@@ -36,7 +47,7 @@
 	* @dependencies injector $ionicPopover, $state
 	*/
 
-	headerPopover.$inject=['$ionicPopover', '$state'];
+	headerPopover.$inject=['$ionicPopover', '$state', 'feedsDAOService', '$ionicLoading', '$timeout'];
 
 	angular
 		.module('tatafo')

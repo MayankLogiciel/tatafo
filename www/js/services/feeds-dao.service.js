@@ -225,6 +225,19 @@
             return isRelated;
         };
 
+
+        /**
+        * dostroying postsDB        
+        */
+        this.destroyPostsDBForClearChache = function(post, sourceId){
+            var deferred = $q.defer();
+            postsDB.destroy().then(function (response) {
+              // success
+            }).catch(function (err) {
+              console.log(err);
+            });
+            return deferred.promise;
+        };
 	}
 
 	feedsDAOService.$inject=['$log', '$rootScope', '$q'];
