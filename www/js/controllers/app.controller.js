@@ -17,15 +17,6 @@
 				$rootScope.settings.nightModeEnabled = data;
 			});
 		};
-
-
-		/**
-		* Reload the feeds
-		*/
-		$scope.reload=function(){
-    		$scope.$broadcast('reloadFeeds');			
-		};
-
     	setup();  		
 	};
 
