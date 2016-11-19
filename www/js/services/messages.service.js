@@ -6,11 +6,11 @@
     */
 
     var messagesService = function() {
-        // this.general = {
-        //     'SOMETHING_WRONG': 'Something went wrong',
-        //     'INTERNET_NOT_CONNECTED':'Please check your internet connection',
-        //     ''
-        // };
+        this.general = {
+            'SOMETHING_WRONG': 'Something went wrong',
+            'INTERNET_NOT_CONNECTED':'Please check your internet connection',
+            'INTERNET_NOT_WORKING':'Network unavailable'
+        };
 
         // this.popupTitle = {
 
