@@ -31,11 +31,13 @@
             },
             
             responseError: function(rejection) {
+
+                var ConnectivityMonitorResponse = $injector.get('ConnectivityMonitorFactory');
                 // $log.debug(rejection);
                 if(angular.isDefined(window.Connection)) {
 
                     if(navigator.connection.type == Connection.NONE) {
-                        utilService.toastOrDialog(messagesService.general.INTERNET_NOT_CONNECTED);
+                        ConnectivityMonitorResponse.showErrorBanner('Network unavailable');
                     }else {
                         switch(rejection.status){
                             case 0:
