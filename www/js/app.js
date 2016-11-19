@@ -28,9 +28,15 @@ angular
         ionic.Platform.ready(function() {
 
             var hideSplashScreen = function (){
+                if(!settingService.doWeNeedToShowTutorialTour()) {
+                    $state.go('tour');
+                }else {
+                    $state.go('app.feeds.all');                            
+                }
+
                 $timeout(function() {
                     if(ionic.Platform.isWebView()) $cordovaSplashscreen.hide();
-                }, 800);
+                }, 100);
             };
      
             var idsReceivedCallback = function(pushObj){
@@ -45,20 +51,10 @@ angular
                     deviceTokenService.registerDeviceOnServer(params).then(function(res){
                         $log.debug(res.data.data.data);
                         deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
-                        if(!settingService.doWeNeedToShowTutorialTour()) {
-                            $state.go('tour');
-                        }else {
-                            $state.go('app.feeds.all');                            
-                        }
                         hideSplashScreen();
                     });
                 }else{
-                    $log.debug('No Need to register device on server');
-                    if(!settingService.doWeNeedToShowTutorialTour()) {
-                        $state.go('tour');
-                    }else {
-                        $state.go('app.feeds.all');                            
-                    }
+                    $log.debug('No Need to register device on server'); 
                     hideSplashScreen();
                 }                
             };
