@@ -14,9 +14,9 @@
 			$scope.sttButton=true;
 			$scope.allFeed=[];
 			$scope.load = false;
-			var postData = feedDetailService.getPostData();
-			fetchImagesFromString(postData);
-			$scope.entry = postData; //load feed data
+			$scope.entry = feedDetailService.getPostData(); //load feed data
+			console.log($scope.entry);
+			//applyImageLoaderToDetailFeedImages($scope.entry);
 			$scope.load = true;
 			//find related source information from localStorage saved sources
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
@@ -28,33 +28,36 @@
 						$scope.topic = val;
 					}
 				});
-			};
-			
+			};			
 			loadFeeds();
-			markAsRead();		
-			
+			markAsRead();
 		    $scope.$on('$ionicView.beforeLeave', function(e) {
 		        if (window.AdMob) AdMob.showInterstitial();	       
 		    });			
 		};
 
-
-		var fetchImagesFromString = function(data) {		
-			var elem= document.createElement("div");
-			elem.innerHTML = data.feed.content;
-			var images = elem.getElementsByTagName("img");
-			angular.forEach(images, function(val,key){
-				val.setAttribute("image-lazy-src", val.src);
-				val.setAttribute("image-lazy-loader", "android");
-				val.setAttribute("image-lazy-distance-from-bottom-to-load",100);
-				val.removeAttribute("src");
-				val.removeAttribute("border");
-			});
-			data.feed.content = elem.innerHTML;
-			console.log(elem.innerHTML);
-		};	
-
-
+		/**
+		* applyImageLoaderToDetailFeedImages is used to apply Loader to imges due to slow load od image
+		* replacing the attribute of content or summary
+		*/
+		// var applyImageLoaderToDetailFeedImages = function(data) {
+		// 	$log.debug(data);
+		// 	var elem= document.createElement("div");
+		// 	elem.innerHTML = data.feed.content || data.feed.summary;
+		// 	var images = elem.getElementsByTagName("img");
+		// 	angular.forEach(images, function(val,key){
+		// 		val.setAttribute("image-lazy-src", val.src);
+		// 		val.setAttribute("image-lazy-loader", "android");
+		// 		val.setAttribute("image-lazy-distance-from-bottom-to-load",100);
+		// 		val.removeAttribute("src");
+		// 		val.removeAttribute("border");
+		// 	});
+		// 	if(data.feed.content){
+		// 		data.feed.content = elem.innerHTML;
+		// 	}else {
+		// 		data.feed.summary = elem.innerHTML;
+		// 	}
+		// };
 
 	    /**
 	    * getting the current index of th feed showing in article page
