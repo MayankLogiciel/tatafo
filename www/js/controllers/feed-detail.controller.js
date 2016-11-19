@@ -44,18 +44,26 @@
 			var elem= document.createElement("div");
 			elem.innerHTML = data.feed.content || data.feed.summary;
 			var images = elem.getElementsByTagName("img");
-			angular.forEach(images, function(val,key){
-				val.setAttribute("image-lazy-src", val.src);
-				val.setAttribute("image-lazy-loader", "android");
-				val.setAttribute("image-lazy-distance-from-bottom-to-load",100);
-				val.removeAttribute("src");
-				val.removeAttribute("border");
+			angular.forEach(images, function(img, key){
+				if( (img.width && img.width == "1")  || (img.height && img.height == "1") ){
+					$log.debug('Image with height or width Attribute 1 found so removed img element');
+					img.parentNode.removeChild(img);
+				}else{
+					img.setAttribute("image-lazy-src", img.src);
+					img.setAttribute("image-lazy-loader", "android");
+					img.setAttribute("image-lazy-distance-from-bottom-to-load",100);
+					img.removeAttribute("src");
+					img.removeAttribute("border");		
+				}
+
 			});
 			if(data.feed.content){
 				data.feed.content = elem.innerHTML;
 			}else {
 				data.feed.summary = elem.innerHTML;
 			}
+			
+			elem = undefined;
 		};
 
 	    /**
