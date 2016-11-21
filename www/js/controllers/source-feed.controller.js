@@ -79,7 +79,6 @@
 		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
 		var loadFeeds = function(isLoadMore) {	
-		console.log(isLoadMore);
 			$scope.loaded = false;			
 			$scope.feedsParams.source_id = $stateParams.sourceId;
 			$scope.feedsParams.source_name = $stateParams.sourceName;
@@ -130,7 +129,6 @@
 						if(isLoadMore){					
 							$scope.$broadcast('scroll.infiniteScrollComplete');
 						}else{
-							console.log("testtststtstst");
 							$scope.$broadcast('scroll.refreshComplete');
 						}				
 						$ionicLoading.hide();
@@ -138,7 +136,6 @@
 					
 				}
 			}
-
 
 		/*
 		* deleteBookMarks used to make the bookmark unselected form

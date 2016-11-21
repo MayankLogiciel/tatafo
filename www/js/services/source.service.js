@@ -65,7 +65,6 @@
                 function( response ) {
                     setFeedSourcesinLocalStorage(response.data.data.sources);
                     if(angular.isDefined(response.data.data.sources) && response.data.data.sources.length > 0 ){
-                        console.log(new Date());
                         setLastSourceSyncTime(new Date());
                     }
                     _defer.resolve(response.data.data.sources);

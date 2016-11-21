@@ -25,8 +25,7 @@
 	            }
 
   				scope.hideModel = function() {
-  					console.log("this is is");
-					scope.appRateModel.hide();
+  					scope.appRateModel.hide();
 				}
   				
 				/**

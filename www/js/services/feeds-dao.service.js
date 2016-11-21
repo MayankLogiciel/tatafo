@@ -234,7 +234,6 @@
             postsDB.destroy().then(function (response) {
               // success
             }).catch(function (err) {
-              console.log(err);
             });
             return deferred.promise;
         };
