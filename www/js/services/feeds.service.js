@@ -62,13 +62,18 @@
                 var re = /<img[^>]+src="?([^"\s]+)"?[^>]*\/>/;
                 response.data.data.feed.map(function(val) {
                     var results = re.exec(val.feed.content || val.feed.summary);
-                    if(results) val.image = results[1];
+                    if(results) {
+                       if((results[0].match(/width="1"/gi)) || (results[0].match(/height="1"/gi))) {
+                            val.image = null; 
+                        }else {
+                            val.image = results[1];
+                        }
+                    }                                        
                 });
                 _defer.resolve(response);
             }, function(response) {
                 _defer.reject(response);
             });
-
             return _defer.promise;
         }            
 
