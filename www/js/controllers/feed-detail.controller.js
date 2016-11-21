@@ -4,13 +4,20 @@
 	/**
 	* FeedDetailController function
 	*/
-	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $ionicHistory, $window) {
+	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $ionicHistory, $window, settingService) {
 		
 		/**
 		* Initialization
 		*/
 		var setup = function(){
 			$log.debug("FeedDetailController");
+
+			$scope.isImageViewDisabled = settingService.getSettings().imageViewDisabled;
+
+			$rootScope.$on('imageViewEnabled', function(ev, args) {
+				$scope.isImageViewDisabled = args;
+			});
+
 			$scope.sttButton=true;
 			$scope.allFeed=[];
 			$scope.load = false;
@@ -49,7 +56,13 @@
 					$log.debug('Image with height or width Attribute 1 found so removed img element');
 					img.parentNode.removeChild(img);
 				}else{
-					img.setAttribute("image-lazy-src", img.src);
+					if ($scope.isImageViewDisabled || ConnectivityMonitorFactory.isOffline()) {
+						img.setAttribute("image-lazy-src", 'img/imgUnavailable.png');
+					} else {
+
+						img.setAttribute("image-lazy-src", img.src);
+					}
+					
 					img.setAttribute("image-lazy-loader", "android");
 					img.setAttribute("image-lazy-distance-from-bottom-to-load",100);
 					img.removeAttribute("src");
@@ -199,7 +212,7 @@
 	};
 
 	
-	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope', '$ionicLoading', 'feedsDAOService', '$ionicHistory', '$window'];
+	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope', '$ionicLoading', 'feedsDAOService', '$ionicHistory', '$window', 'settingService'];
 
 	angular
 		.module('tatafo')

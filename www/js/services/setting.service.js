@@ -45,7 +45,7 @@
       var settings = {
          syncTimeOption: syncIntervalOptions[1], //set default value 4 Hours
          pushNotificationEnabled: true,
-         imageViewEnabled: false,
+         imageViewDisabled: false,
          nightModeEnabled: false,
       };
       this.getSyncIntervalOptions = function(){
@@ -71,7 +71,7 @@
 
       this.setImageViewEnable = function(isImageEnabled) {
           settings = JSON.parse(localStorage.tatafo_settings || settings);
-          settings.imageViewEnabled = isImageEnabled;
+          settings.imageViewDisabled = isImageEnabled;
           localStorage.tatafo_settings = JSON.stringify(settings);         
       };
 

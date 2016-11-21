@@ -24,7 +24,7 @@
                 <h5>Posted by <span class="author entry-author-name detail-page-author" ng-bind="topic.author_name | rawHtml"></span><span class="feed-date" ng-bind="entry.feed.updated | utcTimestampToLocalDateFilter "></span></h5>
             </div>
             
-            <div class="feed-detail-content" image-path-fix ng-if="load">                            
+            <div class="feed-detail-content" ng-if="load" image-path-fix>                          
                 <p dynamic-anchor-fix compile="entry.feed.content || entry.feed.summary | rawHtml">
                 </p>
             </div>

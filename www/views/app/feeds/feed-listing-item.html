@@ -6,8 +6,8 @@
 			<span class="feed-date-time" ng-bind="entry.feed.updated | utcTimestampToLocalDateFilter"></span>
 		</p>
 		<div class="entry-content-section">
-			<div class="entry-content-img">				
-				<img ng-src="{{entry.image || defaultImage}}">
+			<div class="entry-content-img" image-path-fix>				
+				<img src="{{entry.image || defaultImage}}">
 			</div>
 			<div class="entry-content-title">
 				<h2 ng-bind="entry.feed.title" ng-class= "{ 'title-color-when-read': entry.is_read==true }"></h2>

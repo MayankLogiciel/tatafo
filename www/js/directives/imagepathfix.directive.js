@@ -7,13 +7,14 @@
 			scope: {},
 			link: function(scope, element, attrs) {
 
-				var imageViewEnabled = settingService.getSettings().imageViewEnabled;
+				var isImageViewDisabled = settingService.getSettings().imageViewDisabled;
 
 				$rootScope.$on('imageViewEnabled', function(ev, args) {
-					imageViewEnabled = args;
+					isImageViewDisabled = args;
 				});
 
-				if (imageViewEnabled || ConnectivityMonitorFactory.isOffline()) {
+				//console.log(isImageViewDisabled);
+				if (isImageViewDisabled || ConnectivityMonitorFactory.isOffline()) {
 					var timer = $timeout(function(){
 						var images = element.find('img');
 						var href = element.find('img').parent();
