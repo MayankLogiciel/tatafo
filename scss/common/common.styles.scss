@@ -635,7 +635,7 @@ ion-popover-view.fit ion-content {
                 &:before {
                     padding: 0;
                     font-size: 25px;
-                    margin-right: 2px;
+                    margin-right: 2px;                   
                 }
                 &:last_child {
                   margin-right: 0;
@@ -827,4 +827,8 @@ ion-popover-view.fit ion-content {
 .header-item-buttons .buttons {
   transition: none;
   -webkit-transition: none;   
+}
+
+.button.button-assertive.ion-close-circled {
+  display: none;
 }
