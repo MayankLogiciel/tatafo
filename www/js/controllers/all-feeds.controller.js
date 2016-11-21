@@ -4,7 +4,7 @@
 	/**
 	* AllFeedsController Function
 	*/
-	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout) {
+	var AllFeedsController = function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout, messagesService) {
 
 		var setup = function(){
 			$log.debug('AllFeedsController setup');
@@ -55,19 +55,23 @@
 		* by checking users sync preference and last sync time
 		*/
 
-		var isSourceSyncRequired = function(){
-			var syncSetting = settingService.getSettings().syncTimeOption;
-			var syncIntervalInMS = syncSetting.value*60*60*1000;
-			var lastSynced = Date.parse(sourcesService.getLastSourceSyncTime());
-			var currenTime = Date.parse(new Date());
-			var timeSinceLastSyncInMS = currenTime - lastSynced;
+		var isSourceSyncRequired = function() { 
+			if(ConnectivityMonitorFactory.isOffline()) {
+				$log.debug("No request will send to ApI during Offline");
+			} else {				
+				var syncSetting = settingService.getSettings().syncTimeOption;
+				var syncIntervalInMS = syncSetting.value*60*60*1000;
+				var lastSynced = Date.parse(sourcesService.getLastSourceSyncTime());
+				var currenTime = Date.parse(new Date());
+				var timeSinceLastSyncInMS = currenTime - lastSynced;
 
-			if(timeSinceLastSyncInMS > syncIntervalInMS) {
-				$log.debug("Sync is required");
-				return true;
-			}else {
-				$log.debug("Sync is not required");
-			 	return false;
+				if(timeSinceLastSyncInMS > syncIntervalInMS) {
+					$log.debug("Sync is required");
+					return true;
+				}else {
+					$log.debug("Sync is not required");
+				 	return false;
+				}
 			}
 		}
 
@@ -258,7 +262,7 @@
 			$scope.feedsParams.page = 1;
 			$scope.feedsParams.name = query;
 			if(ConnectivityMonitorFactory.isOffline()) {				
-				ConnectivityMonitorFactory.showErrorBanner('Network unavailable');
+				ConnectivityMonitorFactory.showErrorBanner(messagesService.general.INTERNET_NOT_WORKING);
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
@@ -382,7 +386,8 @@
 		'socialService',
 		'ConnectivityMonitorFactory',
 		'settingService',
-		'$timeout'
+		'$timeout',
+		'messagesService'
 				
 	];
 
