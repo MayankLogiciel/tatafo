@@ -10,7 +10,7 @@
 				<img ng-src="{{entry.image || defaultImage}}">
 			</div>
 			<div class="entry-content-title">
-				<h2 ng-bind="entry.feed.title"></h2>
+				<h2 ng-bind="entry.feed.title" ng-class= "{ 'title-color-when-read': entry.is_read==true }"></h2>
 			</div>
 			<div class="clearfix"></div>
 		</div> 

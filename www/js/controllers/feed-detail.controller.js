@@ -55,7 +55,6 @@
 					img.removeAttribute("src");
 					img.removeAttribute("border");		
 				}
-
 			});
 			if(data.feed.content){
 				data.feed.content = elem.innerHTML;
