@@ -8,7 +8,8 @@
     */
     var TourController = function($scope, $state, $ionicSlideBoxDelegate, settingService) {
 
-        $scope.$on('$ionicView.enter', function() {
+        $scope.$on('$ionicView.enter', function() { 
+            AdMob.removeBanner();           
             //Customizations
             $scope.ioniconSize = "36px"; //icon button size.
             $scope.ioniconColor = "#fff"; //icon button color.
@@ -63,6 +64,7 @@
             $scope.skip = function() {
                 //Return to first page.
                 settingService.setTutorialTourStatus(true);
+                AdMob.createBanner(); 
                 $ionicSlideBoxDelegate.slide(0);
                 $state.go($scope.pages.redirect);
             };
