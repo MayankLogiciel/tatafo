@@ -6,7 +6,7 @@
             </div>
         </ion-nav-buttons> 
         <ion-nav-title>
-            <span ng-bind = "topic.author_name"></span>
+            <span ng-bind = "entry.source_name"></span>
         </ion-nav-title>
         <ion-nav-buttons side="right">
             <button class="button button-icon ion-android-share-alt" on-tap="sharePost(post)">
@@ -21,7 +21,7 @@
 
             <div class="feed-entries-card post" post-content>
                 <h4 ng-bind="entry.feed.title || entry.title | rawHtml" class="title" on-hold="copyText('Header')"></h4>
-                <h5>Posted by <span class="author entry-author-name detail-page-author" ng-bind="topic.author_name | rawHtml"></span><span class="feed-date" ng-bind="entry.feed.updated | utcTimestampToLocalDateFilter "></span></h5>
+                <h5>Posted by <span class="author entry-author-name detail-page-author" ng-bind="entry.source_name | rawHtml"></span><span class="feed-date" ng-bind="entry.feed.updated | utcTimestampToLocalDateFilter "></span></h5>
             </div>
             
             <div class="feed-detail-content" ng-if="load" image-path-fix>                          
