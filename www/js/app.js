@@ -30,7 +30,7 @@ angular
             var hideSplashScreen = function (){
                 if(!settingService.doWeNeedToShowTutorialTour()) {
                     $state.go('tour');
-                }else {
+                    }else {
                     $state.go('app.feeds.all');                            
                 }
 
@@ -200,7 +200,6 @@ angular
         })
         .state('app.feed-entries', {
             url: "/feed/:sourceId/:sourceName",
-            cache: false,
             views: {
                 'menuContent': {
                     templateUrl: "views/app/feeds/source-feed.html",

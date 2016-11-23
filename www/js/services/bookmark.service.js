@@ -22,7 +22,7 @@
 						return null;
 					}
 					if(data.doc.data.id==bookmark_post.id){						
-						$ionicLoading.show({ template: 'Bookmark already exist!', noBackdrop: true, duration: 1000 });					
+						$ionicLoading.show({ template: 'Gist already exist!', noBackdrop: true, duration: 1000 });					
 						return data.doc.data.id == bookmark_post.id; 
 					}
 				});
@@ -31,7 +31,7 @@
 					bookmarksDB.post({
 						data:bookmark_post
 					});
-					$ionicLoading.show({ template: 'Bookmark Saved!', noBackdrop: true, duration: 1000 });					
+					$ionicLoading.show({ template: 'Gist Saved!', noBackdrop: true, duration: 1000 });					
 				}
 	        }); 
 		};

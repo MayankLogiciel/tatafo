@@ -43,7 +43,7 @@
       ];
 
       var settings = {
-         syncTimeOption: syncIntervalOptions[1], //set default value 4 Hours
+         syncTimeOption: syncIntervalOptions[3], //set default value 4 Hours
          pushNotificationEnabled: true,
          imageViewDisabled: false,
          nightModeEnabled: false,

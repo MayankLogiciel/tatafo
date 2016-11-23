@@ -23,6 +23,7 @@
 			$scope.load = false;
 			$scope.entry = feedDetailService.getPostData(); //load feed data
 			applyImageLoaderToDetailFeedImages($scope.entry);
+			//replaceElementWithIframeforOtherVideo($scope.entry);
 			$scope.load = true;
 			//find related source information from localStorage saved sources
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
@@ -47,7 +48,6 @@
 		* replacing the attribute of content or summary
 		*/
 		var applyImageLoaderToDetailFeedImages = function(data) {
-			$log.debug(data);
 			var elem= document.createElement("div");
 			elem.innerHTML = data.feed.content || data.feed.summary;
 			var images = elem.getElementsByTagName("img");
@@ -77,6 +77,27 @@
 			
 			elem = undefined;
 		};
+
+		// var replaceElementWithIframeforOtherVideo = function(data){
+		// 	var iframe= document.createElement("iframe");
+		// 	iframe.setAttribute("src", "https://instagram.fixc1-1.fna.fbcdn.net/t50.2886-16/15118034_371725993170314_6570203217211162624_n.mp4");
+		// 	iframe.setAttribute("allowfullscreen", "");
+		// 	iframe.setAttribute("frameborder", "0");
+		// 	iframe.setAttribute("height", "auto");
+		// 	iframe.setAttribute("width","600");
+
+		// 	var elem= document.createElement("blockquote");
+		// 	elem.innerHTML = data.feed.content || data.feed.summary;
+		// 	var element = elem.getElementsByTagName("blockquote");
+		// 	angular.forEach(element, function(value,key){
+		// 		//if(value.class == "instagram-media") {
+		// 		// 		//}	
+		// 		value.appendChild(iframe);			
+				
+		// 	});
+
+		// 	data.feed.content = elem.innerHTML;			
+		// }
 
 	    /**
 	    * getting the current index of th feed showing in article page
@@ -206,7 +227,7 @@
 
 
 		$scope.sharePost = function() {
-			socialService.share($scope.entry.feed.summary || $scope.entry.feed.content, $scope.entry.feed.title, $scope.entry.image, $scope.entry.feed.permalinkUrl);
+			socialService.sharePost($scope.entry.feed.permalinkUrl);
 		}
 		setup();
 	};

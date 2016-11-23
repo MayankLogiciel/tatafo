@@ -13,7 +13,6 @@
 					isImageViewDisabled = args;
 				});
 
-				//console.log(isImageViewDisabled);
 				if (isImageViewDisabled || ConnectivityMonitorFactory.isOffline()) {
 					var timer = $timeout(function(){
 						var images = element.find('img');

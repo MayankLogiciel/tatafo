@@ -294,7 +294,7 @@
 		};
 
 		$scope.sharePost = function(post) {
-			socialService.share(post.feed.summary || post.feed.content, post.feed.title, post.image, post.feed.permalinkUrl);
+			socialService.sharePost(post.feed.permalinkUrl);
 		};
 
 		/**
