@@ -832,7 +832,11 @@ ion-popover-view.fit ion-content {
 .button.button-assertive.ion-close-circled {
   display: none;
 }
-
 .title-color-when-read {
   color: #888;
+}
+.bar .title.title-left {
+  text-align: center;
+  transition: none;
+  -webkit-transition: none;
 }
