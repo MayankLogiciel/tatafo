@@ -164,7 +164,8 @@ angular
         })
         .state('app.feeds', {
             url: "/feeds",
-           // abstract: true,
+            cache: true,
+            abstract: true,
             views: {
                 'menuContent': {
                     templateUrl: "views/app/feeds/tabs.html"
@@ -173,6 +174,7 @@ angular
         })
         .state('app.feeds.all', {
             url: '/all',
+            cache: true,
             views: {
                 'all-tab': {
                     templateUrl: 'views/app/feeds/all-tab.html',
