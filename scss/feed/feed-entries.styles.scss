@@ -111,7 +111,19 @@
 	
 }
 .social-list-border {
-	border: 1px solid;
+	border: 1px solid grey;
+}
+.ion-social-facebook {
+	color: #3b5998;
+}
+.ion-social-twitter {
+	color: green;
+}
+.ion-social-youtube {
+	color: red;
+}
+.ion-social-instagram {
+	color:  #3f729b;
 }
 .feed-detail-cont {
 	padding: 10px;
@@ -132,7 +144,7 @@
 
 .credit-bar-section {
 	background-color: #ccc;
-	margin: 10px 0;
+	margin: 10px 0 0 0;
 	padding: 10px;
 	.credit-bar-icon {
 		float: left;
@@ -144,7 +156,7 @@
 	.credit-bar {
 		p {
 			color: #333;
-			margin: 0 0 0 27px;
+			margin: 0 ;
 			&:first-child {
 				margin-top: 0 !important;
 			}
@@ -153,6 +165,11 @@
 			color: #33AC6B;
 		}
 	}
+}
+
+.expend {
+	width: 100%;
+	padding: 0 0 10px 0;
 }
 .entry-content {
 	.entry-content-section {
