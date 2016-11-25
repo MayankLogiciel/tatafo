@@ -196,8 +196,28 @@
 
 .entry-content-unread {
 	background-color: #f5f5f5;
+	.card-footer {
+		.button-bar {
+			.btn-share {
+				display: none;
+				transition: none;
+  				-webkit-transition: none;
+			}
+		}
+	}
 	.item {
 		background-color: #f5f5f5;	
+	}
+}
+.entry-content-read {
+	.card-footer {
+		.button-bar {
+			.btn-open {
+				display: none;
+				transition: none;
+  				-webkit-transition: none;
+			}
+		}
 	}
 }
 .bookmark-save-icon {

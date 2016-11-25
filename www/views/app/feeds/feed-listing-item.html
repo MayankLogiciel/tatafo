@@ -1,4 +1,4 @@
-<div class="entry-content item item-text-wrap" ng-class="{'entry-content-unread': !entry.status}" lazy-scroll>
+<div class="entry-content item item-text-wrap" ng-class="{'entry-content-unread': !entry.is_read,'entry-content-read': entry.is_read }">
 	<div on-tap="loadPostDetails(entry)">
 		<i ng-class= "{ 'icon ion-eye-disabled left read-unread':(entry.is_read==false) , 'icon ion-eye left read-unread':(entry.is_read==true) }"></i>
 		<p class="entry-author">
@@ -21,7 +21,8 @@
 				<i ng-class= "{ 'icon ion-android-bookmark bookmark-save-icon':(entry.bookmarkSaved) , 'icon ion-android-bookmark':(!entry.bookmarkSaved) }"></i> 
 				<span class="bookmark-save-icon" ng-bind="(!entry.bookmarkSaved)?'Save':'Saved'"></span>
 			</a>
-			<a class="button button-clear card-button secondary" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+			<a class="button button-clear card-button secondary btn-share" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+			<a class="button button-clear card-button secondary btn-open" on-tap="loadPostDetails(entry)"><i class="icon ion-android-open coin"></i> Open</a>
 		</div>
 	</div>
 </div>
