@@ -22,9 +22,7 @@
 			$scope.allFeed=[];
 			$scope.load = false;
 			$scope.entry = feedDetailService.getPostData(); //load feed data
-			applyImageLoaderToDetailFeedImages($scope.entry);
-			//replaceElementWithIframeforOtherVideo($scope.entry);
-			//hideOriginalStoryDiv($scope.entry);
+			applyImageLoaderToDetailFeedImages($scope.entry);			
 			$scope.load = true;
 			//find related source information from localStorage saved sources
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
@@ -79,41 +77,7 @@
 			elem = undefined;
 		};
 
-		// var replaceElementWithIframeforOtherVideo = function(data){
-		// 	var iframe= document.createElement("iframe");
-		// 	iframe.setAttribute("src", "https://instagram.fixc1-1.fna.fbcdn.net/t50.2886-16/15118034_371725993170314_6570203217211162624_n.mp4");
-		// 	iframe.setAttribute("allowfullscreen", "");
-		// 	iframe.setAttribute("frameborder", "0");
-		// 	iframe.setAttribute("height", "auto");
-		// 	iframe.setAttribute("width","600");
-
-		// 	var elem= document.createElement("blockquote");
-		// 	elem.innerHTML = data.feed.content || data.feed.summary;
-		// 	var element = elem.getElementsByTagName("blockquote");
-		// 	angular.forEach(element, function(value,key){
-		// 		//if(value.class == "instagram-media") {
-		// 		// 		//}	
-		// 		value.appendChild(iframe);			
-				
-		// 	});
-
-		// 	data.feed.content = elem.innerHTML;			
-		// }
-
-		// var hideOriginalStoryDiv = function(data) {
-		// 	var elem= document.createElement("div");
-		// 	elem.innerHTML = data.feed.content || data.feed.summary;
-		// 	var originalStoryDiv = elem.getElementsByClassName("blogger-post-footer");
-		// 	angular.forEach(originalStoryDiv, function(val, key){
-		// 		val.parentNode.removeChild(val);
-		// 	});
-		// 	data.feed.content = elem.innerHTML;
-		// }
-
-		//document.getElementsByClassName('appBanner').style.visibility='hidden';
-		// $scope.originalStoringLink = function() {			
-		// 	window.open($scope.entry.feed.permalinkUrl, '_system');
-		// }
+		
 
 	    /**
 	    * getting the current index of th feed showing in article page
