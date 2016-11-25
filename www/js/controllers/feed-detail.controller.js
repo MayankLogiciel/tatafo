@@ -4,7 +4,7 @@
 	/**
 	* FeedDetailController function
 	*/
-	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $ionicHistory, $window, settingService) {
+	var FeedDetailController = function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $ionicHistory, $window, settingService, $cordovaAppAvailability) {
 		
 		/**
 		* Initialization
@@ -24,6 +24,7 @@
 			$scope.entry = feedDetailService.getPostData(); //load feed data
 			applyImageLoaderToDetailFeedImages($scope.entry);
 			//replaceElementWithIframeforOtherVideo($scope.entry);
+			//hideOriginalStoryDiv($scope.entry);
 			$scope.load = true;
 			//find related source information from localStorage saved sources
 			$scope.sourceData = sourcesService.getFeedSourceFromLocalStorage($scope.entry.source_id);
@@ -97,6 +98,21 @@
 		// 	});
 
 		// 	data.feed.content = elem.innerHTML;			
+		// }
+
+		// var hideOriginalStoryDiv = function(data) {
+		// 	var elem= document.createElement("div");
+		// 	elem.innerHTML = data.feed.content || data.feed.summary;
+		// 	var originalStoryDiv = elem.getElementsByClassName("blogger-post-footer");
+		// 	angular.forEach(originalStoryDiv, function(val, key){
+		// 		val.parentNode.removeChild(val);
+		// 	});
+		// 	data.feed.content = elem.innerHTML;
+		// }
+
+		//document.getElementsByClassName('appBanner').style.visibility='hidden';
+		// $scope.originalStoringLink = function() {			
+		// 	window.open($scope.entry.feed.permalinkUrl, '_system');
 		// }
 
 	    /**
@@ -180,17 +196,61 @@
 			window.open("mailto:"+link, '_system');
 		};
 
-		$scope.openLink = function (link) {
+		$scope.openFacebookLink = function (link) {	
+			if(ionic.Platform.isWebView()) {
+				$cordovaAppAvailability.check('com.facebook.katana')
+			    .then(function() {
+			    	window.open('fb://page/'+link, '_system', 'location=no');			       
+			    }, function () {			    	
+			    	window.open('https://www.facebook.com/'+link, '_system');			        
+			    });				
+			} 
+    	}
+
+    	$scope.openTwitterLink = function (link) {	
+			if(ionic.Platform.isWebView()) {
+				$cordovaAppAvailability.check('com.twitter.android')
+			    .then(function() {
+			    	window.open('twitter://user?screen_name='+link, '_system', 'location=no');			       
+			    }, function () {			    	
+			    	window.open('https://www.twitter.com/'+link, '_system');			        
+			    });				
+			} 
+    	}
+
+    	$scope.openInstagramLink = function (link) {	
+			if(ionic.Platform.isWebView()) {
+				$cordovaAppAvailability.check('com.instagram.android')
+			    .then(function() {
+			    	window.open('https://www.instagram.com/'+link, '_system');			       
+			    }, function () {			    	
+			    	window.open('https://www.instagram.com/'+link, '_system');			        
+			    });				
+			} 
+    	}
+
+    	$scope.openYoutubeLink = function (link) {	
+			if(ionic.Platform.isWebView()) {
+				$cordovaAppAvailability.check('com.youtube.android')
+			    .then(function() {
+			    	window.open('https://www.youtube.com/'+link, '_system');			       
+			    }, function () {			    	
+			    	window.open('https://www.youtube.com/'+link, '_system');			        
+			    });				
+			} 
+    	}
+
+		$scope.openOriginalStoryLink = function (link) {
 			cordova.ThemeableBrowser.open(link, '_blank', {
 			    statusbar: {
 			        color: '#FFFFFF'
 			    },
 			    toolbar: {
 			        height: 44,
-			        color: '#f0f0f0ff'
+			        color: '#E74D4D'
 			    },
 			    title: {
-			        color: '#E74D4D',
+			        color: '#FFFFFF',
 			        showPageTitle: true
 			    },
 			    closeButton: {
@@ -198,9 +258,21 @@
 			        imagePressed: 'close_pressed',
 			        align: 'left',
 			        event: 'closePressed'
-			    },			   
+			    },
+			    // backButton: {
+			    //     image: 'ic_action_previous_item',
+			    //     imagePressed: 'back_pressed',
+			    //     align: 'left',
+			    //     event: 'backPressed'
+    			// },	
+			    // forwardButton: {
+			    //     image: 'ic_action_next_item',
+			    //     imagePressed: 'forward_pressed',
+			    //     align: 'left',
+			    //     event: 'forwardPressed'
+   				// },	   				
 			    backButtonCanClose: true
-			}).addEventListener('backPressed', function(e) {
+				}).addEventListener('backPressed', function(e) {
 				}).addEventListener(cordova.ThemeableBrowser.EVT_ERR, function(e) {
 			    	$log.debug(e.message);
 				}).addEventListener(cordova.ThemeableBrowser.EVT_WRN, function(e) {
@@ -233,7 +305,7 @@
 	};
 
 	
-	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope', '$ionicLoading', 'feedsDAOService', '$ionicHistory', '$window', 'settingService'];
+	FeedDetailController.$inject = ['$log', '$scope', 'feedDetailService', 'bookMarkService', 'feedService', 'socialService', 'ConnectivityMonitorFactory', '$timeout', 'sourcesService', '$rootScope', '$ionicLoading', 'feedsDAOService', '$ionicHistory', '$window', 'settingService', '$cordovaAppAvailability'];
 
 	angular
 		.module('tatafo')
