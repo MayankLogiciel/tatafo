@@ -3,7 +3,7 @@
 		<i ng-class= "{ 'icon ion-eye-disabled left read-unread':(entry.is_read==false) , 'icon ion-eye left read-unread':(entry.is_read==true) }"></i>
 		<p class="entry-author">
 			<span class="entry-author-name">By {{entry.source_name}}</span> 
-			<span class="feed-date-time" ng-bind="entry.feed.updated | utcTimestampToLocalDateFilter"></span>
+			<span class="feed-date-time" ng-bind-html="entry.feed.updated | utcTimestampToLocalDateFilter"></span>
 		</p>
 		<div class="entry-content-section">
 			<div class="entry-content-img" image-path-fix>				
