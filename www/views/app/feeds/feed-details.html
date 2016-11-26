@@ -1,5 +1,5 @@
-<ion-view class="feed-entries-details-view">
-    <ion-nav-bar class="bar app-top-bar effect1 header-item-buttons">
+<ion-view class="feed-entries-details-view" header-hide-directive>
+    <ion-nav-bar class=" headerOfPage bar app-top-bar effect1 header-item-buttons">
         <ion-nav-buttons side="left">          
             <div class="buttons">
                 <button class="button button-icon button-assertive ion-android-arrow-back" ng-click="myGoBack()"></button>
@@ -15,7 +15,7 @@
             </button>
         </ion-nav-buttons>        
     </ion-nav-bar>
-    <ion-content scroll="true" overflow-scroll="true">
+    <ion-content on-scroll="hideDetailPageHeader()" delegate-handle="detailPageHeaderHideHandler" class="top-spacing">
 
         <div class="feed-detail-cont" lazy-scroll>
 

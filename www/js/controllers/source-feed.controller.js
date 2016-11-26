@@ -236,21 +236,6 @@
 	  		$scope.sttButton=false;
 		};
 
-	 	/**
-		* getting the scroll postion
-		*/
-		$scope.getScrollPosition = function() {			
-	  		//monitor the scroll
-	  		var moveData = $ionicScrollDelegate.$getByHandle('sourceFeedHandler').getScrollPosition();
-	  		$scope.$apply(function() {
-	     		if(angular.isDefined(moveData) && moveData.top > 150) {
-	       			$scope.sttButton=true;
-	     		}else {
-	        			$scope.sttButton=false;
-	      			}
-	     	});
-	   	};
-	
 		setup();
 	};
 	SourceFeedController.$inject=['$log', '$rootScope', '$scope', '$state', '$stateParams', 'feedService', 'feedsDAOService', '$ionicLoading', '$ionicScrollDelegate', 'bookMarkService', 'feedDetailService', 'socialService', 'ConnectivityMonitorFactory', 'settingService', '$ionicHistory', '$window'];

@@ -349,21 +349,7 @@
 	 		$scope.sttButton=false; //hide the button when reached top
 		};
 
-		/**
-		* getting the scroll postion
-		*/
-		$scope.getScrollPosition = function() {
-	 		//monitor the scroll
-	 		var moveData = $ionicScrollDelegate.$getByHandle('feedshandler').getScrollPosition();
-	 		$scope.$apply(function() {
-	    		if(angular.isDefined(moveData) && moveData.top>150) {
-	      			$scope.sttButton=true;
-	    		}else	{
-	       			$scope.sttButton=false;
-	     		}
-	    	});
-	  	};
-
+		
 	  	setup();
 	};
 

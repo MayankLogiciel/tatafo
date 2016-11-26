@@ -1,5 +1,5 @@
-<ion-view class="feed-entries-view">
-    <ion-nav-bar class="bar app-top-bar effect1 header-item-titles header-item-buttons">
+<ion-view class="feed-entries-view" header-hide-directive>
+    <ion-nav-bar class="headerOfPage bar app-top-bar effect1 header-item-titles header-item-buttons">
         <ion-nav-buttons side="left">          
             <div class="buttons">
                 <button class="button button-icon button-assertive ion-android-arrow-back" ng-click="myGoBack()"></button>
@@ -18,7 +18,7 @@
         </ion-nav-buttons>
     </ion-nav-bar>
 
-    <ion-header-bar class="bar bar-subheader effect1 customer-search-box email-search-box filter-bar-wrapper filter-bar-transition-horizontal" ng-class="{ 'filter-bar-in':isSearchOpen }">
+    <ion-header-bar class=" search-bar bar bar-subheader effect1 customer-search-box email-search-box filter-bar-wrapper filter-bar-transition-horizontal" ng-class="{ 'filter-bar-in':isSearchOpen }">
         <div class="search-container">
             <span class="search-icon">
                 <i class="icon ion-search"></i>
@@ -36,7 +36,7 @@
         </div>
     </ion-header-bar>
 
-    <ion-content has-bouncing="false" class="has-header feed-entries-details-view" on-scroll="getScrollPosition()" delegate-handle="sourceFeedHandler" >
+    <ion-content has-bouncing="false" class="has-header feed-entries-details-view top-spacing" on-scroll="hideHeader();" delegate-handle="headerHideHandler" >
                 
         <ion-refresher ng-if="feed.length > 0" on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
         </ion-refresher>
