@@ -3,16 +3,20 @@
 
 	var utcTimestampToLocalDateFilter = function($filter){
 		return function(uTimeStampInSeconds, formatName){
-			var format = 'yyyy-MMM-dd | HH:mm a';
+			var dateformat = 'yyyy-MMM-dd';
+			var timeFormat = 'HH:mm a';
 
-			if(angular.isDefined(formatName) && formatName == "timeFirst"){
-				format = 'yyyy-MMM-dd | HH:mm a';
-			}
+			// if(angular.isDefined(formatName) && formatName == "timeFirst"){
+			// 	format = 'yyyy-MMM-dd | HH:mm a';
+			// }
 
 			/**
 			* unix timestamps are in seconds, so first need them to convert in milliseconds
 			*/
-			return $filter('date')(uTimeStampInSeconds * 1000, format);
+			var convertedDate = $filter('date')(uTimeStampInSeconds * 1000, dateformat);
+			var convertedTime = $filter('date')(uTimeStampInSeconds * 1000, timeFormat);
+
+			return convertedDate +"<span>|</span>" + convertedTime;
 		}
 	};
 
