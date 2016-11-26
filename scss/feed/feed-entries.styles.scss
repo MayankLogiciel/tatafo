@@ -100,6 +100,11 @@
 }
 .feed-date-time {
 	float: right;
+	span {
+		padding: 0 4px;
+		color: #E74D4D;
+		font-size: 1.2em;
+	}
 }
 
 .feed-entries-card	{
@@ -246,10 +251,19 @@
 	.tabs {
 		background-color: #ccc;
 		a {
-			i, 
+			i {
+				color: #fff;
+			}
 			span.tab-title {
 				color: #000;
 			}
+		}
+		a.tab-item-active {
+			i, 
+			span.tab-title {
+				color: #000;
+			}	
+
 		}
 	}
 }
