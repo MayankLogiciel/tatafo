@@ -4,7 +4,10 @@
 
         return{
             request: function(config) {
+                var canceler = $q.defer();
+                config.timeout = canceler.promise;
                 config.headers = config.headers || {};
+                config.timeout = 10000;
                 
                 //if( ionic.Platform.isWebView() && angular.isDefined(localStorage.tatafo_deviceInfo) ){
                 if( ionic.Platform.isWebView() && angular.isDefined(localStorage.tatafo_deviceInfo) ){
@@ -17,21 +20,22 @@
                     config.headers['test'] = 'true';
                 }
 
-                config.timeout = 60000;
-
-                return config;
+                //if(angular.isDefined(navigator.connection.type)){
+                    
+                //}
+                return config || $q.when(config);
             },
 
             response: function(response){
+
                 return response;
             },
 
-            requestError: function(rejection) {
+            requestError: function(rejection) {                
                 return rejection;
             },
             
             responseError: function(rejection) {
-
                 var ConnectivityMonitorFactory = $injector.get('ConnectivityMonitorFactory');
                 // $log.debug(rejection);
                 if(angular.isDefined(window.Connection)) {
@@ -40,6 +44,10 @@
                         ConnectivityMonitorFactory.showErrorBanner(messagesService.general.INTERNET_NOT_WORKING);
                     }else {
                         switch(rejection.status){
+                            case -1:
+                            //timeout case, server unreachable or internet not working
+                            ConnectivityMonitorFactory.showErrorBanner(messagesService.general.INTERNET_NOT_WORKING);
+                            break;
                             case 0:
                               //timeout case, server unreachable or internet not working
                             ConnectivityMonitorFactory.showErrorBanner(messagesService.general.INTERNET_NOT_WORKING);

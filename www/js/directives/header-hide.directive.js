@@ -15,7 +15,6 @@
 	     		var searchBar = element[0].querySelector('.search-bar');	     		
 	     		scope.hideHeader =function() {
 	     			var moveData = $ionicScrollDelegate.$getByHandle('headerHideHandler').getScrollPosition();
-			  		console.log(moveData);
 			  		scope.$apply(function() {
 			     		if(angular.isDefined(moveData) && moveData.top > 150) {
 			     			header.style.display = 'none';
@@ -23,11 +22,13 @@
 		     				hasHeader.style.top = 0; 
 		     				scope.sttButton=true;
 			     		}else {
+
 			        		header.style.display = 'block';
 			        		searchBar.style.display = 'block';
 		     				hasHeader.style.top = '44px';
 		     				scope.sttButton=false;
-			      		}
+				      		
+			     		}
 			     	}); 		
 	     		} 
 
