@@ -43,7 +43,7 @@ gulp.task('copyplugins', function() {
    .pipe(gulp.dest('./www/lib'));
    gulp.src('./bower_components/ionic-image-lazy-load/ionic-image-lazy-load.js')
    .pipe(gulp.dest('./www/lib'));
-   
+    
 });
 
 gulp.task('watch', function() {
