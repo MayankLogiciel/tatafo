@@ -118,9 +118,11 @@ $night-mode-header: #1b2936;
   .titleuni  {
     background: $night-mode-background;
   }
-  .customer-search-box.email-search-box,
-  .search-container input {
+  .customer-search-box.email-search-box {
     background: $night-mode-header;
+  }
+  .orignal-btn {
+    border-right: 0!important;
   }
 }
 
