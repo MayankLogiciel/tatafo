@@ -26,7 +26,31 @@
 	      				$scope.feed[key].is_read=true;
 	      			}
 	      		});
-	    	});			
+	    	});	
+
+			/**
+			* Back Button Handling before leave
+			* checking the current url(is it Loacl/Foriegn ?)
+			* confirming that need to show popup or not for App rate using settingService.doWeNeedToShowAppRatePopup function
+			*/
+			$scope.$on('$ionicView.beforeLeave', function (event, viewData) {
+				console.log('$ionicView.beforeLeave');
+			    if(($state.current.name.indexOf('app.feeds.local') != -1 ) || (($state.current.name.indexOf('app.feeds.foreign') != -1 ))) {
+				  	if(settingService.doWeNeedToShowAppRatePopup()) {
+						console.log($state.current.name);
+				  		
+				  		var clickEvent = new MouseEvent("tap", {});
+				  		if(($state.current.name.indexOf('app.feeds.local') != -1 )){
+					    	var element = document.getElementById('app-rate-model-source-feed-local');
+				  		}
+				  		if(($state.current.name.indexOf('app.feeds.foreign') != -1 )){
+					    	var element = document.getElementById('app-rate-model-source-feed-foreign');
+				  		}
+						element.dispatchEvent(clickEvent);
+				  	}
+				}
+			});
+
 		};
 
 		/**
@@ -45,20 +69,6 @@
 		//     viewData.enableBack = true;
 		// });
 
-		/**
-		* Back Button Handling before leave
-		* checking the current url(is it Loacl/Foriegn ?)
-		* confirming that need to show popup or not for App rate using settingService.doWeNeedToShowAppRatePopup function
-		*/
-		$rootScope.$on('$ionicView.beforeLeave', function (event, viewData) {
-		    if(($state.current.name.indexOf('app.feeds.local') != -1 ) || (($state.current.name.indexOf('app.feeds.foreign') != -1 ))) {
-			  	if(settingService.doWeNeedToShowAppRatePopup()) {
-			  		var clickEvent = new MouseEvent("tap", {});
-				    var element = document.getElementById('app-rate-model-source-feed');
-					element.dispatchEvent(clickEvent);
-			  	}
-			}
-		});
 
 		/**
 		* Post bookmark
@@ -86,7 +96,6 @@
 			$scope.loaded = false;			
 			$scope.feedsParams.source_id = $stateParams.sourceId;
 			$scope.feedsParams.source_name = $stateParams.sourceName;
-
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedsDAOService.getPostsHavingSource($scope.feedsParams).then(function(response){
 					if(response.posts.length>0){

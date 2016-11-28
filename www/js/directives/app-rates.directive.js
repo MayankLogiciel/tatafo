@@ -5,23 +5,26 @@
 	/**
 	* appRateDirective Directive function
 	*/
-	var appRateDirective=function($ionicModal, $window, settingService) {		
+	var appRateDirective=function($ionicModal, $window, settingService, $timeout) {		
 		return {
 			restrict: 'A',
-			
+			scope: {},
 			link: function(scope, element, attrs) {
 				/**
 				* ionicModal for rate app or not
 				*/
 				$ionicModal.fromTemplateUrl('views/common/rates.html', {    			 
     				scope: scope,
-    				animation: 'none'
+    				animation: 'none',
+    				backdropClickToClose: false
     			}).then(function(modal) {
     				scope.appRateModel = modal;
   				});
 
 	            scope.showAppRateModel = function() {
-	               scope.appRateModel.show();
+	            	$timeout(function() {
+	               		scope.appRateModel.show();
+	            	}, 0);
 	            }
 
   				scope.hideModel = function() {
@@ -33,7 +36,8 @@
 				*/
 				$ionicModal.fromTemplateUrl('views/common/rates1.html', {    			 
     				scope: scope,
-    				animation: 'none'
+    				animation: 'none',
+    				backdropClickToClose: false
     			}).then(function(modal) {
     				scope.appRateModel1 = modal;
   				});
@@ -56,7 +60,8 @@
 				*/
 				$ionicModal.fromTemplateUrl('views/common/rates2.html', {    			 
     				scope: scope,
-    				animation: 'none'
+    				animation: 'none',
+    				backdropClickToClose: false
     			}).then(function(modal) {
     				scope.appRateModel2 = modal;
   				});               
@@ -82,7 +87,7 @@
 	/**
 	* @dependencies injector $ionicModal, $window, settingService
 	*/
-	appRateDirective.$inject=['$ionicModal', '$window', 'settingService'];
+	appRateDirective.$inject=['$ionicModal', '$window', 'settingService', '$timeout'];
 	angular
 		.module('tatafo')
 		.directive('appRateDirective',appRateDirective)
