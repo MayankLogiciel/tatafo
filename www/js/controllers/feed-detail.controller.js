@@ -71,7 +71,9 @@
 			if(data.feed.content){
 				data.feed.content = elem.innerHTML;
 			}else {
-				data.feed.summary = elem.innerHTML;
+				if(elem.innerHTML!= 'undefined') {				
+			 		data.feed.summary = elem.innerHTML;
+			 	}
 			}
 			
 			elem = undefined;
