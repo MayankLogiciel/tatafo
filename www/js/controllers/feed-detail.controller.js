@@ -160,6 +160,10 @@
 			window.open("mailto:"+link, '_system');
 		};
 
+		$scope.openBlogLink = function (link) {
+			window.open(link, '_system');
+		};
+
 		$scope.openFacebookLink = function (link) {	
 			if(ionic.Platform.isWebView()) {
 				$cordovaAppAvailability.check('com.facebook.katana')

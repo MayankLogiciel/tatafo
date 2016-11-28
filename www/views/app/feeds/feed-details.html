@@ -29,7 +29,7 @@
                 </p>
 
                 <div class="button-bar button-bar-detail-page">
-                    <a class="button button-clear card-button primary orignal-btn" on-tap="openOriginalStoryLink(topic.social_links.website_url)">
+                    <a class="button button-clear card-button primary orignal-btn" on-tap="openOriginalStoryLink(entry.feed.permalinkUrl)">
                         View Original Article            
                     </a>
                 </div>
@@ -43,12 +43,12 @@
             </div> -->
             <div class="credit-bar">
                 <p>Credit:</p>
-                <p>This content is owned by <span class="credit-bar-link" on-tap="openOriginalStoryLink(topic.social_links.website_url)">{{entry.source_name}} </span></p>
+                <p>This content is owned by <span class="credit-bar-link" on-tap="openBlogLink(topic.social_links.website_url)">{{entry.source_name}} </span></p>
             </div>           
         </div>
         <div class = "row expend" >
             <div class = "col col-50 social-list-border text-color" >Reach {{entry.source_name}}</div>
-            <div class = "col social-list-border icon-world" ng-show="topic.social_links.website_url" on-tap="openOriginalStoryLink(topic.social_links.website_url)"> <i class="icon ion-ios-world"></i></div>
+            <div class = "col social-list-border icon-world" ng-show="topic.social_links.website_url" on-tap="openBlogLink(topic.social_links.website_url)"> <i class="icon ion-ios-world"></i></div>
             <div class = "col social-list-border icon-facebook" ng-show="topic.social_links.facebook_url" on-tap="openFacebookLink(topic.social_links.facebook_url)"> <i class="icon ion-social-facebook">{{facebook}}</i></div>
             <div class = "col social-list-border icon-twitter" ng-show="topic.social_links.twitter_url" on-tap="openTwitterLink(topic.social_links.twitter_url)"> <i class="icon ion-social-twitter">{{twitter}}</i></div>
             <div class = "col social-list-border icon-instagram" ng-show="topic.social_links.instagram_url" on-tap="openInstagramLink(topic.social_links.instagram_url)"> <i class="icon ion-social-instagram">{{Instagram}}</i></div>
