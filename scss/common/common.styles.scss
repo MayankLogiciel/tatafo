@@ -125,7 +125,6 @@ $night-mode-header: #1b2936;
     border-right: 0!important;
   }
 }
-
 .bar.app-top-bar
 {
 	background-color: $top-bar-bg;
@@ -712,6 +711,11 @@ ion-popover-view.fit ion-content {
             }
         }
     }
+    .reach-box {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
     .social-list-border {
         text-align: center;
         position: relative;
@@ -822,8 +826,11 @@ ion-popover-view.fit ion-content {
     padding: 0 10px;
     left:0 !important;
     right:0 !important;
-    margin:auto;
+    margin:0;
     text-align:center;
+    position: relative;
+    line-height: 36px;
+    max-width: 50%;
 }
 
 .header-item-buttons .buttons {
