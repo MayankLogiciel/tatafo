@@ -23,8 +23,8 @@
 		*/
 		$scope.deleteBookMark = function(postId) {	
 			var confirmPopup = $ionicPopup.confirm({
-     				title: 'Delete BookMark',
-     				template: 'Are you sure you want to delete this bookmark?'
+     				title: 'Delete Gist',
+     				template: 'Are you sure you want to delete this gist?'
 			});
 			confirmPopup.then(function(res) {				
 			    if(res) {

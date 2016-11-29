@@ -45,7 +45,7 @@
 	    		.then(function (result) {
 	    			for(var i = 0; i < result.rows.length; i++){
 	    				if(result.rows[i].id==bookmarkId._id) {
-							$ionicLoading.show({ template: 'Bookmark Deleted!', noBackdrop: true, duration: 1500 });
+							$ionicLoading.show({ template: 'Gist Deleted!', noBackdrop: true, duration: 1500 });
 	    					return bookmarksDB.remove(result.rows[i].id,result.rows[i].value.rev);            				        					
 					 	}
 					} 		            	

@@ -12,37 +12,42 @@
         <ion-nav-buttons side="right">        
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content>
-        <div class="bookmarks-container">
-            <div ng-if="(bookmarks.feeds.length == 0 || bookmarks.length == 0)" class="row empty-bookmark">
-                <div class="empty-results col col-center">
-                    <i class="icon ion-bookmark"></i>
-                    <h3 class="no-bookmarks">There's nothing here yet. Start exploring!</h3>
+    <ion-content has-bouncing="false" class="feed-entries-details-view top-spacing">
+                
+        <div ng-if="(bookmarks.feeds.length == 0 || bookmarks.length == 0)" class="row empty-bookmark">
+            <div class="empty-results col col-center">
+                <i class="icon ion-bookmark"></i>
+                <h3 class="no-bookmarks">There's nothing here yet. Start exploring!</h3>
+            </div>
+        </div> 
+
+        <div class="entries-list feed-col" ng-if="(bookmarks.feeds.length > 0 || bookmarks.length > 0)">
+            <div ng-repeat="entry in bookmarks | orderBy:'feed.updated': true track by entry.doc.data.id" image-path-fix class="list card entry-item">
+                <div class="entry-content item item-text-wrap">
+                    <div>
+                        <p class="entry-author">
+                            <span class="entry-author-name">By {{entry.doc.data.source_name}}</span> 
+                            <span class="feed-date-time" ng-bind-html="entry.doc.data.feed.updated | utcTimestampToLocalDateFilter"></span>
+                        </p>
+                        <div class="entry-content-section">
+                            <div class="entry-content-img" image-path-fix>              
+                                <img src="{{entry.doc.data.image || defaultImage}}">
+                            </div>
+                            <div class="entry-content-title">
+                                <h2 ng-bind="entry.doc.data.feed.title"></h2>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div> 
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="button-bar">
+                            <a class="button button-clear card-button primary btn-open" on-tap="goToFeedPostArticle(entry.doc.data)"><i class="icon ion-android-open coin"></i> Open</a>                    
+                           <a class="button button-clear card-button secondary btn-open" on-tap="deleteBookMark(entry.doc)"><i class="icon ion-trash-b coin"></i> Delete</a> 
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div ng-if="(bookmarks.feeds.length > 0 || bookmarks.length > 0)">
-                <ion-list class="bookmarks-list item item-divider" can-swipe="true">
-                    <ion-item class="bookmark-item item item-divider" ng-repeat="bookmark in bookmarks" >
-                        <div class="bookmark-section">
-                            <h2 class="post-title" ng-bind-html="bookmark.doc.data.feed.title | rawHtml"></h2>
-                            <p class="entry-author">
-                                <span>By {{bookmark.doc.data.source_name}} .</span>
-                                <span class="post-time" am-time-ago="bookmark.doc.data.updated_at"></span> 
-                            </p>
-                            <!-- <div class="item item-body">
-                                <img class="full-image" ng-src="{{bookmark.doc.image}}">
-                            </div> -->
-                            <!-- <p class="post-date">Posted <span class="post-time" am-time-ago="bookmark.doc.date"></span></p> -->
-                        </div>   
-                        <div class="row">
-                            <div class="col text-center">  <button class="button  icon-left ion-ios-book button-calm"  ng-click="goToFeedPostArticle(bookmark.doc.data)">Open</button></div>
-                            <div class="col text-center"><button class="button  icon-left ion-trash-b button-assertive"  ng-click="deleteBookMark(bookmark.doc)">Remove</button></div>
-                        </div>
-                        
-                    </ion-item>
-
-                </ion-list>
-            </div>
         </div>
-    </ion-content>
+    </ion-content>   
 </ion-view>
