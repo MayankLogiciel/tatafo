@@ -5,7 +5,7 @@
 	/**
 	* appRateDirective Directive function
 	*/
-	var headerHideDirective=function($ionicScrollDelegate) {		
+	var headerHideDirective=function($ionicScrollDelegate,$rootScope) {		
 		return {
 			restrict: 'A',
 			
@@ -15,6 +15,7 @@
 	     		var searchBar = element[0].querySelector('.search-bar');	     		
 	     		scope.hideHeader =function() {
 	     			var moveData = $ionicScrollDelegate.$getByHandle('headerHideHandler').getScrollPosition();
+			  		var lastTop = $rootScope.top  ||  {};
 			  		scope.$apply(function() {
 			     		if(angular.isDefined(moveData) && moveData.top > 150) {
 			     			header.style.display = 'none';
@@ -22,34 +23,40 @@
 		     				hasHeader.style.top = 0; 
 		     				scope.sttButton=true;
 			     		}else {
-
-			        		header.style.display = 'block';
-			        		searchBar.style.display = 'block';
-		     				hasHeader.style.top = '44px';
-		     				scope.sttButton=false;
-				      		
+			     			
+			     			scope.sttButton=false;			     			
 			     		}
+			     		if(lastTop > moveData.top){
+			     			header.style.display = 'block';
+				        	searchBar.style.display = 'block';
+			     			hasHeader.style.top = '44px';
+			     		} 
+			  			$rootScope.top = moveData.top;
+
 			     	}); 		
 	     		} 
 
 	     		scope.hideDetailPageHeader =function() {
 	     			var moveData = $ionicScrollDelegate.$getByHandle('detailPageHeaderHideHandler').getScrollPosition();
+			  		var lastTopDetailPage = $rootScope.topDetailPage  ||  {};
 			  		scope.$apply(function() {
 			     		if(angular.isDefined(moveData) && moveData.top > 150) {
 			     			header.style.display = 'none';
 			     			hasHeader.style.top = 0; 
 		     				scope.sttButton=true;
-			     		}else {
+			     		}
+			     		if(lastTopDetailPage > moveData.top){
 			        		header.style.display = 'block';
 			        		hasHeader.style.top = '44px';
 		     				scope.sttButton=false;
 			      		}
+			      		$rootScope.topDetailPage = moveData.top;
 			     	}); 		
 	     		}       				     		     		
  			}
 		}
 	}
-	headerHideDirective.$inject=['$ionicScrollDelegate'];
+	headerHideDirective.$inject=['$ionicScrollDelegate', '$rootScope'];
 	angular
 		.module('tatafo')
 		.directive('headerHideDirective',headerHideDirective)
