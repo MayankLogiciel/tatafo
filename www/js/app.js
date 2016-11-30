@@ -229,6 +229,16 @@ angular
                 }
             }
         })
+        .state('app.offline', {
+            url: "/offline",
+            cache: false,
+            views: {
+                'menuContent': {
+                    templateUrl: "views/app/feeds/offline-page.html",
+                    controller: 'OfflineController'
+                }
+            }
+        })
         .state('app.feeds.bookmarks', {
             url: "/bookmarks",
             cache: false,
@@ -239,7 +249,6 @@ angular
                 }
             }
         });
-
         // if none of the above states are matched, use this as the fallback
         //$urlRouterProvider.otherwise('/app/feeds');
     });

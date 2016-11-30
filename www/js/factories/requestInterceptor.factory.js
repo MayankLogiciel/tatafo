@@ -7,7 +7,7 @@
                 var canceler = $q.defer();
                 config.timeout = canceler.promise;
                 config.headers = config.headers || {};
-                config.timeout = 10000;
+                config.timeout = 40000;
                 
                 //if( ionic.Platform.isWebView() && angular.isDefined(localStorage.tatafo_deviceInfo) ){
                 if( ionic.Platform.isWebView() && angular.isDefined(localStorage.tatafo_deviceInfo) ){
@@ -37,6 +37,7 @@
             
             responseError: function(rejection) {
                 var ConnectivityMonitorFactory = $injector.get('ConnectivityMonitorFactory');
+                var $state = $injector.get('$state');
                 // $log.debug(rejection);
                 if(angular.isDefined(window.Connection)) {
 
@@ -45,8 +46,9 @@
                     }else {
                         switch(rejection.status){
                             case -1:
+                            $state.go('app.offline');
                             //timeout case, server unreachable or internet not working
-                            ConnectivityMonitorFactory.showErrorBanner(messagesService.general.INTERNET_NOT_WORKING);
+                           // ConnectivityMonitorFactory.showErrorBanner(messagesService.general.INTERNET_NOT_WORKING);
                             break;
                             case 0:
                               //timeout case, server unreachable or internet not working

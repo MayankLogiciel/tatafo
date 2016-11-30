@@ -1,0 +1,36 @@
+<ion-view class="feed-entries-details-view">
+    <ion-nav-bar class=" headerOfPage bar app-top-bar effect1 header-item-buttons">
+        <ion-nav-buttons side="left">          
+            <div class="buttons">
+                <button class="button button-icon button-assertive ion-android-arrow-back" ng-click="myGoBack()"></button>
+            </div>
+        </ion-nav-buttons> 
+        <ion-nav-title>
+            <span>Are you connected?</span>
+        </ion-nav-title>
+        <ion-nav-buttons side="right">
+           <header-popover></header-popover> 
+        </ion-nav-buttons>        
+    </ion-nav-bar>
+    <ion-content scroll="false">            
+            <div class="offline">
+                <h2> Connection Problems</h2>
+                <img ng-src="img/heart.png">
+                <p>The elders sympathise with you. Please check your connection.</p>
+            </div> 
+
+            <div class="button-bar button-bar-detail-page btn-spacing">
+                <a class="button button-clear card-button primary" on-tap ="retry()">
+                   <i class="ion-refresh icon-font"></i> Retry Again          
+                </a>
+            </div> 
+
+            <div class="button-bar button-bar-detail-page btn-spacing">
+                <a class="button button-clear card-button primary" ui-sref="app.feeds.all">
+                    <i class="ion-home icon-font"></i>Home Page            
+                </a>
+            </div>      
+       
+    </ion-content>
+    
+</ion-view>
