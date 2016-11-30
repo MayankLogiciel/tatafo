@@ -40,7 +40,7 @@
 	     			var moveData = $ionicScrollDelegate.$getByHandle('detailPageHeaderHideHandler').getScrollPosition();
 			  		var lastTopDetailPage = $rootScope.topDetailPage  ||  {};
 			  		scope.$apply(function() {
-			     		if(angular.isDefined(moveData) && moveData.top > 150) {
+			     		if(angular.isDefined(moveData) && moveData.top > 50) {
 			     			header.style.display = 'none';
 			     			hasHeader.style.top = 0; 
 		     				scope.sttButton=true;

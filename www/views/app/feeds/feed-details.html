@@ -16,9 +16,7 @@
         </ion-nav-buttons>        
     </ion-nav-bar>
     <ion-content on-scroll="hideDetailPageHeader()" delegate-handle="detailPageHeaderHideHandler" class="top-spacing">
-
         <div class="feed-detail-cont" lazy-scroll>
-
             <div class="feed-entries-card post" post-content>
                 <h4 ng-bind="entry.feed.title || entry.title" class="title" on-hold="copyText('Header')"></h4>
                 <h5>Posted by <span class="author entry-author-name detail-page-author" ng-bind="entry.source_name"></span><span class="feed-date-time" ng-bind-html="entry.feed.updated | utcTimestampToLocalDateFilter"></span></h5>
@@ -27,20 +25,14 @@
             <div class="feed-detail-content" ng-if="load" image-path-fix>                          
                 <p dynamic-anchor-fix compile="entry.feed.content || entry.feed.summary | rawHtml">
                 </p>
-
                 <div class="button-bar button-bar-detail-page">
                     <a class="button button-clear card-button primary orignal-btn" on-tap="openOriginalStoryLink(entry.feed.permalinkUrl)">
                         View Original Article            
                     </a>
                 </div>
-                
-               
             </div>
         </div>
         <div class="credit-bar-section">
-<!--             <div class="pull-left credit-bar-icon">
-                <i class="icon ion-happy-outline"></i>
-            </div> -->
             <div class="credit-bar">
                 <p>Credit:</p>
                 <p>This content is owned by <span class="credit-bar-link" on-tap="openBlogLink(topic.social_links.website_url)">{{entry.source_name}} </span></p>

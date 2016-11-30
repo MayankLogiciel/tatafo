@@ -22,6 +22,7 @@
 			$scope.allFeed=[];
 			$scope.load = false;
 			$scope.entry = feedDetailService.getPostData(); //load feed data
+			replaceElementWithIframeforOtherVideo($scope.entry);
 			applyImageLoaderToDetailFeedImages($scope.entry);			
 			$scope.load = true;
 			//find related source information from localStorage saved sources
@@ -79,6 +80,35 @@
 			elem = undefined;
 		};
 
+		var replaceElementWithIframeforOtherVideo = function(data ){		
+
+			var elem= document.createElement("div");
+			elem.innerHTML = data.feed.content || data.feed.summary;
+			var element = elem.getElementsByClassName("instagram-media");
+			var hrefContent = /href="(.*?)"/ ;
+			angular.forEach(element, function(value,key){
+			 	var videoUrl = hrefContent.exec(value.innerHTML);
+				if(videoUrl[1] && videoUrl[1] != null && videoUrl[1] != 'https://www.instagram.com/p'){
+					var iframe= document.createElement("iframe");			
+				 	iframe.setAttribute("allowfullscreen", "");
+				 	iframe.setAttribute("frameborder", "0");
+				 	iframe.setAttribute("scrolling","no");				
+				 	iframe.setAttribute("src",videoUrl[1]+"embed");
+				 	iframe.setAttribute("class","custom-iframe");
+				 	iframe.removeAttribute("class","EmbedHeader");
+				 	elem.appendChild(iframe);			
+				}
+			});
+			//remove instagram media blocks
+			while(element[0]) {
+			    element[0].parentNode.removeChild(element[0]);
+			}
+			//replace content to show 
+			data.feed.content = elem.innerHTML;	
+
+			elem = undefined;
+			element = undefined;				
+		}
 		
 
 	    /**
