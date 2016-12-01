@@ -241,7 +241,7 @@
     	}
 
 		$scope.openOriginalStoryLink = function (link) {
-			cordova.ThemeableBrowser.open(link, '_blank', {
+			var ref = cordova.ThemeableBrowser.open(link, '_blank', {
 			    statusbar: {
 			        color: '#FFFFFF'
 			    },
@@ -259,6 +259,12 @@
 			        align: 'left',
 			        event: 'closePressed'
 			    },
+
+			    "browserProgress": {
+                    "showProgress": true,
+                    "progressBgColor": "#016585",
+                    "progressColor": "#FFAA16"
+                },
 			    // backButton: {
 			    //     image: 'ic_action_previous_item',
 			    //     imagePressed: 'back_pressed',
@@ -271,15 +277,44 @@
 			    //     align: 'left',
 			    //     event: 'forwardPressed'
    				// },	   				
-			    backButtonCanClose: true
+			    backButtonCanClose: true,
+			    hidden: true
 				}).addEventListener('backPressed', function(e) {
 				}).addEventListener(cordova.ThemeableBrowser.EVT_ERR, function(e) {
 			    	$log.debug(e.message);
 				}).addEventListener(cordova.ThemeableBrowser.EVT_WRN, function(e) {
 			    	$log.debug(e.message);
-				});
+				})
+
+				ref.addEventListener('loadstart', function(event) {
+                    $ionicLoading.show({                    	
+                        template: 'Loading please wait ...',
+                        animation: 'fade-in',
+                        noBackdrop: true,
+                        maxWidth: 200,
+                        showDelay: 0
+                  	});
+                });
+
+                ref.addEventListener('loadstop', function(event) {
+                    $ionicLoading.hide();
+                    ref.show();
+                });
+                ref.addEventListener('loaderror', function(event) {
+                    $ionicLoading.hide();
+
+                });
+
+                ref.addEventListener('exit', function(event) {
+                    $ionicLoading.hide();
+                    ref.removeEventListener('loadstart', callback);
+                    ref.removeEventListener('loadstop', callback);
+                    ref.removeEventListener('loaderror', callback);
+                    ref.close();
+                    ref = undefined;
+                });
+
 			};
-			
 		/**
 		*  bookmarkPost post the feed deatil for book mark for PouchDB
 		*/	
