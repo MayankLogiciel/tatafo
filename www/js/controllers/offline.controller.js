@@ -4,7 +4,7 @@
 	/**
 	* OfflineController function
 	*/
-	var OfflineController = function($log, $scope, $state, ConnectivityMonitorFactory, $rootScope,$ionicHistory) {
+	var OfflineController = function($log, $scope, $state, ConnectivityMonitorFactory, $rootScope, $ionicHistory, $ionicLoading) {
 
 		/**
 		* Initialization
@@ -12,7 +12,9 @@
 		var setup=function(){
 			$log.debug('OfflineController setup');			
 		};
-
+		$scope.$on('$ionicView.enter', function(e) {
+		       $ionicLoading.hide();	
+		});	
 		$scope.retry =function () {
 			if(ConnectivityMonitorFactory.isOffline()) {
 				$state.go('app.offline');
@@ -32,7 +34,7 @@
 	/**
 	* @dependencies injector $log, $scope,  
 	*/
-	OfflineController.$inject=['$log', '$scope', '$state', 'ConnectivityMonitorFactory', '$rootScope', '$ionicHistory'];
+	OfflineController.$inject=['$log', '$scope', '$state', 'ConnectivityMonitorFactory', '$rootScope', '$ionicHistory', '$ionicLoading'];
 
 	angular
 		.module('tatafo')
