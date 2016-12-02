@@ -23,7 +23,7 @@ var bookmarksDB = new PouchDB(bookmarksDBSettings.BOOKMARKS_DB_NAME, { auto_comp
 angular
     .module('tatafo', ['ionic', 'underscore', 'tatafo.config', 'ngCordova', 'jett.ionic.content.banner','ionicLazyLoad'])
 
-    .run(function($log, $ionicPlatform, $rootScope, $state, $timeout, deviceTokenService, ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService, $cordovaSplashscreen) {
+    .run(function($log, $ionicPlatform, $rootScope, $state, $timeout, deviceTokenService, ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService, $cordovaSplashscreen, ANDROID_BANNER_ID, ANDROID_INTERSTITIAL_ID) {
 
         ionic.Platform.ready(function() {
 
@@ -104,15 +104,10 @@ angular
             var admobid = {};
             if( /(android)/i.test(navigator.userAgent) ) { 
                 admobid = { // for Android
-                    banner: 'ca-app-pub-6869992474017983/9375997553',
-                    interstitial: 'ca-app-pub-6869992474017983/1657046752'
+                    banner: ANDROID_BANNER_ID,
+                    interstitial: ANDROID_INTERSTITIAL_ID
                 };
-            } else {
-                admobid = { // for Windows Phone
-                    banner: 'ca-app-pub-6869992474017983/8878394753',
-                    interstitial: 'ca-app-pub-6869992474017983/1355127956'
-                };
-            }
+            } 
 
             if(( /(ipad|iphone|ipod|android|windows phone)/i.test(navigator.userAgent) )) {
                 document.addEventListener('deviceready', initApp, false);
