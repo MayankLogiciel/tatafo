@@ -23,7 +23,9 @@
             </div>
             
             <div class="feed-detail-content" ng-if="load" image-path-fix>                          
-                <p dynamic-anchor-fix compile="entry.feed.content || entry.feed.summary | rawHtml">
+                <p ng-if="(entry.feed.content && entry.feed.content!='undefined') || 
+                    (entry.feed.summary && entry.feed.summary!='undefined')"
+                    dynamic-anchor-fix compile="entry.feed.content || entry.feed.summary | rawHtml">
                 </p>
                 <div class="button-bar button-bar-detail-page">
                     <a class="button button-clear card-button primary orignal-btn" on-tap="openOriginalStoryLink(entry.feed.permalinkUrl)">
