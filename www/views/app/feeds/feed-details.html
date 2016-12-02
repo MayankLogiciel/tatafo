@@ -2,7 +2,7 @@
     <ion-nav-bar class=" headerOfPage bar app-top-bar effect1 header-item-buttons">
         <ion-nav-buttons side="left">          
             <div class="buttons">
-                <button class="button button-icon button-assertive ion-android-arrow-back" ng-click="myGoBack()"></button>
+                <button class="button button-icon button-assertive ion-android-arrow-back" on-tap="myGoBack()"></button>
             </div>
         </ion-nav-buttons> 
         <ion-nav-title>
@@ -52,19 +52,19 @@
             <a class="button button-clear card-button primary" on-tap="bookmarkPost(entry)">
                 <i ng-class= "{ 'icon ion-android-bookmark bookmark-save-icon':(entry.bookmarkSaved) , 'icon ion-android-bookmark':(!entry.bookmarkSaved) }"></i> Save            
             </a>
-            <a class="button button-clear card-button secondary" ng-click="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
+            <a class="button button-clear card-button secondary" on-tap="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
         </div>             
     </ion-content>
     <div class="float-button-left effect1" on-tap="previousButton()" ng-hide="currentIndex==0">
         <span class="height-fix">
-            <a ng-click="" class="cont">
+            <a on-tap="" class="cont">
                 <i class="ion-chevron-left white"> </i>
             </a>
         </span>
     </div>
     <div class="float-button-right effect1" on-tap="nextButton()" ng-hide="currentIndex==allFeed.length-1">
         <span class="height-fix">
-            <a ng-click="show()" class="cont">
+            <a on-tap="show()" class="cont">
               <i class="ion-chevron-right white"> </i>
             </a>
         </span>

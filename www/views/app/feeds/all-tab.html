@@ -2,14 +2,14 @@
 	<ion-nav-bar class="headerOfPage bar app-top-bar effect1 header-item-buttons">		
 		<ion-nav-buttons side="left">
 			<button class="button button-icon ion-navicon" menu-toggle="left"></button>
-			<button class="button button-icon button-clear ion-ios-arrow-down" ng-click="popover.show($event)">Sort  
+			<button class="button button-icon button-clear ion-ios-arrow-down" on-tap="popover.show($event)">Sort  
 			</button>
 		</ion-nav-buttons>
 		<ion-nav-buttons side="right"> 
 			<button class="button button-icon button-clear ion-refresh" on-tap="doRefresh()"> 
 			</button>	
-			<button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick()"> </button>
-			<button class="button button-icon button-assertive ion-close-circled" ng-click="" ng-show="isSearchOpen"> </button>
+			<button class="button button-icon button-assertive ion-search" on-tap="onSearchIconClick()"> </button>
+			<button class="button button-icon button-assertive ion-close-circled" ng-show="isSearchOpen"> </button>
 			<header-popover></header-popover>                   
 		</ion-nav-buttons>
 	</ion-nav-bar>
@@ -56,7 +56,7 @@
 			ng-if="isMoreFeeds">
 		</ion-infinite-scroll>
 	</ion-content>
-	<div class="float-button effect1 chevron-top-arrow-color" ng-show="sttButton" ng-click="scrollTop()"	>
+	<div class="float-button effect1 chevron-top-arrow-color" ng-show="sttButton" on-tap="scrollTop()"	>
 		<span class="height-fix">
 			<a class="cont">
 				<i class="icon ion-chevron-up white"> </i>

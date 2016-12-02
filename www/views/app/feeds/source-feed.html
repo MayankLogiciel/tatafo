@@ -2,18 +2,15 @@
     <ion-nav-bar class="headerOfPage bar app-top-bar effect1 header-item-titles header-item-buttons">
         <ion-nav-buttons side="left">          
             <div class="buttons">
-                <button class="button button-icon button-assertive ion-android-arrow-back" ng-click="myGoBack()"></button>
+                <button class="button button-icon button-assertive ion-android-arrow-back" on-tap="myGoBack()"></button>
             </div>
         </ion-nav-buttons> 
         <ion-nav-title>
-            <span ng-bind="feedsParams.source_name"></span>
+            <span ng-bind="feedsParams.source_name"></span>        
         </ion-nav-title>
         <ion-nav-buttons side="right">                  
             <button class="button button-icon button-clear ion-refresh" on-tap="doRefresh()"> </button>
-            <!-- <form ng-submit="searchData(searchInput)">
-            <input type="search"  ng-model="searchInput" name="search" ng-show="mySearch"></form>  -->   
-            <button class="button button-icon button-assertive ion-search" ng-click="onSearchIconClick()"> </button>
-            <!-- <button class="button button-icon button-assertive ion-close-circled" ng-click="onClosedIconClick(); searchInput = '' " ng-show="closed"> </button> -->
+            <button class="button button-icon button-assertive ion-search" on-tap="onSearchIconClick()"> </button>
             <header-popover ng-hide="mySearch"></header-popover>
         </ion-nav-buttons>
     </ion-nav-bar>
@@ -36,7 +33,7 @@
         </div>
     </ion-header-bar>
 
-    <ion-content has-bouncing="false" class="has-header feed-entries-details-view top-spacing" on-scroll="hideHeader();" delegate-handle="headerHideHandler" >
+    <ion-content has-bouncing="false" class="has-header feed-entries-details-view top-spacing" on-scroll="hideHeader();" delegate-handle="headerHideHandler">
                 
         <ion-refresher ng-if="feed.length > 0" on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
         </ion-refresher>
@@ -61,7 +58,7 @@
             ng-if="isMoreFeeds">
         </ion-infinite-scroll>
     </ion-content>
-    <div class="float-button effect1" ng-show="sttButton" ng-click="scrollTop()">
+    <div class="float-button effect1" ng-show="sttButton" on-tap="scrollTop()">
         <span class="height-fix">
             <a class="cont">
                 <i class="icon ion-chevron-up white"> </i>
