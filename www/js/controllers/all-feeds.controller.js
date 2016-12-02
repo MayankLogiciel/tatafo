@@ -33,7 +33,12 @@
 	      		});
 	    	});	    		
 		};
-
+		$scope.$on('$ionicView.enter', function(e) {
+		        if (window.AdMob){
+		        	AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);		        	
+		        }	       
+		        	
+		});			
 		var getFeeds = function () {
 			if(sourcesService.isFeedSourcesAvailable() && !isSourceSyncRequired()){
 				//load all feeds

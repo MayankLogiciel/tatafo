@@ -127,6 +127,7 @@ angular
                     adId: admobid.banner, 
                     isTesting: true,
                     overlap: false, 
+                    autoShow:false,
                     offsetTopBar: false, 
                     position: AdMob.AD_POSITION.BOTTOM_CENTER,
                     bgColor: 'black'

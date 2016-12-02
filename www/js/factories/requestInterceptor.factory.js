@@ -19,10 +19,6 @@
                 }else{
                     config.headers['test'] = 'true';
                 }
-
-                //if(angular.isDefined(navigator.connection.type)){
-                    
-                //}
                 return config || $q.when(config);
             },
 
