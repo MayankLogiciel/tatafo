@@ -30,7 +30,7 @@ gulp.task('copyplugins', function() {
    gulp.src('./bower_components/ionic/fonts/*')
    .pipe(gulp.dest('./www/lib/ionic/fonts'))
    gulp.src('./bower_components/ionic/js/ionic.bundle.min.js')
-   .pipe(gulp.dest('./www/lib'))   
+   .pipe(gulp.dest('./www/lib/ionic'))   
    gulp.src('./bower_components/ngCordova/dist/ng-cordova.min.js')
    .pipe(gulp.dest('./www/lib'))
    gulp.src('./bower_components/underscore/underscore-min.js')
