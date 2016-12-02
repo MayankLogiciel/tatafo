@@ -79,6 +79,7 @@ angular
 
                 window.plugins.OneSignal
                     .startInit(ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER)
+                    .inFocusDisplaying(window.plugins.OneSignal.OSInFocusDisplayOption.None)
                     .handleNotificationOpened(notificationOpenedCallback)
                     .handleNotificationReceived(function(jsonData) {})
                     .endInit();
