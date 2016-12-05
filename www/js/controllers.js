@@ -658,7 +658,7 @@ angular
 	})
 
 	// Feed deatil controller
-	.controller('FeedDetailController',function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $ionicHistory, $window, settingService, $cordovaAppAvailability, $ionicScrollDelegate){
+	.controller('FeedDetailController',function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $ionicHistory, $window, settingService, $cordovaAppAvailability, $ionicScrollDelegate, $filter){
 		/**
 		* Initialization
 		*/
@@ -769,11 +769,9 @@ angular
 	    */
 		var getCurrentFeedIndex = function(){
 			angular.forEach($scope.allFeed, function(val, index) {
-				//$log.debug(val);
 				if(angular.isDefined(val.doc) && $scope.entry.id == val.doc.data.id) {
 					$scope.currentIndex = index;
 				}
-
 				if(!angular.isDefined(val.doc) && $scope.entry.id == val.id) {
 					$scope.currentIndex = index;
 				}
@@ -783,8 +781,9 @@ angular
 		/**
 	    * Loading the all feeds for next and previous the the current index
 	    */
-		var loadFeeds = function() {	
+		var loadFeeds = function() {
 			$scope.allFeed=feedDetailService.getCombinedPostDataForNextPrevious();
+			$scope.allFeed = $filter('orderBy')($scope.allFeed,'feed.updated',true);
 			getCurrentFeedIndex();
 		}
 
