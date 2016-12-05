@@ -1,7 +1,12 @@
-(function()	{
-	'use strict';
+angular
+	.module('tatafo')
+	.filter('rawHtml',function($sce){
+		return function(val) {
+    		return $sce.trustAsHtml(val);
+  		};
+	})
 
-	var utcTimestampToLocalDateFilter = function($filter){
+	.filter('utcTimestampToLocalDateFilter', function($filter){
 		return function(uTimeStampInSeconds, formatName){
 			var dateformat = 'yyyy-MMM-dd';
 			var timeFormat = 'HH:mm a';
@@ -18,11 +23,4 @@
 
 			return convertedDate +"<span>|</span>" + convertedTime;
 		}
-	};
-
-	utcTimestampToLocalDateFilter.$inject=['$filter'];
-	angular
-		.module('tatafo')
-		.filter('utcTimestampToLocalDateFilter', utcTimestampToLocalDateFilter);
-
-})();
+	})
