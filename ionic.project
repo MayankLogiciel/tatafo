@@ -4,6 +4,7 @@
   "gulpStartupTasks": [
     "sass",
     "copyplugins",
+    "templatecache",
     "watch"
   ],
   "watchPatterns": [
