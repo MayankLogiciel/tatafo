@@ -1,0 +1,54 @@
+<ion-view hide-side-menu="false" hide-back-button="true" hide-nav-bar="true">
+
+  <ion-slide-box on-slide-changed="slideChanged(index)">
+    <!-- ion-slide house each page's content -->
+    <ion-slide>
+      <div class="intro_wrapper">
+        <img src="img/intro1.png">
+      </div>
+      <div class="intro_title">
+        <h3>Never miss the hottest entertainment and celebrity gists from the top bloggers!</h3>
+      </div>
+	  
+    </ion-slide>
+
+    <ion-slide>
+      <div class="intro_wrapper">
+        <img src="img/intro2.png">
+      </div>
+      <div class="intro_title">
+        <h3>Save data! Enjoy entertainment news with less mb. Save gists to read later even when offline!</h3>
+      </div>
+	 
+    </ion-slide>
+
+    <ion-slide>
+      <div class="intro_wrapper">
+        <img src="img/intro3.png">
+      </div>
+      <div class="intro_title">
+        <h3>Easily share the current gossip/scandal with friends!</h3>
+      </div>
+	 
+    </ion-slide>
+
+  </ion-slide-box>
+
+  <ion-footer-bar>
+    <div class="row">
+      <div class="col col-75">
+        <a href="#" class="no-animation" ng-click="startApp()" ng-show="!slideIndex">Skip</a>
+        <button style="margin-top:-6px;" class="button button-positive button-clear no-animation" ng-click="previous()" ng-show="slideIndex > 0">
+          <i class="ion ion-chevron-left"></i>
+        </button>
+      </div>
+      <div class="col">
+	  <i class="ion ion-chevron-right no-animation" ng-click="next()" ng-show="slideIndex != 2"></i>
+	  	<a href="#" class="no-animation" ng-click="startApp()" ng-show="slideIndex == 2">Start</a>
+	
+      
+      </div>
+    </div>
+  </ion-footer-bar>
+
+</ion-view>

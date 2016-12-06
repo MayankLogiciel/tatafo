@@ -29,7 +29,7 @@ angular
 
             var hideSplashScreen = function (){
                 if(!settingService.doWeNeedToShowTutorialTour()) {
-                    $state.go('tour');
+                    $state.go('intro');
                     }else {
                     $state.go('app.feeds.all');                            
                 }
@@ -148,10 +148,10 @@ angular
         $ionicConfigProvider.scrolling.jsScrolling(false);
         $ionicConfigProvider.tabs.position('bottom');
         $stateProvider
-        .state('tour', {
-            url: '/tour',
-            templateUrl: 'views/app/tour.html',
-            controller: 'TourController'
+        .state('intro', {
+            url: '/intro',
+            templateUrl: 'views/app/tab-intro.html',
+            controller: 'IntroCtrl'
         })
         .state('app', {
             url: "/app",
