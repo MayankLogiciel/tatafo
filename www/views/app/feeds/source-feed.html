@@ -50,12 +50,9 @@
                 <feed-listing-item></feed-listing-item>
             </div>
         </div>
+       
         <!-- Infinit scroll -->
-        <ion-infinite-scroll 
-            immediate-check="false" 
-            on-infinite="loadMore()" 
-            distance="100px" 
-            ng-if="isMoreFeeds">
+        <ion-infinite-scroll ng-if="feed.length > 0 && isMoreFeeds" on-infinite="loadMore()" distance="0" immediate-check="false">
         </ion-infinite-scroll>
     </ion-content>
     <div class="float-button effect1" ng-show="sttButton" on-tap="scrollTop()">

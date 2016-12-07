@@ -31,7 +31,7 @@
     		</span>		 	
     	</div>
 	</ion-header-bar>
-	<ion-content ng-show = "feedLoaded" has-bouncing="false" class="feed-entries-details-view top-spacing" on-scroll="hideHeader();" delegate-handle="headerHideHandler">
+	<ion-content  has-bouncing="false" class="feed-entries-details-view top-spacing" on-scroll="hideHeader();" delegate-handle="headerHideHandler">
 		 		
 		<ion-refresher ng-if="allFeed.length > 0" on-refresh="doRefresh()" pulling-text="Pull to refresh..." spinner="none">
 		</ion-refresher>
@@ -49,12 +49,8 @@
 			</div>
 		</div>
 		<!-- Infinit scroll -->
-		<ion-infinite-scroll 
-			immediate-check="false" 
-			on-infinite="loadMore()" 
-			distance="100px" 
-			ng-if="isMoreFeeds">
-		</ion-infinite-scroll>
+	    <ion-infinite-scroll ng-if="allFeed.length > 0 && isMoreFeeds" on-infinite="loadMore()" distance="1%" immediate-check="false">
+	    </ion-infinite-scroll>
 	</ion-content>
 	<div class="float-button effect1 chevron-top-arrow-color" ng-show="sttButton" on-tap="scrollTop()"	>
 		<span class="height-fix">

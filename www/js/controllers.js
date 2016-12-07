@@ -43,13 +43,21 @@ angular
 	      				$scope.allFeed[key].is_read=true;
 	      			}
 	      		});
-	    	});	    		
+	    	});
+
 		};
+	    	$rootScope.$on('retry', function (e) {
+				$log.debug("Listening to Offline try again");
+				$timeout(function(){
+					$scope.doRefresh();
+				});
+	    	});	 
+
+
 		$scope.$on('$ionicView.enter', function(e) {
 		        if (window.AdMob){
 		        	AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);		        	
-		        }	       
-		        	
+		        }	
 		});			
 		var getFeeds = function () {
 			if(sourcesService.isFeedSourcesAvailable() && !isSourceSyncRequired()){
@@ -148,8 +156,7 @@ angular
 						$timeout(function() {
 							$scope.feedLoaded = true;
 						}, 200);
-					})
-					.finally(function(){	
+					}).finally(function(){	
 						if(isLoadMore){
 							$scope.$broadcast('scroll.infiniteScrollComplete');
 						}else{
@@ -161,37 +168,60 @@ angular
 			}
 		};
 
-			/**
-			* LoadFeeds 
-			*/
-			var LoadAllFeedsByCheckingReadUnreadFilter = function(isLoadMore) {
-				feedsDAOService.getRecentPostsFromPouchDB($scope.feedsParams).then(function(response){
-					$log.debug(response);
-					if(!isLoadMore) {
-						$scope.allFeed = [];
-					}
-					if(response.posts.length>0){
-						angular.forEach(response.posts, function(feed, key) {	
-							$scope.allFeed = $scope.allFeed.concat(feed);
-						});						
-						$scope.isMoreFeeds = response.isMorePostsPresent;
-					}	
-					else{
-						$scope.isMoreFeeds = response.isMorePostsPresent;
-					}
-					getBookMarksfromPouchDBToChangeSaveButtonColor();					
-					$scope.loaded = true;
-					$timeout(function() {
-						$scope.feedLoaded = true;
-					}, 200);
-				}).finally(function(){	
-					if(isLoadMore){
-						$scope.$broadcast('scroll.infiniteScrollComplete');
-					}else{
-						$scope.$broadcast('scroll.refreshComplete');
-					}				
-				});	
+		/**
+		* LoadFeeds 
+		*/
+		var LoadAllFeedsByCheckingReadUnreadFilter = function(isLoadMore) {
+			feedsDAOService.getRecentPostsFromPouchDB($scope.feedsParams).then(function(response){
+				$log.debug(response);
+				if(!isLoadMore) {
+					$scope.allFeed = [];
+				}
+				if(response.posts.length>0){
+					angular.forEach(response.posts, function(feed, key) {	
+						$scope.allFeed = $scope.allFeed.concat(feed);
+					});						
+					$scope.isMoreFeeds = response.isMorePostsPresent;
+				}	
+				else{
+					$scope.isMoreFeeds = response.isMorePostsPresent;
+				}
+				getBookMarksfromPouchDBToChangeSaveButtonColor();					
+				$scope.loaded = true;
+				$timeout(function() {
+					$scope.feedLoaded = true;
+				}, 200);
+			}).finally(function(){	
+				if(isLoadMore){
+					$scope.$broadcast('scroll.infiniteScrollComplete');
+				}else{
+					$scope.$broadcast('scroll.refreshComplete');
+				}				
+			});	
+		}
+
+		/**
+		*loadMore incrementing page by one and calling the loadFeeds
+		*/
+		$scope.loadMore = function() {
+			if($scope.allFeed.length > 0 && $scope.sttButton==true){
+				$scope.feedsParams.page++;
+	 			loadFeeds(true);
 			}
+		}
+
+
+		/**
+		* doRefresh setting up the page 1 
+		* calling the loadFeeds
+		*/
+		$scope.doRefresh = function() {
+			$scope.isMoreFeeds = false;	
+			$scope.feedsParams.page = 1;				
+			loadFeeds(false);
+       		$scope.scrollTop();
+		};
+
 		/*
 		* deleteBookMarks used to make the bookmark unselected form
 		*/
@@ -314,27 +344,7 @@ angular
 			socialService.sharePost(post.feed.permalinkUrl);
 		};
 
-		/**
-		*loadMore incrementing page by one and calling the loadFeeds
-		*/
-		$scope.loadMore = function() {
-			if($scope.allFeed.length > 0){
-				$scope.feedsParams.page++;
-	 			loadFeeds(true);
-			}
-		}
-
-
-		/**
-		* doRefresh setting up the page 1 
-		* calling the loadFeeds
-		*/
-		$scope.doRefresh = function() {
-			$scope.isMoreFeeds = false;	
-			$scope.feedsParams.page = 1;				
-			loadFeeds(false);
-       		$scope.scrollTop();
-		};
+		
 
 		/**
 		* loadPostDetails feedDetailService.setPostData posting the deatil of single feed to article page
@@ -390,7 +400,14 @@ angular
 	      				$scope.feed[key].is_read=true;
 	      			}
 	      		});
-	    	});	
+	    	});
+
+	    	$rootScope.$on('retry', function () {
+				$log.debug("Listening to Offline try again");
+				$timeout(function(){
+					$scope.doRefresh();
+				});     		
+	    	});	 	
 
 			/**
 			* Back Button Handling before leave
@@ -398,11 +415,9 @@ angular
 			* confirming that need to show popup or not for App rate using settingService.doWeNeedToShowAppRatePopup function
 			*/
 			$scope.$on('$ionicView.beforeLeave', function (event, viewData) {
-				console.log('$ionicView.beforeLeave');
-			    if(($state.current.name.indexOf('app.feeds.local') != -1 ) || (($state.current.name.indexOf('app.feeds.foreign') != -1 ))) {
+				if(($state.current.name.indexOf('app.feeds.local') != -1 ) || (($state.current.name.indexOf('app.feeds.foreign') != -1 ))) {
 				  	if(settingService.doWeNeedToShowAppRatePopup()) {
-						console.log($state.current.name);
-				  		
+									  		
 				  		var clickEvent = new MouseEvent("tap", {});
 				  		if(($state.current.name.indexOf('app.feeds.local') != -1 )){
 					    	var element = document.getElementById('app-rate-model-source-feed-local');
@@ -548,7 +563,7 @@ angular
 		*loadMore incrementing page by one and calling the loadFeeds
 		*/	
 		$scope.loadMore = function() {
-			if($scope.feed.length > 0){
+			if($scope.feed.length > 0 && $scope.sttButton==true){
 				$scope.feedsParams.page++;
 		 		loadFeeds(true);
 			}
@@ -1003,11 +1018,11 @@ angular
 		       $ionicLoading.hide();	
 		});	
 		$scope.retry =function () {
-			if(ConnectivityMonitorFactory.isOffline()) {
+			if(ConnectivityMonitorFactory.isOffline()) {				
 				$state.go('app.offline');
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
-				$rootScope.$broadcast("retry");
+				$rootScope.$broadcast('retry', {tryAgain: true} );
 				$scope.myGoBack();
 			}	
 		}

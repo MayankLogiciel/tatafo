@@ -41,8 +41,8 @@ angular
 
             if(ionic.Platform.isAndroid()) {
                 admobid = { // for Android
-                    banner: 'ca-app-pub-6869992474017983/9375997553',
-                    interstitial: 'ca-app-pub-6869992474017983/1657046752'
+                    banner: ANDROID_BANNER_ID,
+                    interstitial: ANDROID_INTERSTITIAL_ID
                 };
             }
 
