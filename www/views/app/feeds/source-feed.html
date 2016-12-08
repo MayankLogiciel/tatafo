@@ -46,7 +46,7 @@
         </div> 
         
         <div class="entries-list feed-col" ng-if="feed.length > 0">
-            <div ng-repeat="entry in feed | orderBy:'feed.updated': true track by entry.id" image-path-fix class="list card entry-item">
+            <div ng-repeat="entry in feed | orderBy:'feed.updated': true" image-path-fix class="list card entry-item">
                 <feed-listing-item></feed-listing-item>
             </div>
         </div>
