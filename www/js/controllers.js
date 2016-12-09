@@ -17,7 +17,7 @@ angular
     	setup();
 	})
 	// All Feeds Controller
-	.controller('AllFeedsController', function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout, messagesService){
+	.controller('AllFeedsController', function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout){
 		var setup = function(){
 			$log.debug('AllFeedsController setup');
 			$scope.allFeed = [];
@@ -309,7 +309,7 @@ angular
 			$scope.feedsParams.page = 1;
 			$scope.feedsParams.name = query;
 			if(ConnectivityMonitorFactory.isOffline()) {				
-				ConnectivityMonitorFactory.showErrorBanner(messagesService.general.INTERNET_NOT_WORKING);
+				ConnectivityMonitorFactory.showErrorBanner('Network unavailable');
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				$scope.doRefresh();
