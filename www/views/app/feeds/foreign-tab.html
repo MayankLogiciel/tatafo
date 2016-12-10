@@ -11,7 +11,7 @@
 	</ion-nav-bar>
 <ion-content class="has-header">   
 	<div class="categories-list feed-col">
-		<div ng-repeat="source in feedSources | orderBy : 'image_character'" class="source-section" ng-show="source.locale=='foreign'">
+		<div ng-repeat="source in feedSources | orderBy : 'display_order'" class="source-section" ng-show="source.locale=='foreign'">
 			<a class="feed-category" on-tap="feedDetail(source.id,source.name)">
 				<img class="circle-1 circle-img" src="img/feeds/logos/feed-source.png">
 				<img class="circle-2 circle-img" src="img/feeds/logos/feed-source.png">
@@ -21,10 +21,6 @@
 				<div class="source-title">
 					<p ng-bind="source.name"></p>
 				</div>
-				<!-- <pre-img ratio="_1_1" helper-class="square-image">
-					<img class="category-image" ng-src="img/feeds/logos/cnn.jpg" spinner-on-load>
-				</pre-img>
-				<div class="category-bg"></div> -->
 			</a>
 		</div>
 	</div>
