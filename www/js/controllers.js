@@ -27,7 +27,7 @@ angular
 				limit:10
 			};
 			$scope.appRateCardYes = true;
-			$scope.appRateCardNo = true;
+			$scope.appRateCardNo = true;			
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
@@ -129,6 +129,7 @@ angular
 		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
 		var loadFeeds = function(isLoadMore) {
+			$scope.appRateCard = false;
 			$scope.loaded = false;
 			if(ConnectivityMonitorFactory.isOffline()) {
 				if( ($scope.feedStatus.read && $scope.feedStatus.unread) || (!$scope.feedStatus.read && !$scope.feedStatus.unread) ){
@@ -507,7 +508,8 @@ angular
 		* if ConnectivityMonitorFactory.isOffline then loads the feeds from pouch db using feedsDAOService.getfeedFromPouchDB
 		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
-		var loadFeeds = function(isLoadMore) {	
+		var loadFeeds = function(isLoadMore) {
+			$scope.appRateCard = false;	
 			$scope.loaded = false;			
 			$scope.feedsParams.source_id = $stateParams.sourceId;
 			$scope.feedsParams.source_name = $stateParams.sourceName;
