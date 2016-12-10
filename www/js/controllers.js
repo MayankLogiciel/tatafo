@@ -17,7 +17,7 @@ angular
     	setup();
 	})
 	// All Feeds Controller
-	.controller('AllFeedsController', function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout){
+	.controller('AllFeedsController', function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout, $window){
 		var setup = function(){
 			$log.debug('AllFeedsController setup');
 			$scope.allFeed = [];
@@ -26,6 +26,8 @@ angular
 				page:1,
 				limit:10
 			};
+			$scope.appRateCardYes = true;
+			$scope.appRateCardNo = true;
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
@@ -149,7 +151,7 @@ angular
 						if(!isLoadMore) {
 							$scope.allFeed = [];
 						}
-						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);						
+						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
 						getBookMarksfromPouchDBToChangeSaveButtonColor();
 						feedsDAOService.addNewFeeds($scope.allFeed);
 						$scope.loaded = true;
@@ -208,6 +210,38 @@ angular
 				$scope.feedsParams.page++;
 	 			loadFeeds(true);
 			}
+		}
+
+
+		$scope.canWeEmbedTheAppRateCard = function(index) {
+			if(ConnectivityMonitorFactory.isOffline()) {
+				return false;
+			}
+			if((ConnectivityMonitorFactory.isOnline()) && (settingService.doWeNeedToShowAppRatePopup()) && (index==15)) {
+				return true;
+			}
+		}
+		$scope.hideCards = function() {
+			$scope.appRateCard = true;
+			$scope.appRateCardNo = true;
+			$scope.appRateCardYes = true;			
+		}
+		$scope.showAppRateModelForNo = function() {
+			$scope.appRateCard = true
+			$scope.appRateCardNo = false;
+		}
+		$scope.showAppRateModelForYes = function() {			
+			$scope.appRateCard = true;
+			$scope.appRateCardYes =false;
+		}
+		$scope.appRate = function() {
+			$scope.appRateCardYes = true;
+			settingService.setAppRateStatus(true);		
+			$window.open("market://details?id=com.wec.tatafo", "_system");
+		}
+		$scope.popAsk1 = function () {
+			$scope.appRateCardNo = true;
+			$window.open("mailto:webextremeconcept@gmail.com", "_system");
 		}
 
 
@@ -388,6 +422,8 @@ angular
 				page:1,
 				limit:10
 			};
+			$scope.appRateCardNo = true;
+			$scope.appRateCardYes = true;
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
@@ -477,6 +513,7 @@ angular
 			$scope.feedsParams.source_name = $stateParams.sourceName;
 			if(ConnectivityMonitorFactory.isOffline()) {
 				feedsDAOService.getPostsHavingSource($scope.feedsParams).then(function(response){
+					
 					if(response.posts.length>0){
 						if(!isLoadMore) {
 							$scope.feed = [];
@@ -500,12 +537,11 @@ angular
 				});;
 			}
 			
-			if(ConnectivityMonitorFactory.isOnline()) {
-					
+			if(ConnectivityMonitorFactory.isOnline()) {					
 				$ionicLoading.show({
           			template: '<ion-spinner icon="android"></ion-spinner>'
         		});
-				feedService.getFeeds($scope.feedsParams).then(function(feed) {			
+				feedService.getFeeds($scope.feedsParams).then(function(feed) {							
 	   				if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
 						$scope.isMoreFeeds = true;
 					}else{
@@ -517,6 +553,10 @@ angular
 					$scope.feed = $scope.feed.concat(feed.data.data.feed);						
 					getBookMarksfromPouchDBToChangeSaveButtonColor();
 					$scope.loaded = true;
+					},function(err){
+						if(err.status == 406){
+							localStorage.tatafo_sources = JSON.stringify(err.data.data.sources.data);
+						}
 					}).finally(function(){	
 						if(isLoadMore){					
 							$scope.$broadcast('scroll.infiniteScrollComplete');
@@ -567,6 +607,37 @@ angular
 				$scope.feedsParams.page++;
 		 		loadFeeds(true);
 			}
+		}
+
+		$scope.canWeEmbedTheAppRateCard = function(index) {
+			if(ConnectivityMonitorFactory.isOffline()) {
+				return false;
+			}
+			if((ConnectivityMonitorFactory.isOnline()) && (settingService.doWeNeedToShowAppRatePopup()) && (index==15)) {
+				return true;
+			}
+		}
+		$scope.hideCards = function() {
+			$scope.appRateCard = true;
+			$scope.appRateCardNo = true;
+			$scope.appRateCardYes = true;			
+		}
+		$scope.showAppRateModelForNo = function() {
+			$scope.appRateCard = true
+			$scope.appRateCardNo = false;
+		}
+		$scope.showAppRateModelForYes = function() {			
+			$scope.appRateCard = true;
+			$scope.appRateCardYes =false;
+		}
+		$scope.appRate = function() {
+			$scope.appRateCardYes = true;
+			settingService.setAppRateStatus(true);		
+			$window.open("market://details?id=com.wec.tatafo", "_system");
+		}
+		$scope.popAsk1 = function () {
+			$scope.appRateCardNo = true;
+			$window.open("mailto:webextremeconcept@gmail.com", "_system");
 		}
 
 		/**
