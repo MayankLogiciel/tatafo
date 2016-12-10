@@ -238,6 +238,9 @@ angular
                             case 0:
                               //timeout case, server unreachable or internet not working
                             ConnectivityMonitorFactory.showErrorBanner(messagesService.general.INTERNET_NOT_WORKING);
+                            break;
+                            case 406:
+                                $state.go('app.feeds.all');
                             break; 
                             default:
                             break;
