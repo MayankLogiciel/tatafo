@@ -71,7 +71,7 @@ angular
 				}
 
 				scope.popAsk1 = function () {
-					$window.open("mailto:info@jobprogress.com", "_system");
+					$window.open("mailto:webextremeconcept@gmail.com", "_system");
 				}
 
 				element.on('tap', scope.showAppRateModel); 
