@@ -14,7 +14,6 @@ angular
 	// .constant('DEBUG', true)
 
 
-
 	/**
 	* Constant for Tatafo Live Server Url
 	* Constant ONESIGNAL App Id

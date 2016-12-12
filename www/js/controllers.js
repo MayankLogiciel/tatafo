@@ -416,7 +416,7 @@ angular
 	})
 
 	// source feeds controller
-	.controller('SourceFeedController',function($log, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, $ionicScrollDelegate, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService, $ionicHistory, $window){
+	.controller('SourceFeedController',function($log, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, $ionicScrollDelegate, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService, $ionicHistory, $window, sourcesService, $timeout){
 		var setup = function() {		
 			$log.debug('SourceFeedController setup');
 			$scope.feed = [];
@@ -552,6 +552,9 @@ angular
 					},function(err){
 						if(err.status == 406){
 							localStorage.tatafo_sources = JSON.stringify(err.data.data.sources.data);
+							$timeout(function() {
+								$ionicHistory.clearCache();
+							}, 300);
 						}
 					}).finally(function(){	
 						if(isLoadMore){					
