@@ -26,7 +26,9 @@ angular
     .run(function($log, $ionicPlatform, $rootScope, $state, $timeout, deviceTokenService, ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService, $cordovaSplashscreen, ANDROID_BANNER_ID, ANDROID_INTERSTITIAL_ID) {
 
         ionic.Platform.ready(function() {
-
+            //it will set default user settings if not set
+            settingService.getSettings();
+            
             var hideSplashScreen = function (){
                 if(!settingService.doWeNeedToShowTutorialTour()) {
                     $state.go('intro');
@@ -134,9 +136,6 @@ angular
                     autoShow: false
                 });
             }
-
-            //it will set default user settings if not set
-            settingService.getSettings();
 
             //start watching online/offline event
             ConnectivityMonitorFactory.startWatching();
