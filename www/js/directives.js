@@ -86,6 +86,38 @@ angular
 	  	};
 	})
 
+	.directive('appRateInListDirective', function(settingService, $window) {
+	  	return {
+	    	templateUrl: 'views/app/feeds/app-rate-list.html',
+	    	controller: function($scope, $element, $attrs) {
+	    	$scope.appRateCardNo = true;
+			$scope.appRateCardYes = true;
+	    	$scope.hideCards = function() {
+			$scope.appRateCard = true;
+			$scope.appRateCardNo = true;
+			$scope.appRateCardYes = true;			
+		}
+		$scope.showAppRateModelForNo = function() {
+			$scope.appRateCard = true
+			$scope.appRateCardNo = false;
+		}
+		$scope.showAppRateModelForYes = function() {			
+			$scope.appRateCard = true;
+			$scope.appRateCardYes =false;
+		}
+		$scope.appRate = function() {
+			$scope.appRateCardYes = true;
+			settingService.setAppRateStatus(true);		
+			$window.open("market://details?id=com.wec.tatafo", "_system");
+		}
+		$scope.popAsk1 = function () {
+			$scope.appRateCardNo = true;
+			$window.open("mailto:webextremeconcept@gmail.com", "_system");
+		}
+	    	}
+	  	};
+	})
+
 	.directive('actionEnter', function () {
 	    return function (scope, element, attrs) {
 	        element.bind("keydown keypress", function (event) {

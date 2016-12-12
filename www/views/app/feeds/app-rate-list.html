@@ -1,0 +1,42 @@
+<div ng-hide="appRateCard" class="entry-content">
+	<h1 class="titleuni">Question</h1>
+	<div class="button button-clear crossbtn" on-tap="hideCards()"><span class="icon ion-close"></span></div>
+	<div class="rates">
+		<p>
+			Do you enjoy using Tatafo?
+		</p>
+		<div class="button-bar">
+			<a class="button ion-sad button-block button-assertive" on-tap="showAppRateModelForNo()"> NO</a>
+			<a class="button ion-happy button-block button-balanced" on-tap="showAppRateModelForYes();"> YES</a>
+		</div>
+	</div>
+</div>
+<div ng-hide="appRateCardNo" class="entry-content">				
+	<h1 class="titleuni">:(</h1>
+	<div class="button button-clear crossbtn" on-tap="hideCards()"><span class="icon ion-close"></span></div>
+	<div class="rates1">
+		<p>
+			We are sorry you dont enjoy using Tatafo. Please let us know how to improve your user experience. We appreciate your feed back
+		</p>
+		<button class="button ion-email button-full button-balanced" on-tap="popAsk1(); hideCards()">
+			Send Feedback
+		</button>
+	</div>
+</div>
+<div ng-hide="appRateCardYes" class="entry-content">				
+	<h1 class="titleuni">Yay!</h1>
+	<div class="button button-clear crossbtn" on-tap="hideCards()"><span class="icon ion-close"></span></div>
+	<div class="rates2">
+		<div class="rates-image1"></div>
+		<p>
+			We are happy that you like our application!
+		</p>
+		<p>
+			Please, support us by giving us a rating from 1 to 5. 5 stars is the highest rating.
+		</p>
+
+		<button class="button ion-ios-star button-full button-balanced" on-tap="appRate();">
+			Rate TATAFO
+		</button>
+	</div>
+</div>

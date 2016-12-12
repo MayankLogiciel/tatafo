@@ -26,8 +26,6 @@ angular
 				page:1,
 				limit:10
 			};
-			$scope.appRateCardYes = true;
-			$scope.appRateCardNo = true;			
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
@@ -129,7 +127,6 @@ angular
 		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
 		var loadFeeds = function(isLoadMore) {
-			$scope.appRateCard = false;
 			$scope.loaded = false;
 			if(ConnectivityMonitorFactory.isOffline()) {
 				if( ($scope.feedStatus.read && $scope.feedStatus.unread) || (!$scope.feedStatus.read && !$scope.feedStatus.unread) ){
@@ -222,29 +219,6 @@ angular
 				return true;
 			}
 		}
-		$scope.hideCards = function() {
-			$scope.appRateCard = true;
-			$scope.appRateCardNo = true;
-			$scope.appRateCardYes = true;			
-		}
-		$scope.showAppRateModelForNo = function() {
-			$scope.appRateCard = true
-			$scope.appRateCardNo = false;
-		}
-		$scope.showAppRateModelForYes = function() {			
-			$scope.appRateCard = true;
-			$scope.appRateCardYes =false;
-		}
-		$scope.appRate = function() {
-			$scope.appRateCardYes = true;
-			settingService.setAppRateStatus(true);		
-			$window.open("market://details?id=com.wec.tatafo", "_system");
-		}
-		$scope.popAsk1 = function () {
-			$scope.appRateCardNo = true;
-			$window.open("mailto:webextremeconcept@gmail.com", "_system");
-		}
-
 
 		/**
 		* doRefresh setting up the page 1 
@@ -423,8 +397,7 @@ angular
 				page:1,
 				limit:10
 			};
-			$scope.appRateCardNo = true;
-			$scope.appRateCardYes = true;
+			
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
@@ -509,7 +482,6 @@ angular
 		* if ConnectivityMonitorFactory.isOnline then loads the feeds from  API using feedService.getFeeds
 		*/
 		var loadFeeds = function(isLoadMore) {
-			$scope.appRateCard = false;	
 			$scope.loaded = false;			
 			$scope.feedsParams.source_id = $stateParams.sourceId;
 			$scope.feedsParams.source_name = $stateParams.sourceName;
@@ -619,29 +591,7 @@ angular
 				return true;
 			}
 		}
-		$scope.hideCards = function() {
-			$scope.appRateCard = true;
-			$scope.appRateCardNo = true;
-			$scope.appRateCardYes = true;			
-		}
-		$scope.showAppRateModelForNo = function() {
-			$scope.appRateCard = true
-			$scope.appRateCardNo = false;
-		}
-		$scope.showAppRateModelForYes = function() {			
-			$scope.appRateCard = true;
-			$scope.appRateCardYes =false;
-		}
-		$scope.appRate = function() {
-			$scope.appRateCardYes = true;
-			settingService.setAppRateStatus(true);		
-			$window.open("market://details?id=com.wec.tatafo", "_system");
-		}
-		$scope.popAsk1 = function () {
-			$scope.appRateCardNo = true;
-			$window.open("mailto:webextremeconcept@gmail.com", "_system");
-		}
-
+		
 		/**
 		* loadPostDetails feedDetailService.setPostData posting the deatil of single feed to article page
 		* loadPostDetails feedDetailService.setCombinedPostDataForNextPrevious sending the deatil of other feeds for next and previous Button
