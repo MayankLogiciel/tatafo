@@ -620,6 +620,19 @@ angular
         	}
       	}
 
+        /**
+        * doWeNeedToShowAppRateInList used to confirm that when to show app rate card in list
+        * geting app rate status from local storage
+        * checking the status is true
+        * returning true
+        */
+        this.doWeNeedToShowAppRateInList = function() { 
+            var getFeedAppRateStatus = localStorage.tatafo_appRateStatus;
+            if((angular.isUndefined(getFeedAppRateStatus) || getFeedAppRateStatus == 'false')){
+               return true; 
+            }
+        }
+
       	this.setTutorialTourStatus = function(status) {
         	//var appTutorialTourStatus = JSON.parse(localStorage.tatafo_AppTutorialTourStatus || false);
         	localStorage.tatafo_AppTutorialTourStatus = status;

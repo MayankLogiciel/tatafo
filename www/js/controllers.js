@@ -46,19 +46,29 @@ angular
 	    	});
 
 		};
-	    	$rootScope.$on('retry', function (e) {
-				$log.debug("Listening to Offline try again");
-				$timeout(function(){
-					$scope.doRefresh();
-				});
-	    	});	 
 
+		/**
+		* Handles offline retry mode
+		**/
+    	$rootScope.$on('retry', function (e) {
+			$log.debug("Listening to Offline try again");
+			$timeout(function(){
+				$scope.doRefresh();
+			});
+    	});	 
 
+    	/**
+		* show ad banner on the entry of all tab  
+		**/
 		$scope.$on('$ionicView.enter', function(e) {
 		        if (window.AdMob){
 		        	AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);		        	
 		        }	
-		});			
+		});	
+
+		/**
+		* Loads feeds from Localstaorage if availabele else Load from API  
+		**/		
 		var getFeeds = function () {
 			if(sourcesService.isFeedSourcesAvailable() && !isSourceSyncRequired()){
 				//load all feeds
@@ -210,12 +220,17 @@ angular
 			}
 		}
 
-
+		/**
+		* $scope.canWeEmbedTheAppRateCard used to show and hide apprate cards
+		* it check the connection first (offline or online)
+		* settingService.doWeNeedToShowAppRatePopup() is used when we have to show the apprate card
+		* index == 15 is used where to show the card in feed list
+		**/
 		$scope.canWeEmbedTheAppRateCard = function(index) {
 			if(ConnectivityMonitorFactory.isOffline()) {
 				return false;
 			}
-			if((ConnectivityMonitorFactory.isOnline()) && (settingService.doWeNeedToShowAppRatePopup()) && (index==15)) {
+			if((ConnectivityMonitorFactory.isOnline()) && (settingService.doWeNeedToShowAppRateInList()) && (index==15)) {
 				return true;
 			}
 		}
@@ -299,6 +314,9 @@ angular
 			$scope.popover.hide();
 		};
 
+		/**
+		* get feeds acconding to the read and unread sort option
+		**/
 		var loadFeedsByFilteringReadOrUnread = function() {
 			if( $scope.feedStatus.read || $scope.feedStatus.unread ) {
 				$scope.feedsParams.is_read = ($scope.feedStatus.read) ? true : false;
@@ -313,6 +331,9 @@ angular
 			}		
 		}
 
+		/**
+		* show error banner if search in offline Mode
+		**/
 		$scope.search = function(query){
 			$scope.isSearchUsed = true;
 			$scope.feedsParams.page = 1;
@@ -344,11 +365,17 @@ angular
         	}        	
     	};
 
+    	/**
+		* Post bookmark
+		*/	      
 		$scope.bookmarkPost = function(post) {
 			post.bookmarkSaved = true;
 			bookMarkService.addBookmarkToPouchDB(post);
 		};
 
+		/**
+		* share post
+		*/
 		$scope.sharePost = function(post) {
 			socialService.sharePost(post.feed.permalinkUrl);
 		};
@@ -412,6 +439,9 @@ angular
 	      		});
 	    	});
 
+			/**
+			* Handles offline retry mode
+			**/
 	    	$rootScope.$on('retry', function () {
 				$log.debug("Listening to Offline try again");
 				$timeout(function(){
@@ -450,14 +480,6 @@ angular
 		$scope.myGoBack = function() {
     		$window.history.go(-1);
   		};
-
-		/**
-		* Back Button Handling
-		*/
-		// $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
-		//     viewData.enableBack = true;
-		// });
-
 
 		/**
 		* Post bookmark
@@ -583,11 +605,18 @@ angular
 			}
 		}
 
+		/**
+		* $scope.canWeEmbedTheAppRateCard used to show and hide apprate cards
+		* it check the connection first (offline or online)
+		* settingService.doWeNeedToShowAppRatePopup() is used when we have to show the apprate card
+		* index == 15 is used where to show the card in feed list
+		**/
+
 		$scope.canWeEmbedTheAppRateCard = function(index) {
 			if(ConnectivityMonitorFactory.isOffline()) {
 				return false;
 			}
-			if((ConnectivityMonitorFactory.isOnline()) && (settingService.doWeNeedToShowAppRatePopup()) && (index==15)) {
+			if((ConnectivityMonitorFactory.isOnline()) && (settingService.doWeNeedToShowAppRateInList()) && (index==15)) {
 				return true;
 			}
 		}
@@ -635,6 +664,10 @@ angular
         	
     	};
 
+    	/**
+		* doRefresh setting up the page 1 
+		* calling the loadFeeds
+		*/
 		$scope.doRefresh = function() {	
 			$scope.isMoreFeeds = false;
 			$scope.feedsParams.page = 1;				
@@ -642,6 +675,11 @@ angular
        		$scope.scrollTop();
 		};
 
+		
+		/**
+		* scrolling up to top by clicking sttButton
+		* hide the sttButton
+		*/
 	   	$scope.scrollTop = function() {
 	   		$ionicScrollDelegate.scrollTop([true]);
 	  		$scope.sttButton=false;
@@ -771,6 +809,10 @@ angular
 			elem = undefined;
 		};
 
+		/**
+		* replaceElementWithIframeforOtherVideo is used to replace the Instagram Video Tag with Iframe
+		* replacing the attribute of content or summary
+		*/
 		var replaceElementWithIframeforOtherVideo = function(data ){		
 
 			var elem= document.createElement("div");
@@ -878,14 +920,23 @@ angular
 			 }
 		};
 
+		/**
+		* open Email in app browser
+		**/
 		$scope.openEmail = function (link) {
 			window.open("mailto:"+link, '_system');
 		};
 
+		/**
+		* open site link in app browser
+		**/
 		$scope.openBlogLink = function (link) {
 			window.open(link, '_system');
 		};
 
+		/**
+		* open facebook link in native browser if found else in external browser
+		**/
 		$scope.openFacebookLink = function (link) {	
 			if(ionic.Platform.isWebView()) {
 				$cordovaAppAvailability.check('com.facebook.katana')
@@ -897,6 +948,9 @@ angular
 			} 
     	}
 
+    	/**
+		* open twitter link in native browser if found else in external browser
+		**/
     	$scope.openTwitterLink = function (link) {	
 			if(ionic.Platform.isWebView()) {
 				$cordovaAppAvailability.check('com.twitter.android')
@@ -908,6 +962,9 @@ angular
 			} 
     	}
 
+    	/**
+		* open Instagram link in external browser
+		**/
     	$scope.openInstagramLink = function (link) {	
 			if(ionic.Platform.isWebView()) {
 				$cordovaAppAvailability.check('com.instagram.android')
@@ -919,6 +976,9 @@ angular
 			} 
     	}
 
+    	/**
+		* open youtube link in external browser
+		**/
     	$scope.openYoutubeLink = function (link) {	
 			if(ionic.Platform.isWebView()) {
 				$cordovaAppAvailability.check('com.youtube.android')
@@ -930,6 +990,9 @@ angular
 			} 
     	}
 
+    	/**
+		* open Original story link in Theamable browser
+		**/
 		$scope.openOriginalStoryLink = function (link) {
 			var ref = cordova.ThemeableBrowser.open(link, '_blank', {
 			    statusbar: {
@@ -1022,7 +1085,9 @@ angular
     		$window.history.go(-1);
   		};
 
-
+  		/**
+  		* share post
+  		**/
 		$scope.sharePost = function() {
 			socialService.sharePost($scope.entry.feed.permalinkUrl);
 		}
@@ -1037,9 +1102,17 @@ angular
 		var setup=function(){
 			$log.debug('OfflineController setup');			
 		};
+		/**
+		* Hide Loading in Offline page
+		*/
 		$scope.$on('$ionicView.enter', function(e) {
 		       $ionicLoading.hide();	
 		});	
+
+		/**
+		* Retry send the page to offline if ConnectivityMonitorFactory.isOffline
+		* send back with retry
+		*/
 		$scope.retry =function () {
 			if(ConnectivityMonitorFactory.isOffline()) {				
 				$state.go('app.offline');
@@ -1049,7 +1122,7 @@ angular
 				$scope.myGoBack();
 			}	
 		}
-
+		//send back to the location
 		$scope.myGoBack = function(){
 			$ionicHistory.goBack();
 		}
