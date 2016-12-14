@@ -24,8 +24,9 @@ angular
 			$scope.feedSources = [];
 			$scope.feedsParams = {
 				page:1,
-				limit:10
+				limit:10				
 			};
+			
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
@@ -61,6 +62,7 @@ angular
 		* show ad banner on the entry of all tab  
 		**/
 		$scope.$on('$ionicView.enter', function(e) {
+				
 		        if (window.AdMob){
 		        	AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);		        	
 		        }	
@@ -147,11 +149,14 @@ angular
 			}
 			if(ConnectivityMonitorFactory.isOnline()) {
 				if($state.current.name.indexOf('app.feeds.all') !== -1 ) {
-					$ionicLoading.show({
-	          			template: '<ion-spinner icon="android"></ion-spinner>'
-	        		});
-					feedService.getFeeds($scope.feedsParams).then(function(feed) {			
-		   				if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
+					if(!isLoadMore) {						
+						$ionicLoading.show({
+		          			template: '<ion-spinner icon="android"></ion-spinner>'
+		        		});
+					}
+										
+					feedService.getFeeds($scope.feedsParams).then(function(feed) {	
+						if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
 							$scope.isMoreFeeds = true;
 						}else{
 							$scope.isMoreFeeds = false;
@@ -160,6 +165,7 @@ angular
 							$scope.allFeed = [];
 						}
 						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
+						$scope.created_at = $scope.allFeed[0].created_at;
 						getBookMarksfromPouchDBToChangeSaveButtonColor();
 						feedsDAOService.addNewFeeds($scope.allFeed);
 						$scope.loaded = true;
@@ -190,6 +196,7 @@ angular
 				if(response.posts.length>0){
 					angular.forEach(response.posts, function(feed, key) {	
 						$scope.allFeed = $scope.allFeed.concat(feed);
+
 					});						
 					$scope.isMoreFeeds = response.isMorePostsPresent;
 				}	
@@ -213,9 +220,11 @@ angular
 		/**
 		*loadMore incrementing page by one and calling the loadFeeds
 		*/
+
 		$scope.loadMore = function() {
 			if($scope.allFeed.length > 0 && $scope.sttButton==true){
 				$scope.feedsParams.page++;
+				$scope.feedsParams.created_at = $scope.created_at;
 	 			loadFeeds(true);
 			}
 		}
@@ -534,9 +543,11 @@ angular
 			}
 			
 			if(ConnectivityMonitorFactory.isOnline()) {					
-				$ionicLoading.show({
-          			template: '<ion-spinner icon="android"></ion-spinner>'
-        		});
+				if(!isLoadMore) {						
+						$ionicLoading.show({
+		          			template: '<ion-spinner icon="android"></ion-spinner>'
+		        		});
+					}
 				feedService.getFeeds($scope.feedsParams).then(function(feed) {							
 	   				if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
 						$scope.isMoreFeeds = true;
@@ -546,7 +557,9 @@ angular
 					if(!isLoadMore) {
 						$scope.feed = [];
 					}
-					$scope.feed = $scope.feed.concat(feed.data.data.feed);						
+					$scope.feed = $scope.feed.concat(feed.data.data.feed);
+					$scope.created_at = $scope.feed[0].created_at;	
+
 					getBookMarksfromPouchDBToChangeSaveButtonColor();
 					$scope.loaded = true;
 					},function(err){
@@ -602,6 +615,7 @@ angular
 		$scope.loadMore = function() {
 			if($scope.feed.length > 0 && $scope.sttButton==true){
 				$scope.feedsParams.page++;
+				$scope.feedsParams.created_at = $scope.created_at;
 		 		loadFeeds(true);
 			}
 		}
@@ -769,7 +783,7 @@ angular
 			loadFeeds();
 			markAsRead();
 		    $scope.$on('$ionicView.beforeLeave', function(e) {
-		        if (window.AdMob) AdMob.showInterstitial();	       
+		    	if (window.AdMob) AdMob.showInterstitial();	
 		    });			
 		};
 
@@ -792,7 +806,7 @@ angular
 
 						img.setAttribute("image-lazy-src", img.src);
 					}
-					
+						
 					img.setAttribute("image-lazy-loader", "android");
 					img.setAttribute("image-lazy-distance-from-bottom-to-load",100);
 					img.removeAttribute("src");
