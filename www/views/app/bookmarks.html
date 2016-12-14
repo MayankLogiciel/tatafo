@@ -22,7 +22,7 @@
         </div> 
 
         <div class="entries-list feed-col" ng-if="(bookmarks.feeds.length > 0 || bookmarks.length > 0)">
-            <div ng-repeat="entry in bookmarks | orderBy:'feed.updated': true track by entry.doc.data.id" image-path-fix class="list card entry-item">
+            <div ng-repeat="entry in bookmarks | orderBy:'feed.updated': true" image-path-fix class="list card entry-item">
                 <div class="entry-content item item-text-wrap">
                     <div>
                         <p class="entry-author">
@@ -42,8 +42,8 @@
 
                     <div class="card-footer">
                         <div class="button-bar">
+                            <a class="button button-clear card-button secondary btn-open" on-tap="deleteBookMark(entry.doc)"><i class="icon ion-trash-b coin"></i> Delete</a> 
                             <a class="button button-clear card-button primary btn-open" on-tap="goToFeedPostArticle(entry.doc.data)"><i class="icon ion-android-open coin"></i> Open</a>                    
-                           <a class="button button-clear card-button secondary btn-open" on-tap="deleteBookMark(entry.doc)"><i class="icon ion-trash-b coin"></i> Delete</a> 
                         </div>
                     </div>
                 </div>
