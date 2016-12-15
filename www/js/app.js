@@ -28,6 +28,7 @@ angular
         ionic.Platform.ready(function() {
             //it will set default user settings if not set
             settingService.getSettings();
+            settingService.setAppVisitedCount();
             
             var hideSplashScreen = function (){
                 if(!settingService.doWeNeedToShowTutorialTour()) {

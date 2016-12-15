@@ -547,7 +547,8 @@ angular
 			imageViewDisabled: false,
 			nightModeEnabled: false,
 		};
-		this.getSyncIntervalOptions = function(){
+
+        this.getSyncIntervalOptions = function(){
 			return syncIntervalOptions;
 		};
 
@@ -606,19 +607,36 @@ angular
         	localStorage.tatafo_sourceFeedVisitedCounter = sourceFeedVisitedCount;
       	}
 
-      	/**
+        /**
       	* doWeNeedToShowAppRatePopup used to confirm that when to show popop for app rate
       	* geting the counter and app rate status from local storage
       	* checking the count value is it dividual by 5 and status is true
       	* returning true
       	*/
-      	this.doWeNeedToShowAppRatePopup = function() {                   
-        	var getSourceFeedAppRateStatus = localStorage.tatafo_appRateStatus;
+      	this.doWeNeedToShowAppRatePopup = function() {  
+            var getFeedAppRateStatus = localStorage.tatafo_appRateStatus;       
+            var getAppRateIgnoranceTime = localStorage.tatafo_appRateIgnoranceTime;
+            var lastIngoranceTime = Date.parse(getAppRateIgnoranceTime || new Date("October 13, 2000 00:00:00"));
+            var currenTime = Date.parse(new Date());
+            var nextAppRateCardShowTime = 7*24*60*60*1000;
+            var lastIngoranceTimeInMS = currenTime - lastIngoranceTime;                             
         	var getSourceFeedVisitedCount =  localStorage.tatafo_sourceFeedVisitedCounter;
-        	if((getSourceFeedVisitedCount % 5 == 0) && (angular.isUndefined(getSourceFeedAppRateStatus) || getSourceFeedAppRateStatus == 'false')) {
-         		return true;          
-        	}
+        	if((lastIngoranceTimeInMS > nextAppRateCardShowTime) && (getSourceFeedVisitedCount%5==0) &&(angular.isUndefined(getFeedAppRateStatus) || getFeedAppRateStatus == 'false')){
+               return true; 
+            }
       	}
+
+
+        this.setAppVisitedCount = function() {
+            var appVisitedCount = JSON.parse(localStorage.tatafo_appVisitedCounter || 0);
+            appVisitedCount++;
+            localStorage.tatafo_appVisitedCounter = appVisitedCount;
+        }
+
+
+        this.setAppRateIgnoranceTime = function(ignoranceTime) {            
+            localStorage.tatafo_appRateIgnoranceTime = ignoranceTime;
+        }
 
         /**
         * doWeNeedToShowAppRateInList used to confirm that when to show app rate card in list
@@ -626,13 +644,19 @@ angular
         * checking the status is true
         * returning true
         */
+       
         this.doWeNeedToShowAppRateInList = function() { 
-            var getFeedAppRateStatus = localStorage.tatafo_appRateStatus;
-            if((angular.isUndefined(getFeedAppRateStatus) || getFeedAppRateStatus == 'false')){
+            var getSourceFeedAppRateStatus = localStorage.tatafo_appRateStatus;       
+            var getAppRateIgnoranceTime = localStorage.tatafo_appRateIgnoranceTime;
+            var lastIngoranceTime = Date.parse(getAppRateIgnoranceTime || new Date("October 13, 2000 00:00:00"));
+            var currenTime = Date.parse(new Date());
+            var nextAppRateCardShowTime = 7*24*60*60*1000;
+            var lastIngoranceTimeInMS = currenTime - lastIngoranceTime;
+            var getAppVisitedCount =  localStorage.tatafo_appVisitedCounter;
+            if((lastIngoranceTimeInMS > nextAppRateCardShowTime) && (getAppVisitedCount >= 3) &&(angular.isUndefined(getSourceFeedAppRateStatus) || getSourceFeedAppRateStatus == 'false')){
                return true; 
             }
         }
-
       	this.setTutorialTourStatus = function(status) {
         	//var appTutorialTourStatus = JSON.parse(localStorage.tatafo_AppTutorialTourStatus || false);
         	localStorage.tatafo_AppTutorialTourStatus = status;

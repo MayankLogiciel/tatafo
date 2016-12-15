@@ -1,4 +1,4 @@
-<ion-modal-view class="ion-nifty-modal">
+<ion-modal-view class="ion-nifty-modal rating-popup yesno">
 	<ion-header-bar class="darkbutton effect1">
 		<h1 class="titleuni">:(</h1>
 		<div class="button button-clear" on-tap="hideAppRateModelNo()"><span class="icon ion-close"></span></div>
@@ -6,11 +6,13 @@
 	<ion-content>
 		<div class="rates">
 			<p>
-				We are sorry you dont enjoy using Tatafo. Please let us know how to improve your user experience. We appreciate your feed back
-	    	</p>
-			<button class="button ion-email button-full button-balanced" on-tap="popAsk1(); hideAppRateModelNo();">
-				Send Feedback
-			</button>
+				We are sorry you dont enjoy using Tatafo. Would you mind giving us some feedback?
+			</p>
+			<div class="button-bar">
+
+				<a class="button button-block ion-sad button-assertive" on-tap="hideAppRateModelNo()"> No, Thanks</a>
+				<a class="button button-block ion-happy button-stable" on-tap="popAsk1(); hideAppRateModelNo();"> Yes</a>
+			</div>
 		</div>
-    </ion-content>
+	</ion-content>
 </ion-modal-view>

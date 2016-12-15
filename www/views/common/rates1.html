@@ -1,21 +1,17 @@
-<ion-modal-view class="ion-nifty-modal">
+<ion-modal-view class="ion-nifty-modal rating-popup yesno">
 	<ion-header-bar class="darkbutton effect1">
-		<h1 class="titleuni">Yay!</h1>
+		<h1 class="titleuni">Thanks!</h1>
 		<div class="button button-clear" on-tap="hideAppRateModelYes()"><span class="icon ion-close"></span></div>
 	</ion-header-bar>
 	<ion-content>
 		<div class="rates">
-			<div class="rates-image1"></div>
 			<p>
-				We are happy that you like our application!
+				How about a rating on the appstore then? Ratings start from 1 to 5. 5 stars is the highest rating.
 			</p>
-			<p>
-				Please, support us by giving us a rating from 1 to 5. 5 stars is the highest rating.
-			</p>
-
-			<button class="button ion-ios-star button-full button-balanced" on-tap="appRate(); hideAppRateModelYes();">
-				Rate TATAFO
-			</button>
-		</div>
+			<div class="button-bar">
+				<a class="button button-block ion-sad button-assertive" on-tap="hideAppRateModelYes();"> No, Thanks</a>
+				<a class="button button-block ion-happy button-stable" on-tap="appRate(); hideAppRateModelYes();"> Yes</a>
+			</div>
+			</div>		
 	</ion-content>
 </ion-modal-view>

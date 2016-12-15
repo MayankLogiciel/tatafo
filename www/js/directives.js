@@ -24,7 +24,8 @@ angular
 	            }
 
   				scope.hideModel = function() {
-  					scope.appRateModel.hide();
+  					scope.appRateModel.hide(); 
+  					settingService.setAppRateIgnoranceTime(new Date()); 					
 				}
   				
 				/**
@@ -44,13 +45,13 @@ angular
 
               	scope.hideAppRateModelYes = function() {
 					scope.appRateModel1.hide();
+					settingService.setAppRateIgnoranceTime(new Date());
 				}
 
 				scope.appRate = function () {
 					settingService.setAppRateStatus(true);		
-					$window.open("market://details?id=com.wec.tatafo", "_system");
+					$window.open("https://play.google.com/store/apps/details?id=com.jolomi.gossip", "_system");
 				}
-
 				/**
 				* ionicModal for rate app if not satisfied
 				*/
@@ -63,11 +64,12 @@ angular
   				});               
 
 	            scope.showAppRateModelForNo = function() {
-	               scope.appRateModel2.show();
+	               scope.appRateModel2.show();	               
 	            }
               	
 				scope.hideAppRateModelNo = function() {
 					scope.appRateModel2.hide();
+					settingService.setAppRateIgnoranceTime(new Date());
 				}
 
 				scope.popAsk1 = function () {
@@ -102,7 +104,8 @@ angular
 	  			$scope.hideCards = function() {
 	  				$scope.appRateCard = true;
 	  				$scope.appRateCardNo = true;
-	  				$scope.appRateCardYes = true;			
+	  				$scope.appRateCardYes = true;
+	  				settingService.setAppRateIgnoranceTime(new Date());			
 	  			}
 	  			$scope.showAppRateForNo = function() {
 	  				$scope.appRateCard = true
@@ -115,7 +118,7 @@ angular
 	  			$scope.appRate = function() {
 	  				$scope.appRateCardYes = true;
 	  				settingService.setAppRateStatus(true);		
-	  				$window.open("market://details?id=com.wec.tatafo", "_system");
+	  				$window.open("https://play.google.com/store/apps/details?id=com.jolomi.gossip", "_system");
 	  			}
 	  			$scope.popAsk1 = function () {
 	  				$scope.appRateCardNo = true;

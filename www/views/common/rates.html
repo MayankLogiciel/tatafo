@@ -1,20 +1,17 @@
 <ion-modal-view class="ion-nifty-modal rating-popup">
 	<ion-header-bar class="darkbutton effect1">
-		<h1 class="titleuni">Question</h1>
+		<h1 class="titleuni">Hello</h1>
 		<div class="button button-clear" on-tap="hideModel()"><span class="icon ion-close"></span></div>
 	</ion-header-bar>
 	<ion-content>
 		<div class="rates">
-			<!-- <div class="rates-image">
-				<img ng-src="img/feeds/logos/cnn.jpg">
-			</div> -->
 			<p>
-			Do you enjoy using Tatafo?
+				Enjoying this app?
 			</p>
 			<div class="button-bar">
-				<a class="button ion-sad button-block button-assertive" on-tap="showAppRateModelForNo(); hideModel();"> NO</a>
-				<a class="button ion-happy button-block button-balanced" on-tap="showAppRateModelForYes(); hideModel();"> YES</a>
+				<a class="button button-block ion-sad button-assertive" on-tap="showAppRateModelForNo(); hideModel();"> Not Really</a>
+				<a class="button button-block ion-happy button-stable" on-tap="showAppRateModelForYes(); hideModel();"> Yes!</a>
 			</div>
-		</div>
+			</div>		
 	</ion-content>
 </ion-modal-view>
