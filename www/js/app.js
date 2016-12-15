@@ -103,45 +103,58 @@ angular
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
+            onDocLoad();
+            ConnectivityMonitorFactory.startWatching();
+        });
 
-
-            var admobid = {};
-            if( /(android)/i.test(navigator.userAgent) ) { 
-                admobid = { // for Android
-                    banner: ANDROID_BANNER_ID,
-                    interstitial: ANDROID_INTERSTITIAL_ID
-                };
-            } 
-
+        function onDocLoad() {
             if(( /(ipad|iphone|ipod|android|windows phone)/i.test(navigator.userAgent) )) {
                 document.addEventListener('deviceready', initApp, false);
             } else {
                 initApp();
             }
-
-            function initApp() {
-                if (!AdMob ) { $log.debug( 'admob plugin not ready' ); return; }
-
-                AdMob.createBanner( {
-                    adId: admobid.banner, 
-                    isTesting: true,
-                    overlap: false, 
-                    autoShow:false,
-                    offsetTopBar: false, 
-                    position: AdMob.AD_POSITION.BOTTOM_CENTER,
-                    bgColor: 'black'
-                } );
-                
-                AdMob.prepareInterstitial({
-                    adId: admobid.interstitial,
-                    autoShow: false
+        }    
+        function initApp() {
+            initAd();
+        }
+        function initAd(){
+            if ( window.plugins && window.plugins.AdMob ) {
+                var ad_units = {
+                    android : {
+                        banner: ANDROID_BANNER_ID,
+                        interstitial: ANDROID_INTERSTITIAL_ID
+                    }
+                };
+                var admobid = "";
+                if( /(android)/i.test(navigator.userAgent) ) {
+                    admobid = ad_units.android;
+                } 
+                window.plugins.AdMob.setOptions( {
+                    publisherId: admobid.banner,
+                    interstitialAdId: admobid.interstitial,
+                    bannerAtTop: false, // set to true, to put banner at top
+                    overlap: false, // set to true, to allow banner overlap webview
+                    offsetTopBar: false, // set to true to avoid ios7 status bar overlap
+                    isTesting: true, // receiving test ad
+                    autoShow: true // auto show interstitial ad when loaded
                 });
+                registerAdEvents();
+                
+            } else {
+                alert( 'admob plugin not ready' );
             }
-
-            //start watching online/offline event
-            ConnectivityMonitorFactory.startWatching();
-        });
-
+        }
+        //optional, in case respond to events
+        function registerAdEvents() {
+            document.addEventListener('onReceiveAd', function(){});
+            document.addEventListener('onFailedToReceiveAd', function(data){});
+            document.addEventListener('onPresentAd', function(){});
+            document.addEventListener('onDismissAd', function(){ });
+            document.addEventListener('onLeaveToAd', function(){ });
+            document.addEventListener('onReceiveInterstitialAd', function(){ });
+            document.addEventListener('onPresentInterstitialAd', function(){ });
+            document.addEventListener('onDismissInterstitialAd', function(){ });
+        }
         $ionicPlatform.on("resume", function() {});
     })
     .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {

@@ -62,10 +62,7 @@ angular
 		* show ad banner on the entry of all tab  
 		**/
 		$scope.$on('$ionicView.enter', function(e) {
-				
-		        if (window.AdMob){
-		        	AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);		        	
-		        }	
+				window.plugins.AdMob.createBannerView();		       
 		});	
 
 		/**
@@ -154,8 +151,9 @@ angular
 		          			template: '<ion-spinner icon="android"></ion-spinner>'
 		        		});
 					}
-										
+					
 					feedService.getFeeds($scope.feedsParams).then(function(feed) {	
+
 						if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
 							$scope.isMoreFeeds = true;
 						}else{
@@ -783,7 +781,7 @@ angular
 			loadFeeds();
 			markAsRead();
 		    $scope.$on('$ionicView.beforeLeave', function(e) {
-		    	if (window.AdMob) AdMob.showInterstitial();	
+		    	window.plugins.AdMob.createInterstitialView();		    	
 		    });			
 		};
 
