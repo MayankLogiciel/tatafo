@@ -86,7 +86,6 @@ angular
                     .handleNotificationOpened(notificationOpenedCallback)
                     .handleNotificationReceived(function(jsonData) {})
                     .endInit();
-
                 window.plugins.OneSignal.getIds(idsReceivedCallback);
 
             }else{
@@ -108,7 +107,7 @@ angular
         });
 
         function onDocLoad() {
-            if(( /(ipad|iphone|ipod|android|windows phone)/i.test(navigator.userAgent) )) {
+            if(( /(android)/i.test(navigator.userAgent) )) {
                 document.addEventListener('deviceready', initApp, false);
             } else {
                 initApp();
@@ -135,14 +134,11 @@ angular
                     bannerAtTop: false, // set to true, to put banner at top
                     overlap: false, // set to true, to allow banner overlap webview
                     offsetTopBar: false, // set to true to avoid ios7 status bar overlap
-                    isTesting: true, // receiving test ad
+                    isTesting: false, // receiving test ad
                     autoShow: true // auto show interstitial ad when loaded
                 });
                 registerAdEvents();
-                
-            } else {
-                alert( 'admob plugin not ready' );
-            }
+            } 
         }
         //optional, in case respond to events
         function registerAdEvents() {

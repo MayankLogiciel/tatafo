@@ -62,7 +62,9 @@ angular
 		* show ad banner on the entry of all tab  
 		**/
 		$scope.$on('$ionicView.enter', function(e) {
-				window.plugins.AdMob.createBannerView();		       
+			if(ionic.Platform.isWebView()) {
+				window.plugins.AdMob.createBannerView();
+			}		       
 		});	
 
 		/**
@@ -781,7 +783,9 @@ angular
 			loadFeeds();
 			markAsRead();
 		    $scope.$on('$ionicView.beforeLeave', function(e) {
-		    	window.plugins.AdMob.createInterstitialView();		    	
+		    	if(ionic.Platform.isWebView()) {
+		    		window.plugins.AdMob.createInterstitialView();	
+		    	}	    	
 		    });			
 		};
 

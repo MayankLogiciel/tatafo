@@ -118,6 +118,16 @@ $night-mode-header: #1b2936;
   .titleuni  {
     background: $night-mode-background;
   }
+  .rates {
+    background: $night-mode-background;
+  }
+  .button-bar-night {
+    color:$night-mode-text !important;
+    background: rgba(255, 255, 255, 0.2);
+  }
+  .button-bar-night.activated{
+    background: rgba(255, 255, 255, 0.2);
+  }
   .customer-search-box.email-search-box {
     background: $night-mode-header;
   }
