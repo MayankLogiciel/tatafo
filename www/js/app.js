@@ -23,7 +23,7 @@ var bookmarksDB = new PouchDB(bookmarksDBSettings.BOOKMARKS_DB_NAME, { auto_comp
 angular
     .module('tatafo', ['ionic', 'underscore', 'tatafo.config', 'ngCordova', 'jett.ionic.content.banner','ionicLazyLoad'])
 
-    .run(function($log, $ionicPlatform, $rootScope, $state, $timeout, deviceTokenService, ConnectivityMonitorFactory, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, settingService, $cordovaSplashscreen, ANDROID_BANNER_ID, ANDROID_INTERSTITIAL_ID) {
+    .run(function($log, $ionicPlatform, $rootScope, $state, $timeout, deviceTokenService, ConnectivityMonitorFactory, settingService, $cordovaSplashscreen, ANDROID_BANNER_ID, ANDROID_INTERSTITIAL_ID) {
 
         ionic.Platform.ready(function() {
             //it will set default user settings if not set
@@ -41,26 +41,7 @@ angular
                     if(ionic.Platform.isWebView()) $cordovaSplashscreen.hide();
                 }, 100);
             };
-     
-            var idsReceivedCallback = function(pushObj){
-                $log.debug(pushObj);
-                if( deviceTokenService.isRegisterOnServerRequired(pushObj) ){
-                    $log.debug('Registeration on server required for push notification');
-                    var params = {
-                        device_token : pushObj.userId + '',
-                        push_token : pushObj.pushToken + ''
-                    };
-
-                    deviceTokenService.registerDeviceOnServer(params).then(function(res){
-                        $log.debug(res.data.data.data);
-                        deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
-                        hideSplashScreen();
-                    });
-                }else{
-                    $log.debug('No Need to register device on server'); 
-                    hideSplashScreen();
-                }                
-            };
+            hideSplashScreen();          
 
             $ionicPlatform.registerBackButtonAction(function (event) {
                 if($state.current.name=="app.feeds.all"){
@@ -70,33 +51,6 @@ angular
                   navigator.app.backHistory();
                 }
             }, 100);
-
-            if ( ionic.Platform.isWebView() && ionic.Platform.isAndroid() ) {
-
-                //$log.debug(window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4}));
-
-                var notificationOpenedCallback = function(jsonData) {
-                    $log.debug('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-                };
-
-
-                window.plugins.OneSignal
-                    .startInit(ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER)
-                    .inFocusDisplaying(window.plugins.OneSignal.OSInFocusDisplayOption.None)
-                    .handleNotificationOpened(notificationOpenedCallback)
-                    .handleNotificationReceived(function(jsonData) {})
-                    .endInit();
-                window.plugins.OneSignal.getIds(idsReceivedCallback);
-
-            }else{
-                // this is temp code, always intentionly run on browser to test register device feature
-                var pushObj = {
-                    'userId': 'userId1',
-                    'pushToken' : 'pushToken1'
-                };
-
-                idsReceivedCallback(pushObj);
-            }
 
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required

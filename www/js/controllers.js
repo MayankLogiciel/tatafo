@@ -17,7 +17,7 @@ angular
     	setup();
 	})
 	// All Feeds Controller
-	.controller('AllFeedsController', function($log, $ionicPopover, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout, $window){
+	.controller('AllFeedsController', function($log, $ionicPopover, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, deviceTokenService, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout, $window){
 		var setup = function(){
 			$log.debug('AllFeedsController setup');
 			$scope.allFeed = [];
@@ -25,8 +25,7 @@ angular
 			$scope.feedsParams = {
 				page:1,
 				limit:10				
-			};
-			
+			};			
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
@@ -34,8 +33,12 @@ angular
 			$scope.feedStatus = {};
 			$scope.feedStatus.read=true;
 			$scope.feedStatus.unread=true;
-			$scope.feedLoaded = false;			
-			getFeeds();			
+			$scope.feedLoaded = false;
+			if($state.current.name.indexOf('app.feeds.all') !== -1) {
+				generateOneSignalIds();
+			}else{
+				getFeeds();
+			}
 			loadPopOver();
 			$rootScope.$on("readArticle", function (event,args) {
 				$log.debug("Read Article event received in All Feed Controller");
@@ -45,17 +48,69 @@ angular
 	      			}
 	      		});
 	    	});
-
 		};
+		var generateOneSignalIds = function() {
+			if ( ionic.Platform.isWebView() && ionic.Platform.isAndroid() ) {
+
+                if($state.current.name.indexOf('app.feeds.all') !== -1 ) {
+					$ionicLoading.show({
+			      		template: '<ion-spinner icon="android"></ion-spinner>'
+			    	});
+	            }
+                //$log.debug(window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4}));
+
+                var notificationOpenedCallback = function(jsonData) {
+                    $log.debug('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+                };
+                window.plugins.OneSignal
+                    .startInit(ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER)
+                    .inFocusDisplaying(window.plugins.OneSignal.OSInFocusDisplayOption.None)
+                    .handleNotificationOpened(notificationOpenedCallback)
+                    .handleNotificationReceived(function(jsonData) {})
+                    .endInit();
+                window.plugins.OneSignal.getIds(idsReceivedCallback);               
+            }else{            	
+                // this is temp code, always intentionly run on browser to test register device feature
+                var pushObj = {
+                    'userId': 'userId1',
+                    'pushToken' : 'pushToken1'
+                };
+            	idsReceivedCallback(pushObj);
+            }
+		}
+		var idsReceivedCallback = function(pushObj){
+            $log.debug(pushObj);
+            if( deviceTokenService.isRegisterOnServerRequired(pushObj) ){
+                $log.debug('Registeration on server required for push notification');
+                var params = {
+                    device_token : pushObj.userId + '',
+                    push_token : pushObj.pushToken + ''
+                };
+                deviceTokenService.registerDeviceOnServer(params).then(function(res){
+                    $log.debug(res.data.data.data);
+                    deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
+					getFeeds();
+                }, function(err){
+                	$state.go('app.offline');
+                });
+            }else{
+                $log.debug('No Need to register device on server'); 
+				getFeeds();			
+            }
+        };
 
 		/**
 		* Handles offline retry mode
 		**/
     	$rootScope.$on('retry', function (e) {
 			$log.debug("Listening to Offline try again");
-			$timeout(function(){
-				$scope.doRefresh();
-			});
+			if( !localStorage.tatafo_deviceInfo){
+				generateOneSignalIds();
+			}else{
+				$timeout(function(){
+					$scope.doRefresh();
+				});
+			}
     	});	 
 
     	/**
@@ -152,8 +207,7 @@ angular
 						$ionicLoading.show({
 		          			template: '<ion-spinner icon="android"></ion-spinner>'
 		        		});
-					}
-					
+					}					
 					feedService.getFeeds($scope.feedsParams).then(function(feed) {	
 
 						if(feed.data.data.meta.pagination.current_page < feed.data.data.meta.pagination.total_pages){
@@ -165,7 +219,9 @@ angular
 							$scope.allFeed = [];
 						}
 						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
-						$scope.created_at = $scope.allFeed[0].created_at;
+						if($scope.allFeed.length > 0) {
+							$scope.created_at = $scope.allFeed[0].created_at;
+						}
 						getBookMarksfromPouchDBToChangeSaveButtonColor();
 						feedsDAOService.addNewFeeds($scope.allFeed);
 						$scope.loaded = true;
@@ -558,8 +614,9 @@ angular
 						$scope.feed = [];
 					}
 					$scope.feed = $scope.feed.concat(feed.data.data.feed);
-					$scope.created_at = $scope.feed[0].created_at;	
-
+					if($scope.feed.length > 0) {
+						$scope.created_at = $scope.feed[0].created_at;
+					}
 					getBookMarksfromPouchDBToChangeSaveButtonColor();
 					$scope.loaded = true;
 					},function(err){
