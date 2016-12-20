@@ -34,7 +34,7 @@ angular
 			$scope.feedStatus.read=true;
 			$scope.feedStatus.unread=true;
 			$scope.feedLoaded = false;
-			if($state.current.name.indexOf('app.feeds.all') !== -1) {
+			if(($state.current.name.indexOf('app.feeds.all') !== -1) && ConnectivityMonitorFactory.isOnline()){
 				generateOneSignalIds();
 			}else{
 				getFeeds();
@@ -134,10 +134,12 @@ angular
 			}else{	
 				//load feed source data first
 				$log.debug('Sources Unavailable');
-				$ionicLoading.show({
-          			template: '<ion-spinner icon="android"></ion-spinner>'
-        		});
-				loadFeedSources();
+				if(ConnectivityMonitorFactory.isOnline()) {					
+					$ionicLoading.show({
+	          			template: '<ion-spinner icon="android"></ion-spinner>'
+	        		});
+					loadFeedSources();
+				}
 			}
 		};
 
