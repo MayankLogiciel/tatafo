@@ -24,3 +24,12 @@ angular
 			return convertedDate +"<span>|</span>" + convertedTime;
 		}
 	})
+
+	.filter('htmlToPlaintext', function() {
+	    return function(text) {
+	    	text = text ? String(text).replace(/<[^>]+>/gm, '') : '';
+	      	text = text ? String(text).replace(/&nbsp;/gm,'') : '';
+	     	text = text ? String(text).replace(/<!--[\s\S]*?-->/g, '') : '';
+	      	return  text;
+	    };
+	})
