@@ -885,9 +885,13 @@ ion-popover-view.fit ion-content {
 ins, ins.adsbygoogle {
   height: auto !important;
 }
-.ion-android-share-alt:before{
-   color: #E74D4D;
+.float-button-right .ion-android-share-alt.icon-color {
+   color: #E74D4D !important;
    margin-top: 3px;
    margin-right:4px;
+}
+
+.float-button-right .cont.icon-align {
+  margin-top: -12px !important;
 }
 
