@@ -206,8 +206,6 @@ angular
 
 	.service('feedDetailService', function(){
 		var post;
-		var allVisiblePosts;
-
 		/**
 		* Get the post object
 		* @return {object} 
@@ -224,24 +222,7 @@ angular
 		*/
 		this.setPostData = function(postDetail) {
 			post = postDetail;			
-		};
-
-		/**
-		* Get the allVisiblePosts object
-		* @return {object} 
-		*/
-		this.getCombinedPostDataForNextPrevious = function(){
-			return allVisiblePosts;
-		}
-
-		/**
-		* set the post object
-		* @param {object} data
-		* set allVisiblePosts = data
-		*/
-		this.setCombinedPostDataForNextPrevious=function(data){
-			allVisiblePosts = data;
-		}
+		};		
 	})
 
 	.service('feedListService',function($rootScope , FeedLoader , $q){

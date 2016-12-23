@@ -451,11 +451,9 @@ angular
 
 		/**
 		* loadPostDetails feedDetailService.setPostData posting the deatil of single feed to article page
-		* loadPostDetails feedDetailService.setCombinedPostDataForNextPrevious sending the deatil of other feeds for next and previous Button
-		*/	
+		**/	
 		$scope.loadPostDetails=function(post) {	
 			feedDetailService.setPostData(post);
-			feedDetailService.setCombinedPostDataForNextPrevious($scope.allFeed);
 			$state.go('app.feed-entries-details');								
 		};
 
@@ -697,11 +695,9 @@ angular
 		
 		/**
 		* loadPostDetails feedDetailService.setPostData posting the deatil of single feed to article page
-		* loadPostDetails feedDetailService.setCombinedPostDataForNextPrevious sending the deatil of other feeds for next and previous Button
-		*/
+		* */
 		$scope.loadPostDetails=function(post) {
 			feedDetailService.setPostData(post);
-			feedDetailService.setCombinedPostDataForNextPrevious($scope.feed);
 			$state.go('app.feed-entries-details');
 		}
 
@@ -839,7 +835,6 @@ angular
 					}
 				});
 			};			
-			loadFeeds();
 			markAsRead();
 		    $scope.$on('$ionicView.beforeLeave', function(e) {
 		    	if(ionic.Platform.isWebView()) {
@@ -897,15 +892,20 @@ angular
 			var hrefContent = /href="(.*?)"/ ;
 			angular.forEach(element, function(value,key){
 			 	var videoUrl = hrefContent.exec(value.innerHTML);
-				if(videoUrl[1] && videoUrl[1] != null && videoUrl[1] != 'https://www.instagram.com/p'){
-					var iframe= document.createElement("iframe");			
-				 	iframe.setAttribute("allowfullscreen", "");
-				 	iframe.setAttribute("frameborder", "0");
-				 	iframe.setAttribute("scrolling","no");				
-				 	iframe.setAttribute("src",videoUrl[1]+"embed");
-				 	iframe.setAttribute("class","custom-iframe");
-				 	iframe.removeAttribute("class","EmbedHeader");
-				 	elem.appendChild(iframe);			
+			 	if(angular.isUndefined(videoUrl) || videoUrl== null) {
+					return false;
+				}else{
+
+					if(videoUrl[1] && videoUrl[1] != null && videoUrl[1] != 'https://www.instagram.com/p'){
+						var iframe= document.createElement("iframe");			
+					 	iframe.setAttribute("allowfullscreen", "");
+					 	iframe.setAttribute("frameborder", "0");
+					 	iframe.setAttribute("scrolling","no");				
+					 	iframe.setAttribute("src",videoUrl[1]+"embed");
+					 	iframe.setAttribute("class","custom-iframe");
+					 	iframe.removeAttribute("class","EmbedHeader");
+					 	elem.appendChild(iframe);			
+					}
 				}
 			});
 			//remove instagram media blocks
@@ -917,64 +917,7 @@ angular
 
 			elem = undefined;
 			element = undefined;				
-		}
-		
-
-	    /**
-	    * getting the current index of th feed showing in article page
-	    */
-		var getCurrentFeedIndex = function(){
-			angular.forEach($scope.allFeed, function(val, index) {
-				if(angular.isDefined(val.doc) && $scope.entry.id == val.doc.data.id) {
-					$scope.currentIndex = index;
-				}
-				if(!angular.isDefined(val.doc) && $scope.entry.id == val.id) {
-					$scope.currentIndex = index;
-				}
-			});
-		}
-
-		/**
-	    * Loading the all feeds for next and previous the the current index
-	    */
-		var loadFeeds = function() {
-			$scope.allFeed=feedDetailService.getCombinedPostDataForNextPrevious();
-			$scope.allFeed = $filter('orderBy')($scope.allFeed,'feed.updated',true);
-			getCurrentFeedIndex();
-		}
-
-		/**
-	    * handling the Next button to show next article
-	    */
-		$scope.nextButton=function(){
-			$scope.load = false;
-			$scope.currentIndex = $scope.currentIndex + 1;
-
-			if(angular.isDefined($scope.allFeed[$scope.currentIndex])) {
-				$scope.entry = $scope.allFeed[$scope.currentIndex];		
-			}else {
-				$scope.entry = $scope.allFeed[$scope.currentIndex].doc.data;		
-			}
-			$timeout(function() {
-				$scope.load = true;
-			}, 0, false);
-		}
-
-		/**
-	    * handling the previous button to show next article
-	    */
-	    $scope.previousButton=function(){
-	    	$scope.load = false;
-			$scope.currentIndex = $scope.currentIndex - 1;
-			if(angular.isDefined($scope.allFeed[$scope.currentIndex])) {
-				$scope.entry = $scope.allFeed[$scope.currentIndex];		
-			} else {
-				$scope.entry = $scope.allFeed[$scope.currentIndex].doc.data;		
-			}
-			$timeout(function() {
-				$scope.load = true;
-			}, 0, false);
-		}
+		}		
 
 		/**
 		* mark post status read

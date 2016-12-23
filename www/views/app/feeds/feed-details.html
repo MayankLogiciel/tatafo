@@ -18,7 +18,7 @@
     <ion-content on-scroll="hideDetailPageHeader()" delegate-handle="detailPageHeaderHideHandler" class="top-spacing">
         <div class="feed-detail-cont" lazy-scroll>
             <div class="feed-entries-card post" post-content>
-                <h4 ng-bind="entry.feed.title || entry.title" class="title" on-hold="copyText('Header')"></h4>
+                <h4 ng-bind-html="entry.feed.title || entry.title" class="title" on-hold="copyText('Header')"></h4>
                 <h5>Posted by <span class="author entry-author-name detail-page-author" ng-bind="entry.source_name"></span><span class="feed-date-time" ng-bind-html="entry.feed.updated | utcTimestampToLocalDateFilter"></span></h5>
             </div>
             
@@ -57,17 +57,10 @@
             <a class="button button-clear card-button secondary" on-tap="sharePost(entry)"><i class="icon ion-android-share-alt coin"></i> Share</a>
         </div>             
     </ion-content>
-    <div class="float-button-left effect1" on-tap="previousButton()" ng-hide="currentIndex==0">
+    <div class="float-button-right effect1" on-tap="sharePost(entry)">
         <span class="height-fix">
-            <a on-tap="" class="cont">
-                <i class="ion-chevron-left white"> </i>
-            </a>
-        </span>
-    </div>
-    <div class="float-button-right effect1" on-tap="nextButton()" ng-hide="currentIndex==allFeed.length-1">
-        <span class="height-fix">
-            <a on-tap="show()" class="cont">
-              <i class="ion-chevron-right white"> </i>
+            <a class="cont">
+              <i class="ion-android-share-alt white"> </i>
             </a>
         </span>
     </div>
