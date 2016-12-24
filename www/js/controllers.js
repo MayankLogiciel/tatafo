@@ -986,11 +986,12 @@ angular
     	$scope.openInstagramLink = function (link) {	
 			if(ionic.Platform.isWebView()) {
 				$cordovaAppAvailability.check('com.instagram.android')
-			    .then(function() {
-			    	window.open('https://www.instagram.com/'+link, '_system');			       
-			    }, function () {			    	
-			    	window.open('https://www.instagram.com/'+link, '_system');			        
-			    });				
+                    .then(function() {
+                        window.open('instagram://user?username='+link, '_system', 'location=no');                   
+                    }, function () {                    
+                        window.open('https://www.instagram.com/' +link, '_system');
+                    });                
+               		
 			} 
     	}
 
@@ -999,7 +1000,7 @@ angular
 		**/
     	$scope.openYoutubeLink = function (link) {	
 			if(ionic.Platform.isWebView()) {
-				$cordovaAppAvailability.check('com.youtube.android')
+				$cordovaAppAvailability.check('com.google.android.youtube')
 			    .then(function() {
 			    	window.open('https://www.youtube.com/'+link, '_system');			       
 			    }, function () {			    	
