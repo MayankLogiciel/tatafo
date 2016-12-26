@@ -481,7 +481,7 @@ angular
 	})
 
 	// source feeds controller
-	.controller('SourceFeedController',function($log, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, $ionicScrollDelegate, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService, $ionicHistory, $window, sourcesService){
+	.controller('SourceFeedController',function($log, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, $ionicScrollDelegate, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService, $ionicHistory, $window, sourcesService, $timeout){
 		var setup = function() {		
 			$log.debug('SourceFeedController setup');
 			$scope.feed = [];
@@ -511,8 +511,8 @@ angular
 				$log.debug("Listening to Offline try again");
 				$timeout(function(){
 					$scope.doRefresh();
-				});     		
-	    	});	 	
+				});
+			});	 	
 
 			/**
 			* Back Button Handling before leave
@@ -1002,7 +1002,7 @@ angular
 			if(ionic.Platform.isWebView()) {
 				$cordovaAppAvailability.check('com.google.android.youtube')
 			    .then(function() {
-			    	window.open('https://www.youtube.com/'+link, '_system');			       
+			    	window.open('https://www.youtube.com/'+link, '_system');		       
 			    }, function () {			    	
 			    	window.open('https://www.youtube.com/'+link, '_system');			        
 			    });				
