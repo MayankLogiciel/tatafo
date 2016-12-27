@@ -880,6 +880,8 @@ angular
 			elem.innerHTML = data.feed.content || data.feed.summary;
 			var images = elem.getElementsByTagName("img");
 			angular.forEach(images, function(img, key){
+
+				var imgDataSrc = img.getAttribute('data-src');
 				if( (img.width && img.width == "1")  || (img.height && img.height == "1") ){
 					$log.debug('Image with height or width Attribute 1 found so removed img element');
 					img.parentNode.removeChild(img);
@@ -887,11 +889,12 @@ angular
 					if ($scope.isImageViewDisabled || ConnectivityMonitorFactory.isOffline()) {
 						img.setAttribute("image-lazy-src", 'img/imgUnavailable.png');						
 					} else {
-						img.setAttribute("image-lazy-src", img.src || img.srcset);
+						img.setAttribute("image-lazy-src", imgDataSrc || img.src || img.srcset);
 					}
 					img.setAttribute("image-lazy-loader", "android");
 					img.setAttribute("image-lazy-distance-from-bottom-to-load",100);
 					img.removeAttribute("src");
+					img.removeAttribute("data-src");
 					img.removeAttribute("srcset");
 					img.removeAttribute("border");		
 				}
