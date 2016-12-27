@@ -2,22 +2,23 @@ angular
 	.module('tatafo')
 
 	// App Controller
-	.controller('AppController',function($log, $scope, settingService, $rootScope){
+	.controller('AppController',function($log, $scope, $rootScope, settingService){
 		/**
 		* Initialization
 		*/
 		var setup=function(){
 			$log.debug('AppController setup');
-			$scope.defaultImage = 'img/imgUnavailable.png';
-			$rootScope.settings = JSON.parse(localStorage.tatafo_settings);
-			$scope.$on('nightModeEnabled', function(event, data){
+			$scope.defaultImage = 'img/imgUnavailable.png';	
+			$rootScope.$on('nightModeEnabled', function(event, data){			
+			$rootScope.settings = {}; 
 				$rootScope.settings.nightModeEnabled = data;
 			});
 		};
     	setup();
 	})
+
 	// All Feeds Controller
-	.controller('AllFeedsController', function($log, $ionicPopover, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, deviceTokenService, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state,feedDetailService, $ionicScrollDelegate, bookMarkService, socialService, ConnectivityMonitorFactory, settingService, $timeout, $window){
+	.controller('AllFeedsController', function($log, $ionicScrollDelegate, $ionicPopover, settingService, ANDROID_BANNER_ID, ANDROID_INTERSTITIAL_ID, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, deviceTokenService, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state, feedDetailService, bookMarkService, socialService, ConnectivityMonitorFactory, $timeout){
 		var setup = function(){
 			$log.debug('AllFeedsController setup');
 			$scope.allFeed = [];
@@ -25,8 +26,10 @@ angular
 			$scope.feedsParams = {
 				page:1,
 				limit:10				
-			};			
-			$scope.isMoreFeeds=false;
+			};		
+			var settings = settingService.getSettings();
+			$rootScope.settings = settings;	
+            $scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
 			$scope.searchQuery = '';
@@ -35,7 +38,10 @@ angular
 			$scope.feedStatus.unread=true;
 			$scope.feedLoaded = false;
 			if(($state.current.name.indexOf('app.feeds.all') !== -1) && ConnectivityMonitorFactory.isOnline()){
+				ConnectivityMonitorFactory.startWatching();
+				settingService.setAppVisitedCount();
 				generateOneSignalIds();
+				showAdd();
 			}else{
 				getFeeds();
 			}
@@ -99,6 +105,30 @@ angular
             }
         };
 
+        var showAdd = function(){
+            if ( window.plugins && window.plugins.AdMob ) {
+                var ad_units = {
+                    android : {
+                        banner: ANDROID_BANNER_ID,
+                        interstitial: ANDROID_INTERSTITIAL_ID
+                    }
+                };
+                var admobid = "";
+                if( /(android)/i.test(navigator.userAgent) ) {
+                    admobid = ad_units.android;
+                } 
+                window.plugins.AdMob.setOptions( {
+                    publisherId: admobid.banner,
+                    interstitialAdId: admobid.interstitial,
+                    bannerAtTop: false, // set to true, to put banner at top
+                    overlap: false, // set to true, to allow banner overlap webview
+                    offsetTopBar: false, // set to true to avoid ios7 status bar overlap
+                    isTesting: false, // receiving test ad
+                    autoShow: true // auto show interstitial ad when loaded
+                });              
+            } 
+        }
+        
 		/**
 		* Handles offline retry mode
 		**/
@@ -121,7 +151,7 @@ angular
 				window.plugins.AdMob.createBannerView();
 			}		       
 		});	
-
+		
 		/**
 		* Loads feeds from Localstaorage if availabele else Load from API  
 		**/		
@@ -134,7 +164,7 @@ angular
 			}else{	
 				//load feed source data first
 				$log.debug('Sources Unavailable');
-				if(ConnectivityMonitorFactory.isOnline()) {					
+				if((ConnectivityMonitorFactory.isOnline()) || ($state.current.name.indexOf('app.feeds.all') !== -1)) {					
 					$ionicLoading.show({
 	          			template: '<ion-spinner icon="android"></ion-spinner>'
 	        		});
@@ -147,7 +177,6 @@ angular
 		* Decide whether source data sync is required or not
 		* by checking users sync preference and last sync time
 		*/
-
 		var isSourceSyncRequired = function() { 
 			if(ConnectivityMonitorFactory.isOffline()) {
 				$log.debug("No request will send to ApI during Offline");
@@ -481,7 +510,7 @@ angular
 	})
 
 	// source feeds controller
-	.controller('SourceFeedController',function($log, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, $ionicScrollDelegate, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService, $ionicHistory, $window, sourcesService, $timeout){
+	.controller('SourceFeedController',function($log, $ionicScrollDelegate, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService, $ionicHistory, $window, sourcesService, $timeout){
 		var setup = function() {		
 			$log.debug('SourceFeedController setup');
 			$scope.feed = [];
@@ -803,7 +832,7 @@ angular
 	})
 
 	// Feed deatil controller
-	.controller('FeedDetailController',function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, $timeout, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $ionicHistory, $window, settingService, $cordovaAppAvailability, $ionicScrollDelegate, $filter){
+	.controller('FeedDetailController',function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $window, settingService, $cordovaAppAvailability){
 		/**
 		* Initialization
 		*/
@@ -856,15 +885,14 @@ angular
 					img.parentNode.removeChild(img);
 				}else{
 					if ($scope.isImageViewDisabled || ConnectivityMonitorFactory.isOffline()) {
-						img.setAttribute("image-lazy-src", 'img/imgUnavailable.png');
+						img.setAttribute("image-lazy-src", 'img/imgUnavailable.png');						
 					} else {
-
-						img.setAttribute("image-lazy-src", img.src);
+						img.setAttribute("image-lazy-src", img.src || img.srcset);
 					}
-						
 					img.setAttribute("image-lazy-loader", "android");
 					img.setAttribute("image-lazy-distance-from-bottom-to-load",100);
 					img.removeAttribute("src");
+					img.removeAttribute("srcset");
 					img.removeAttribute("border");		
 				}
 			});
