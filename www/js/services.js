@@ -60,7 +60,7 @@ angular
         };
 	})
 
-	.service('feedService', function($log, $http, $q, TATAFO_API_URL, $window, $rootScope, $ionicLoading, $timeout){
+	.service('feedService', function($log, $http, $q, TATAFO_API_URL, $timeout){
 		var post;
 
 
@@ -137,7 +137,7 @@ angular
         }            
 	})
 
-	.service('bookMarkService',function(_, $rootScope, $q, $ionicLoading){
+	.service('bookMarkService',function(_, $q, $ionicLoading){
 		/**
 		* add Bookmark to PouchDB
 		* check if already exist then create msg already exist
@@ -225,7 +225,7 @@ angular
 		};		
 	})
 
-	.service('feedListService',function($rootScope , FeedLoader , $q){
+	.service('feedListService',function(FeedLoader , $q){
 		this.get = function(feedSourceUrl) {
 			var response = $q.defer();
 			//num is the number of results to pull form the source
@@ -236,7 +236,7 @@ angular
 		};
 	})
 
-	.service('feedsDAOService', function($log, $rootScope, $q){
+	.service('feedsDAOService', function($log, $q){
 
         /**
         * 1. Add/Update posts to Posts Local DB
@@ -486,7 +486,7 @@ angular
 	    }
 	})
 
-	.service('settingService', function($log, $http, $q, TATAFO_API_URL){
+	.service('settingService', function(){
 		var syncIntervalOptions = [
         {
               title : '30 MINUTES',
@@ -639,18 +639,11 @@ angular
             }
         }
       	this.setTutorialTourStatus = function(status) {
-        	//var appTutorialTourStatus = JSON.parse(localStorage.tatafo_AppTutorialTourStatus || false);
         	localStorage.tatafo_AppTutorialTourStatus = status;
-      	}
-      	this.doWeNeedToShowTutorialTour = function() {                   
-        	var getTutorialTourStatus =  localStorage.tatafo_AppTutorialTourStatus;
-        	if(getTutorialTourStatus == 'true') {
-          		return true;          
-        	}
-      	}
+      	}      	
 	})
 	
-	.service('socialService', function($log, $cordovaSocialSharing) {
+	.service('socialService', function($cordovaSocialSharing) {
 		var link='';
 
 		this.sharePost = function(link){
@@ -658,7 +651,7 @@ angular
         };
 	})
 
-	.service('sourcesService', function($log, $http, $q, TATAFO_API_URL, settingService) {
+	.service('sourcesService', function($log, $http, $q, TATAFO_API_URL) {
 		this.isFeedSourcesAvailable = function() {            
             var sources = JSON.parse(localStorage.tatafo_sources || '[]');
 
