@@ -894,4 +894,6 @@ ins, ins.adsbygoogle {
 .float-button-right .cont.icon-align {
   margin-top: -12px !important;
 }
-
+.platform-android .action-sheet-cancel {
+    display: block !important;
+}
