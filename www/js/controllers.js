@@ -18,7 +18,7 @@ angular
 	})
 
 	// All Feeds Controller
-	.controller('AllFeedsController', function($log, $ionicScrollDelegate, $ionicPopover, settingService, ANDROID_BANNER_ID, ANDROID_INTERSTITIAL_ID, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, deviceTokenService, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state, feedDetailService, bookMarkService, socialService, ConnectivityMonitorFactory, $timeout){
+	.controller('AllFeedsController', function($log, $ionicActionSheet, $ionicScrollDelegate, $ionicPopover, settingService, ANDROID_BANNER_ID, ANDROID_INTERSTITIAL_ID, ONESIGNAL_APP_ID, GOOGLE_PROJECT_NUMBER, deviceTokenService, $rootScope, $scope, sourcesService, feedService, feedsDAOService, $ionicLoading, $state, feedDetailService, bookMarkService, socialService, ConnectivityMonitorFactory, $timeout){
 		var setup = function(){
 			$log.debug('AllFeedsController setup');
 			$scope.allFeed = [];
@@ -28,6 +28,7 @@ angular
 				limit:10				
 			};		
 			var settings = settingService.getSettings();
+			$scope.isError = false;
 			$rootScope.settings = settings;	
             $scope.isMoreFeeds=false;
 			$scope.sttButton=false;
@@ -164,11 +165,14 @@ angular
 			}else{	
 				//load feed source data first
 				$log.debug('Sources Unavailable');
-				if((ConnectivityMonitorFactory.isOnline()) || ($state.current.name.indexOf('app.feeds.all') !== -1)) {					
+				if((ConnectivityMonitorFactory.isOnline()) && ($state.current.name.indexOf('app.feeds.all') !== -1)) {					
 					$ionicLoading.show({
 	          			template: '<ion-spinner icon="android"></ion-spinner>'
 	        		});
 					loadFeedSources();
+				}
+				if(ConnectivityMonitorFactory.isOffline()) {								
+					ConnectivityMonitorFactory.showErrorBanner('Network unavailable');			
 				}
 			}
 		};
@@ -259,6 +263,31 @@ angular
 						$timeout(function() {
 							$scope.feedLoaded = true;
 						}, 200);
+					}, function(err){
+
+						$ionicActionSheet.show({
+						buttons: [
+								{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
+								{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
+						],
+						 titleText: 'Eyah! You are having Network Problems',
+						 cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
+						 cancel: function() {
+									console.log('CANCELLED');
+								},
+						buttonClicked: function(index) {
+						switch (index){
+							case 0 :
+								$scope.doRefresh();
+								return true;
+							case 1 :
+							$state.go("app.feeds.bookmarks");
+								return true;
+						}
+						}
+						});
+						
+						$scope.isError = true;
 					}).finally(function(){	
 						if(isLoadMore){
 							$scope.$broadcast('scroll.infiniteScrollComplete');
@@ -309,7 +338,7 @@ angular
 		*/
 
 		$scope.loadMore = function() {
-			if($scope.allFeed.length > 0 && $scope.sttButton==true){
+			if($scope.allFeed.length > 0 && $scope.sttButton==true && !$scope.isError){
 				$scope.feedsParams.page++;
 				$scope.feedsParams.created_at = $scope.created_at;
 	 			loadFeeds(true);
@@ -336,6 +365,7 @@ angular
 		* calling the loadFeeds
 		*/
 		$scope.doRefresh = function() {
+			$scope.isError = false;
 			$scope.isMoreFeeds = false;	
 			$scope.feedsParams.page = 1;				
 			loadFeeds(false);
@@ -510,7 +540,7 @@ angular
 	})
 
 	// source feeds controller
-	.controller('SourceFeedController',function($log, $ionicScrollDelegate, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService, $ionicHistory, $window, sourcesService, $timeout){
+	.controller('SourceFeedController',function($log, $ionicActionSheet, $ionicScrollDelegate, $rootScope, $scope, $state, $stateParams, feedService, feedsDAOService, $ionicLoading, bookMarkService, feedDetailService, socialService, ConnectivityMonitorFactory, settingService, $ionicHistory, $window, sourcesService, $timeout){
 		var setup = function() {		
 			$log.debug('SourceFeedController setup');
 			$scope.feed = [];
@@ -518,7 +548,7 @@ angular
 				page:1,
 				limit:10
 			};
-			
+			$scope.isError = false;
 			$scope.isMoreFeeds=false;
 			$scope.sttButton=false;
 			$scope.isSearchOpen = false;
@@ -653,6 +683,32 @@ angular
 							localStorage.tatafo_sources = JSON.stringify(err.data.data.sources.data);
 							$ionicHistory.clearCache();
 						}
+						if(err.status == -1){
+
+							$ionicActionSheet.show({
+						buttons: [
+								{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
+								{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
+						],
+						 titleText: 'Eyah! You are having Network Problems',
+						 cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
+						 cancel: function() {
+									console.log('CANCELLED');
+								},
+						buttonClicked: function(index) {
+						switch (index){
+							case 0 :
+								$scope.doRefresh();
+								return true;
+							case 1 :
+							$state.go("app.feeds.bookmarks");
+								return true;
+						}
+						}
+						});
+
+							$scope.isError = true;
+						}
 					}).finally(function(){	
 						if(isLoadMore){					
 							$scope.$broadcast('scroll.infiniteScrollComplete');
@@ -699,7 +755,7 @@ angular
 		*loadMore incrementing page by one and calling the loadFeeds
 		*/	
 		$scope.loadMore = function() {
-			if($scope.feed.length > 0 && $scope.sttButton==true){
+			if($scope.feed.length > 0 && $scope.sttButton==true && !$scope.isError){
 				$scope.feedsParams.page++;
 				$scope.feedsParams.created_at = $scope.created_at;
 		 		loadFeeds(true);
@@ -769,6 +825,7 @@ angular
 		*/
 		$scope.doRefresh = function() {	
 			$scope.isMoreFeeds = false;
+			$scope.isError = false;
 			$scope.feedsParams.page = 1;				
 			loadFeeds(false);
        		$scope.scrollTop();
@@ -896,7 +953,7 @@ angular
 					img.removeAttribute("src");
 					img.removeAttribute("data-src");
 					img.removeAttribute("srcset");
-					img.removeAttribute("border");		
+					img.removeAttribute("border");							
 				}
 			});
 			if(data.feed.content){

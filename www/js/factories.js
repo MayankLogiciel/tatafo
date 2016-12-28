@@ -136,7 +136,11 @@ angular
                     }else {
                         switch(rejection.status){
                             case -1:
-                            $state.go('app.offline');
+                            if(($state.current.name.indexOf('app.feeds.all') !== -1 ) || ($state.current.name.indexOf('app.feed-entries') !== -1 )) {
+                                $log.debug("Feed Listing Page ");
+                            }else {
+                                $state.go('app.offline');
+                            }
                             break;
                             case 0:
                               //timeout case, server unreachable or internet not working
