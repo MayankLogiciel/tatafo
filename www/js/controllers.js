@@ -98,7 +98,29 @@ angular
                     deviceTokenService.setDeviceInfoInLocalStorage(res.data.data.data);
 					getFeeds();
                 }, function(err){
-                	$state.go('app.offline');
+                	    $ionicActionSheet.show({
+						buttons: [
+								{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
+								{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
+						],
+						titleText: 'Eyah! You are having Network Problems',
+						cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
+						cancel: function() {
+							$log.debug('CANCELLED');
+						},
+						buttonClicked: function(index) {
+							switch (index){
+								case 0 :
+									if( !localStorage.tatafo_deviceInfo){
+										generateOneSignalIds();
+									}
+									return true;
+								case 1 :
+								$state.go("app.feeds.bookmarks");
+									return true;
+							}
+						}
+					});
                 });
             }else{
                 $log.debug('No Need to register device on server'); 
@@ -133,16 +155,16 @@ angular
 		/**
 		* Handles offline retry mode
 		**/
-    	$rootScope.$on('retry', function (e) {
-			$log.debug("Listening to Offline try again");
-			if( !localStorage.tatafo_deviceInfo){
-				generateOneSignalIds();
-			}else{
-				$timeout(function(){
-					$scope.doRefresh();
-				});
-			}
-    	});	 
+   //  	$rootScope.$on('retry', function (e) {
+			// $log.debug("Listening to Offline try again");
+			// if( !localStorage.tatafo_deviceInfo){
+			// 	generateOneSignalIds();
+			// }else{
+			// 	$timeout(function(){
+			// 		$scope.doRefresh();
+			// 	});
+			// }
+   //  	});	 
 
     	/**
 		* show ad banner on the entry of all tab  
@@ -219,6 +241,30 @@ angular
 			sourcesService.getSources().then(function(sources) {
 				$scope.feedSources = sources;
 				loadFeeds();
+			}, function(err){
+				if(err.status == -1){
+					$ionicActionSheet.show({
+						buttons: [
+								{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
+								{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
+						],
+						titleText: 'Eyah! You are having Network Problems',
+						cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
+						cancel: function() {
+							$log.debug('CANCELLED');
+						},
+						buttonClicked: function(index) {
+							switch (index){
+								case 0 :										
+									loadFeedSources();										
+									return true;
+								case 1 :
+								$state.go("app.feeds.bookmarks");
+									return true;
+							}
+						}
+					});
+				}
 			});
 		};
 
@@ -266,25 +312,25 @@ angular
 					}, function(err){
 
 						$ionicActionSheet.show({
-						buttons: [
-								{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
-								{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
-						],
-						 titleText: 'Eyah! You are having Network Problems',
-						 cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
-						 cancel: function() {
-									console.log('CANCELLED');
-								},
-						buttonClicked: function(index) {
-						switch (index){
-							case 0 :
-								$scope.doRefresh();
-								return true;
-							case 1 :
-							$state.go("app.feeds.bookmarks");
-								return true;
-						}
-						}
+							buttons: [
+									{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
+									{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
+							],
+							titleText: 'Eyah! You are having Network Problems',
+							cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
+							cancel: function() {
+								$log.debug('CANCELLED');
+							},
+							buttonClicked: function(index) {
+								switch (index){
+									case 0 :										
+										$scope.doRefresh();										
+										return true;
+									case 1 :
+									$state.go("app.feeds.bookmarks");
+										return true;
+								}
+							}
 						});
 						
 						$scope.isError = true;
@@ -566,12 +612,12 @@ angular
 			/**
 			* Handles offline retry mode
 			**/
-	    	$rootScope.$on('retry', function () {
-				$log.debug("Listening to Offline try again");
-				$timeout(function(){
-					$scope.doRefresh();
-				});
-			});	 	
+	  		// 	$rootScope.$on('retry', function () {
+			// 	$log.debug("Listening to Offline try again");
+			// 	$timeout(function(){
+			// 		$scope.doRefresh();
+			// 	});
+			// });	 	
 
 			/**
 			* Back Button Handling before leave
@@ -684,29 +730,27 @@ angular
 							$ionicHistory.clearCache();
 						}
 						if(err.status == -1){
-
 							$ionicActionSheet.show({
-						buttons: [
-								{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
-								{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
-						],
-						 titleText: 'Eyah! You are having Network Problems',
-						 cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
-						 cancel: function() {
-									console.log('CANCELLED');
+								buttons: [
+										{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
+										{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
+								],
+								titleText: 'Eyah! You are having Network Problems',
+								cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
+								cancel: function() {
+									$log.debug('CANCELLED');
 								},
-						buttonClicked: function(index) {
-						switch (index){
-							case 0 :
-								$scope.doRefresh();
-								return true;
-							case 1 :
-							$state.go("app.feeds.bookmarks");
-								return true;
-						}
-						}
-						});
-
+								buttonClicked: function(index) {
+									switch (index){
+										case 0 :
+											$scope.doRefresh();
+											return true;
+										case 1 :
+										$state.go("app.feeds.bookmarks");
+											return true;
+									}
+								}
+							});
 							$scope.isError = true;
 						}
 					}).finally(function(){	
@@ -889,7 +933,7 @@ angular
 	})
 
 	// Feed deatil controller
-	.controller('FeedDetailController',function($log, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $window, settingService, $cordovaAppAvailability){
+	.controller('FeedDetailController',function($log, $ionicActionSheet, $scope, feedDetailService, bookMarkService, feedService, socialService, ConnectivityMonitorFactory, sourcesService, $rootScope, $ionicLoading, feedsDAOService, $window, settingService, $cordovaAppAvailability){
 		/**
 		* Initialization
 		*/
@@ -950,8 +994,6 @@ angular
 					}
 					img.setAttribute("image-lazy-loader", "android");
 					img.setAttribute("image-lazy-distance-from-bottom-to-load",100);
-					img.removeAttribute("src");
-					img.removeAttribute("data-src");
 					img.removeAttribute("srcset");
 					img.removeAttribute("border");							
 				}
@@ -1018,6 +1060,30 @@ angular
 				feedService.markPostReadUnread(params).then(function(res) {
 					$log.debug(res);
 					$rootScope.$broadcast("readArticle", { id: res.data.data.updated_ids[0], status: true });
+				},function(err){
+					if(err.status == -1) {
+						$ionicActionSheet.show({
+						buttons: [
+								{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
+								{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
+						],
+						 titleText: 'Eyah! You are having Network Problems',
+						 cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
+						 cancel: function() {
+									$log.debug('CANCELLED');
+								},
+						buttonClicked: function(index) {
+						switch (index){
+							case 0 :
+								markAsRead();
+								return true;
+							case 1 :
+							$state.go("app.feeds.bookmarks");
+								return true;
+						}
+						}
+						});
+					}
 				})
 			}
 			if (!$scope.entry.is_read && ConnectivityMonitorFactory.isOffline()) {
@@ -1221,18 +1287,18 @@ angular
 		* send back with retry
 		*/
 		$scope.retry =function () {
-			if(ConnectivityMonitorFactory.isOffline()) {				
-				$state.go('app.offline');
-			}
-			if(ConnectivityMonitorFactory.isOnline()) {
-				$rootScope.$broadcast('retry', {tryAgain: true} );
-				$scope.myGoBack();
-			}	
+			// if(ConnectivityMonitorFactory.isOffline()) {				
+			// 	$state.go('app.offline');
+			// }
+			// if(ConnectivityMonitorFactory.isOnline()) {
+			// 	$rootScope.$broadcast('retry', {tryAgain: true} );
+			// 	$scope.myGoBack();
+			// }	
 		}
 		//send back to the location
-		$scope.myGoBack = function(){
-			$ionicHistory.goBack();
-		}
+		// $scope.myGoBack = function(){
+		// 	$ionicHistory.goBack();
+		// }
     	setup();
 	})
 	// setting controller

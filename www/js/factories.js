@@ -102,7 +102,7 @@ angular
                 config.timeout = canceler.promise;
                 config.headers = config.headers || {};
                 config.timeout = 40000;
-                
+
                 //if( ionic.Platform.isWebView() && angular.isDefined(localStorage.tatafo_deviceInfo) ){
                 if( ionic.Platform.isWebView() && angular.isDefined(localStorage.tatafo_deviceInfo) ){
                     //set headers so that token can be verified and user's last activity can be captured
@@ -136,12 +136,7 @@ angular
                     }else {
                         switch(rejection.status){
                             case -1:
-                            if(($state.current.name.indexOf('app.feeds.all') !== -1 ) || ($state.current.name.indexOf('app.feed-entries') !== -1 )) {
-                                $log.debug("Feed Listing Page ");
-                            }else {
-                                $state.go('app.offline');
-                            }
-                            break;
+                                break;
                             case 0:
                               //timeout case, server unreachable or internet not working
                             ConnectivityMonitorFactory.showErrorBanner(messagesService.general.INTERNET_NOT_WORKING);
