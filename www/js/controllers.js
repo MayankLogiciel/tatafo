@@ -193,8 +193,29 @@ angular
 	        		});
 					loadFeedSources();
 				}
-				if(ConnectivityMonitorFactory.isOffline()) {								
-					ConnectivityMonitorFactory.showErrorBanner('Network unavailable');			
+				if(ConnectivityMonitorFactory.isOffline() && ($state.current.name.indexOf('app.feeds.all') !== -1)) {								
+					ConnectivityMonitorFactory.showErrorBanner('Network unavailable');
+					$ionicActionSheet.show({
+						buttons: [
+								{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
+								{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
+						],
+						titleText: 'Eyah! You are having Network Problems',
+						cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
+						cancel: function() {
+							$log.debug('CANCELLED');
+						},
+						buttonClicked: function(index) {
+							switch (index){
+								case 0 :										
+									getFeeds();										
+									return true;
+								case 1 :
+								$state.go("app.feeds.bookmarks");
+									return true;
+							}
+						}
+					});			
 				}
 			}
 		};
@@ -361,6 +382,28 @@ angular
 
 					});						
 					$scope.isMoreFeeds = response.isMorePostsPresent;
+				}else if(response.posts.length <= 0 && ($state.current.name.indexOf('app.feeds.all') !== -1)){
+					$ionicActionSheet.show({
+						buttons: [
+								{ text: '<i class="icon ion-refresh assertive"></i> Retry for New Gists' },
+								{ text: '<i class="icon ion-android-bookmark assertive"></i> Open Saved Gists' },
+						],
+						titleText: 'Eyah! You are having Network Problems',
+						cancelText: '<i class="icon ion-close-round assertive"></i> Cancel',
+						cancel: function() {
+							$log.debug('CANCELLED');
+						},
+						buttonClicked: function(index) {
+							switch (index){
+								case 0 :										
+									loadFeeds();										
+									return true;
+								case 1 :
+								$state.go("app.feeds.bookmarks");
+									return true;
+							}
+						}
+					});
 				}	
 				else{
 					$scope.isMoreFeeds = response.isMorePostsPresent;
