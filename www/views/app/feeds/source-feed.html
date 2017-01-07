@@ -47,7 +47,7 @@
         </div> 
         
         <div class="entries-list feed-col" ng-if="feed.length > 0">
-            <div ng-repeat="entry in feed | orderBy:'feed.updated': true" image-path-fix class="list card entry-item">
+            <div ng-repeat="entry in feed | orderBy:'updated_at': true" image-path-fix class="list card entry-item">
                 <app-rate-in-list-directive ng-if="canWeEmbedTheAppRateCard($index)"></app-rate-in-list-directive>
                 <feed-listing-item></feed-listing-item>
             </div>
