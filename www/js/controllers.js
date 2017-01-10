@@ -322,7 +322,7 @@ angular
 						}
 						$scope.allFeed = $scope.allFeed.concat(feed.data.data.feed);
 						angular.forEach($scope.allFeed, function(val,key){	
-							var createdDate = Date.parse(val.updated_at)
+							var createdDate = Date.parse(val.updated_at);
 							val.timestamp = createdDate/1000;							
 						})
 
@@ -1003,10 +1003,7 @@ angular
 			$scope.allFeed=[];
 			$scope.load = false;
 			$scope.entry = feedDetailService.getPostData(); //load feed data
-			angular.forEach($scope.entry, function(val,key){	
-				var createdDate = Date.parse(val.updated_at);
-				val.timestamp = createdDate/1000;							
-			})
+			$scope.timestamp = $scope.entry.updated_at;
 			replaceElementWithIframeforOtherVideo($scope.entry);
 			applyImageLoaderToDetailFeedImages($scope.entry);			
 			$scope.load = true;
